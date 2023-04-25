@@ -29,7 +29,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('users', [AdminController::class, 'users'])->name('admin.users');
 
 
-    // Content 
+    // Content
     Route::get('/', [ContentController::class, 'index'])->name('content.index');
     Route::get('/content/create', [ContentController::class, 'create'])->name('content.create');
     Route::post('/content', [ContentController::class, 'store'])->name('content.store');
@@ -61,3 +61,9 @@ Route::delete('/subscriptions/{id}', [SubscriptionController::class, 'destroy'])
 
 
 
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
