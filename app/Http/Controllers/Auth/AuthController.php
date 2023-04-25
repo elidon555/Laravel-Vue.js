@@ -24,6 +24,7 @@ class AuthController extends Controller
             ], 422);
         }
 
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         if (!$user->hasRole('admin')) {
