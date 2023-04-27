@@ -27,8 +27,6 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     // define your admin routes here
     Route::get('users', [AdminController::class, 'users'])->name('admin.users');
-
-
     // Content
     Route::get('/', [ContentController::class, 'index'])->name('content.index');
     Route::get('/content/create', [ContentController::class, 'create'])->name('content.create');
@@ -57,13 +55,3 @@ Route::get('/subscriptions/{id}', [SubscriptionController::class, 'show'])->name
 Route::get('/subscriptions/{id}/edit', [SubscriptionController::class, 'edit'])->name('subscriptions.edit');
 Route::put('/subscriptions/{id}', [SubscriptionController::class, 'update'])->name('subscriptions.update');
 Route::delete('/subscriptions/{id}', [SubscriptionController::class, 'destroy'])->name('subscriptions.destroy');
-
-
-
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
