@@ -1,11 +1,11 @@
 <template>
   <div v-if="currentUser.id" class="min-h-full bg-gray-200 flex">
     <!--    Sidebar-->
-    <Sidebar :class="{'-ml-[200px]': !sidebarOpened}"/>
+    <Sidebar :class="{'-ml-[200px]': !sidebarOpened}" :user="currentUser"/>
     <!--/    Sidebar-->
 
     <div class="flex-1">
-      <Navbar @toggle-sidebar="toggleSidebar"></Navbar>
+      <Navbar @toggle-sidebar="toggleSidebar" ></Navbar>
       <!--      Content-->
       <main class="p-6">
         <router-view></router-view>
@@ -32,7 +32,6 @@ const {title} = defineProps({
 })
 const sidebarOpened = ref(true);
 const currentUser = computed(() => store.state.user.data);
-
 function toggleSidebar() {
   sidebarOpened.value = !sidebarOpened.value
 }

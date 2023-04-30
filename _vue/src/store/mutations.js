@@ -3,6 +3,10 @@ export function setUser(state, user) {
   state.user.data = user;
 }
 
+export function setRole(state, role) {
+  state.role.data = role;
+}
+
 export function setToken(state, token) {
   state.user.token = token;
   if (token) {
@@ -41,9 +45,46 @@ export function setUsers(state, [loading, data = null]) {
       from: data.meta.from,
       to: data.meta.to,
       total: data.meta.total,
+      roles: data.roles,
+      permissions: data.permissions
     }
   }
   state.products.loading = loading;
+}
+
+export function setRoles(state, [loading, data = null]) {
+
+    if (data) {
+        state.roles = {
+            ...state.roles,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+            permissions: data.permissions
+        }
+    }
+    state.products.loading = loading;
+}
+
+export function setPermissions(state, [loading, data = null]) {
+
+    if (data) {
+        state.permissions = {
+            ...state.permissions,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+        }
+    }
+    state.products.loading = loading;
 }
 
 export function setCustomers(state, [loading, data = null]) {

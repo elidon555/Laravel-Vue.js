@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import AppLayout from '../components/AppLayout.vue'
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
-import Products from "../views/Products/Products.vue";
+import Products from "../views/Subscriptions/Products.vue";
 import Users from "../views/Users/Users.vue";
 import Customers from "../views/Customers/Customers.vue";
 import CustomerView from "../views/Customers/CustomerView.vue";
@@ -15,6 +15,10 @@ import store from "../store";
 import Report from "../views/Reports/Report.vue";
 import OrdersReport from "../views/Reports/OrdersReport.vue";
 import CustomersReport from "../views/Reports/CustomersReport.vue";
+import Signup from "../views/Signup.vue";
+import Roles from "../views/Roles/Roles.vue";
+import Permissions from "../views/Permissions/Permissions.vue";
+
 
 const routes = [
   {
@@ -43,7 +47,26 @@ const routes = [
       {
         path: 'users',
         name: 'app.users',
-        component: Users
+        component: Users,
+        meta: {
+          roles: ["admin"],
+        },
+      },
+      {
+        path: 'roles',
+        name: 'app.roles',
+        component: Roles,
+        meta: {
+          roles: ["admin"],
+        },
+      },
+      {
+        path: 'permissions',
+        name: 'app.permissions',
+        component: Permissions,
+        meta: {
+          roles: ["admin"],
+        },
       },
       {
         path: 'customers',
@@ -69,9 +92,6 @@ const routes = [
         path: '/report',
         name: 'reports',
         component: Report,
-        meta: {
-          requiresAuth: true
-        },
         children: [
           {
             path: 'orders/:date?',
@@ -91,6 +111,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+    meta: {
+      requiresGuest: true
+    }
+  },  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup,
     meta: {
       requiresGuest: true
     }
@@ -123,14 +150,36 @@ const router = createRouter({
   routes
 })
 
+
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.state.user.token) {
+
+
+  const user = store.state.user
+  // console.log('route set')
+  if (to.meta.requiresAuth && !user.token) {
     next({name: 'login'})
-  } else if (to.meta.requiresGuest && store.state.user.token) {
+  }
+  // else if (to.meta.roles && user.token) {
+  //   let hasRole = false;
+  //   for (const role of user.data.roles){
+  //     if (to.meta.roles.includes(role)){
+  //       hasRole = true
+  //     }
+  //   }
+  //   if (hasRole) next()
+  //   else next({name: 'app.dashboard'})
+  //   next({name: 'app.dashboard'})
+  // }
+  else if (to.meta.requiresGuest && user.token) {
     next({name: 'app.dashboard'})
   } else {
     next();
   }
+
+  if (to.meta.roles) {
+    console.log('ok')
+  }
+
 
 })
 
