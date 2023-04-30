@@ -14,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -32,12 +33,14 @@ class UserController extends Controller
 
         $query = User::query()
             ->where('name', 'like', "%$search%")
-            ->with('roles')
+            ->with(['roles','permissions'])
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        $roles['roles'] = Role::query()->get()->toArray();
+        $additional['roles'] = Role::query()->get()->toArray();
+        $additional['permissions'] = Permission::query()->get()->toArray();
 
-        return UserResource::collection($query)->additional($roles);
+        return UserResource::collection($query)
+            ->additional($additional);
     }
 
     /**
@@ -78,6 +81,7 @@ class UserController extends Controller
         $data['updated_by'] = $request->user()->id;
 
         $user->syncRoles($data['roles']);
+        $user->syncPermissions($data['permissions']);
         $user->update($data);
 
         return new UserResource($user);

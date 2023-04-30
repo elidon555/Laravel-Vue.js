@@ -52,12 +52,23 @@
 
                     <div>
                         <div v-for="(role, index) of users.roles" :key="role.name">
-                            {{role}}
                             <input type="checkbox" :value="role.name" v-model="roles">
                             <label for="jack">{{ role.name }}</label>
                             <br>
                         </div>
                     </div>
+
+                    Permissions
+
+                    <div>
+                        <div v-for="(permission, index) of users.permissions" :key="permission.name">
+                            <input type="checkbox" :value="permission.name" v-model="permissions">
+                            <label for="jack">{{ permission.name }}</label>
+                            <br>
+                        </div>
+                    </div>
+
+
 
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button type="submit"
@@ -104,16 +115,19 @@ const user = ref({
   id: props.user.id,
   name: props.user.name,
   email: props.user.email,
-    roles: props.user.roles
+    roles: props.user.roles,
+    permissions: props.user.permissions
 })
 
 const users = computed(() => store.state.users);
 const roles = ref([]);
+const permissions = ref([]);
 const loading = ref(false)
 
 const props = defineProps({
   modelValue: Boolean,
     roles: Array,
+    permissions: Array,
   user: {
     required: true,
     type: Object,
@@ -132,9 +146,12 @@ onUpdated(() => {
     id: props.user.id,
     name: props.user.name,
     email: props.user.email,
-      roles: props.user.roles
+      roles: props.user.roles,
+      permissions: props.user.permissions
   }
   roles.value = props.user.roles.map(item => item.name);
+  permissions.value = props.user.permissions.map(item => item.name);
+  console.log(permissions.value)
 })
 
 function closeModal() {
@@ -145,6 +162,7 @@ function closeModal() {
 function onSubmit() {
     loading.value = true
     user.value.roles = roles
+    user.value.permissions = permissions
   if (user.value.id) {
     store.dispatch('updateUser', user.value)
       .then(response => {

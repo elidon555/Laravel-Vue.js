@@ -45,7 +45,8 @@ export function setUsers(state, [loading, data = null]) {
       from: data.meta.from,
       to: data.meta.to,
       total: data.meta.total,
-      roles: data.roles
+      roles: data.roles,
+      permissions: data.permissions
     }
   }
   state.products.loading = loading;

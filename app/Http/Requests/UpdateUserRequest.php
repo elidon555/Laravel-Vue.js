@@ -28,7 +28,8 @@ class UpdateUserRequest extends FormRequest
             'name' => ['max:55'],
             'email' => ['email'],
             'password' => ['nullable', Password::min(8)->numbers()->letters()->symbols()],
-            'roles' => 'nullable'
+            'roles' => 'nullable',
+            'permissions' => 'nullable'
         ];
     }
 }
