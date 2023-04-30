@@ -1,6 +1,11 @@
 
 export function setUser(state, user) {
   state.user.data = user;
+    if (user) {
+        sessionStorage.setItem('AUTH', JSON.stringify(user));
+    } else {
+        sessionStorage.removeItem('AUTH')
+    }
 }
 
 export function setRole(state, role) {

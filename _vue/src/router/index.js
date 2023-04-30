@@ -18,6 +18,8 @@ import CustomersReport from "../views/Reports/CustomersReport.vue";
 import Signup from "../views/Signup.vue";
 import Roles from "../views/Roles/Roles.vue";
 import Permissions from "../views/Permissions/Permissions.vue";
+import {computed} from "vue";
+import Content from "../views/Content/Content.vue";
 
 
 const routes = [
@@ -43,6 +45,11 @@ const routes = [
         path: 'products',
         name: 'app.products',
         component: Products
+      },
+      {
+        path: 'content',
+        name: 'app.content',
+        component: Content
       },
       {
         path: 'users',
@@ -153,33 +160,23 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
+  const auth = store.state.user.data
+  const token = store.state.user.token
 
-  const user = store.state.user
-  // console.log('route set')
-  if (to.meta.requiresAuth && !user.token) {
+  if (to.meta.requiresAuth && !token) {
     next({name: 'login'})
-  }
-  // else if (to.meta.roles && user.token) {
-  //   let hasRole = false;
-  //   for (const role of user.data.roles){
-  //     if (to.meta.roles.includes(role)){
-  //       hasRole = true
-  //     }
-  //   }
-  //   if (hasRole) next()
-  //   else next({name: 'app.dashboard'})
-  //   next({name: 'app.dashboard'})
-  // }
-  else if (to.meta.requiresGuest && user.token) {
+  } else if (token && auth.roles && to.meta.roles ) {
+
+    const hasRole = auth.roles.some(role => to.meta.roles.includes(role['name']));
+    if (!hasRole) next({ name: 'app.dashboard' });
+
+    next();
+
+} else if (to.meta.requiresGuest && token) {
     next({name: 'app.dashboard'})
   } else {
     next();
   }
-
-  if (to.meta.roles) {
-    console.log('ok')
-  }
-
 
 })
 
