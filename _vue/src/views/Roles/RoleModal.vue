@@ -20,7 +20,7 @@
                        class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center"/>
               <header class="py-3 px-4 flex justify-between items-center">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  {{ user.id ? `Update user: "${props.user.name}"` : 'Create new User' }}
+                  {{ role.id ? `Update role: "${props.role.name}"` : 'Create new Role' }}
                 </DialogTitle>
                 <button
                   @click="closeModal()"
@@ -44,17 +44,14 @@
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-2" v-model="user.name" label="Name"/>
-                  <CustomInput class="mb-2" v-model="user.email" label="Email"/>
-                  <CustomInput type="password" class="mb-2" v-model="user.password" label="Password"/>
-
+                  <CustomInput class="mb-2" v-model="role.name" label="Name"/>
+                  <CustomInput class="mb-2" v-model="role.guard_name" label="Guard name"/>
                     Roles
 
                     <div>
-                        <div v-for="(role, index) of users.roles" :key="role.name">
-                            {{role}}
-                            <input type="checkbox" :value="role.name" v-model="roles">
-                            <label for="jack">{{ role.name }}</label>
+                        <div v-for="(permission, index) of roles.permissions" :key="permission.name">
+                            <input type="checkbox" :value="permission.name" v-model="permissions">
+                            <label for="jack">{{ permission.name }}</label>
                             <br>
                         </div>
                     </div>
@@ -100,21 +97,20 @@ import Spinner from "../../components/core/Spinner.vue";
 import { CheckIcon, ChevronDoubleUpIcon } from '@heroicons/vue/solid'
 
 
-const user = ref({
-  id: props.user.id,
-  name: props.user.name,
-  email: props.user.email,
-    roles: props.user.roles
+const role = ref({
+  id: props.role.id,
+  name: props.role.name,
+  guard_name: props.role.guard_name,
+    permissions: props.role.permissions
 })
 
-const users = computed(() => store.state.users);
-const roles = ref([]);
+const roles = computed(() => store.state.roles);
+const permissions = ref([]);
 const loading = ref(false)
 
 const props = defineProps({
   modelValue: Boolean,
-    roles: Array,
-  user: {
+  role: {
     required: true,
     type: Object,
   }
@@ -128,40 +124,40 @@ const show = computed({
 })
 
 onUpdated(() => {
-  user.value = {
-    id: props.user.id,
-    name: props.user.name,
-    email: props.user.email,
-      roles: props.user.roles
+  role.value = {
+    id: props.role.id,
+    name: props.role.name,
+    guard_name: props.role.guard_name,
+    permissions: props.role.permissions,
   }
-  roles.value = props.user.roles.map(item => item.name);
-})
+  permissions.value = props.role.permissions.map(item => item.name);
 
+})
 function closeModal() {
   show.value = false
   emit('close')
 }
 
 function onSubmit() {
-    loading.value = true
-    user.value.roles = roles
-  if (user.value.id) {
-    store.dispatch('updateUser', user.value)
+  loading.value = true
+    role.value.permissions= permissions;
+  if (role.value.id) {
+    store.dispatch('updateRole', role.value)
       .then(response => {
         loading.value = false;
         if (response.status === 200) {
           // TODO show notification
-          store.dispatch('getUsers')
+          store.dispatch('getRoles')
           closeModal()
         }
       })
   } else {
-    store.dispatch('createUser', user.value)
+    store.dispatch('createRole', role.value)
       .then(response => {
         loading.value = false;
         if (response.status === 201) {
           // TODO show notification
-          store.dispatch('getUsers')
+          store.dispatch('getRoles')
           closeModal()
         }
       })

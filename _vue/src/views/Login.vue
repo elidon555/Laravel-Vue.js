@@ -54,6 +54,13 @@
         </div>
       </div>
 
+        <div class="text-center">
+
+            <router-link to="/signup">
+                <p >Don’t have an account? Signup!</p>
+            </router-link>
+        </div>
+
       <div>
         <button type="submit"
                 :disabled="loading"

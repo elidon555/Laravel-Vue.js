@@ -20,7 +20,7 @@
                        class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center"/>
               <header class="py-3 px-4 flex justify-between items-center">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  {{ user.id ? `Update user: "${props.user.name}"` : 'Create new User' }}
+                  {{ permission.id ? `Update permission: "${props.permission.name}"` : 'Create new Permission' }}
                 </DialogTitle>
                 <button
                   @click="closeModal()"
@@ -44,20 +44,8 @@
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-2" v-model="user.name" label="Name"/>
-                  <CustomInput class="mb-2" v-model="user.email" label="Email"/>
-                  <CustomInput type="password" class="mb-2" v-model="user.password" label="Password"/>
-
-                    Roles
-
-                    <div>
-                        <div v-for="(role, index) of users.roles" :key="role.name">
-                            {{role}}
-                            <input type="checkbox" :value="role.name" v-model="roles">
-                            <label for="jack">{{ role.name }}</label>
-                            <br>
-                        </div>
-                    </div>
+                  <CustomInput class="mb-2" v-model="permission.name" label="Name"/>
+                  <CustomInput class="mb-2" v-model="permission.guard_name" label="Guard name"/>
 
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button type="submit"
@@ -100,21 +88,20 @@ import Spinner from "../../components/core/Spinner.vue";
 import { CheckIcon, ChevronDoubleUpIcon } from '@heroicons/vue/solid'
 
 
-const user = ref({
-  id: props.user.id,
-  name: props.user.name,
-  email: props.user.email,
-    roles: props.user.roles
+const permission = ref({
+  id: props.permission.id,
+  name: props.permission.name,
+  guard_name: props.permission.guard_name,
 })
 
-const users = computed(() => store.state.users);
+const permissions = computed(() => store.state.permissions);
 const roles = ref([]);
 const loading = ref(false)
 
 const props = defineProps({
   modelValue: Boolean,
     roles: Array,
-  user: {
+  permission: {
     required: true,
     type: Object,
   }
@@ -128,13 +115,11 @@ const show = computed({
 })
 
 onUpdated(() => {
-  user.value = {
-    id: props.user.id,
-    name: props.user.name,
-    email: props.user.email,
-      roles: props.user.roles
+  permission.value = {
+    id: props.permission.id,
+    name: props.permission.name,
+    guard_name: props.permission.guard_name,
   }
-  roles.value = props.user.roles.map(item => item.name);
 })
 
 function closeModal() {
@@ -144,24 +129,23 @@ function closeModal() {
 
 function onSubmit() {
     loading.value = true
-    user.value.roles = roles
-  if (user.value.id) {
-    store.dispatch('updateUser', user.value)
+  if (permission.value.id) {
+    store.dispatch('updatePermission', permission.value)
       .then(response => {
         loading.value = false;
         if (response.status === 200) {
           // TODO show notification
-          store.dispatch('getUsers')
+          store.dispatch('getPermissions')
           closeModal()
         }
       })
   } else {
-    store.dispatch('createUser', user.value)
+    store.dispatch('createPermission', permission.value)
       .then(response => {
         loading.value = false;
         if (response.status === 201) {
           // TODO show notification
-          store.dispatch('getUsers')
+          store.dispatch('getPermissions')
           closeModal()
         }
       })

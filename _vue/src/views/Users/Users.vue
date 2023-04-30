@@ -23,7 +23,8 @@ const DEFAULT_USER = {
   title: '',
   description: '',
   image: '',
-  price: ''
+  price: '',
+    roles: []
 }
 
 const users = computed(() => store.state.users);
@@ -43,6 +44,7 @@ function editUser(u) {
 function onModalClose() {
   userModel.value = {...DEFAULT_USER}
 }
+
 </script>
 
 <style scoped>

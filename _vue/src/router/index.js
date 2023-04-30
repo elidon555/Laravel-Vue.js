@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import AppLayout from '../components/AppLayout.vue'
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
-import Products from "../views/Products/Products.vue";
+import Products from "../views/Subscriptions/Products.vue";
 import Users from "../views/Users/Users.vue";
 import Customers from "../views/Customers/Customers.vue";
 import CustomerView from "../views/Customers/CustomerView.vue";
@@ -15,6 +15,9 @@ import store from "../store";
 import Report from "../views/Reports/Report.vue";
 import OrdersReport from "../views/Reports/OrdersReport.vue";
 import CustomersReport from "../views/Reports/CustomersReport.vue";
+import Signup from "../views/Signup.vue";
+import Roles from "../views/Roles/Roles.vue";
+import Permissions from "../views/Permissions/Permissions.vue";
 
 const routes = [
   {
@@ -44,6 +47,16 @@ const routes = [
         path: 'users',
         name: 'app.users',
         component: Users
+      },
+        {
+        path: 'roles',
+        name: 'app.roles',
+        component: Roles
+      },
+        {
+        path: 'permissions',
+        name: 'app.permissions',
+        component: Permissions
       },
       {
         path: 'customers',
@@ -94,6 +107,13 @@ const routes = [
     meta: {
       requiresGuest: true
     }
+  },  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup,
+    meta: {
+      requiresGuest: true
+    }
   },
   {
     path: '/request-password',
@@ -124,6 +144,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    console.log(store.state.user)
   if (to.meta.requiresAuth && !store.state.user.token) {
     next({name: 'login'})
   } else if (to.meta.requiresGuest && store.state.user.token) {

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use http\Client\Request;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -23,8 +24,12 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\Throwable $e, \Illuminate\Http\Request $request) {
+            if ($request->is('*')) {
+                return response()->json([
+                    'message' => $e->getMessage() . $e->getCode() . $e->getFile()
+                ], 500);
+            }
         });
     }
 }

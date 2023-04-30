@@ -21,8 +21,7 @@ use App\Http\Controllers\SubscriptionController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
+Auth::routes();
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     // define your admin routes here
