@@ -27,7 +27,7 @@
         Orders
       </span>
     </router-link>
-    <router-link :to="{name: 'app.users'}"
+    <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}"
                  class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
         <UsersIcon class="w-5"/>
@@ -36,7 +36,7 @@
         Users
       </span>
     </router-link>
-      <router-link :to="{name: 'app.roles'}"
+      <router-link v-show="checkRole(['admin'])" :to="{name: 'app.roles'}"
                    class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
         <UsersIcon class="w-5"/>
@@ -45,7 +45,7 @@
         Roles
       </span>
       </router-link>
-      <router-link :to="{name: 'app.permissions'}"
+      <router-link v-show="checkRole(['admin'])" :to="{name: 'app.permissions'}"
                    class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
         <UsersIcon class="w-5"/>
@@ -77,6 +77,18 @@
 
 <script setup>
   import {HomeIcon, UserGroupIcon, UsersIcon, ViewListIcon, ChartBarIcon} from '@heroicons/vue/outline'
+  import {ref} from "vue";
+
+  const props = defineProps({
+    user: {
+      required: true,
+      type: Object,
+    }
+  })
+  const user = ref(props.user)
+  function checkRole(roles) {
+    return user.value.roles.some(role => roles.includes(role.name));
+  }
 </script>
 
 <style scoped>
