@@ -1,7 +1,7 @@
 <template>
   <div v-if="currentUser" class="min-h-full bg-gray-200 flex">
     <!--    Sidebar-->
-    <Sidebar :class="{'-ml-[200px]': !sidebarOpened}" :user="currentUser"/>
+    <Sidebar :class="{'-ml-[160px]': !sidebarOpened}" :user="currentUser"/>
     <!--/    Sidebar-->
 
     <div class="flex-1">

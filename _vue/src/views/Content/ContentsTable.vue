@@ -72,13 +72,6 @@
       </v-card>
     </v-dialog>
 
-    <div>
-      <video width="320" height="240" controls>
-        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                      type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
     <div v-if="!contents.loading" class="flex justify-between items-center mt-5">
       <div v-if="contents.data.length">
         Showing from {{ contents.from }} to {{ contents.to }}
@@ -117,8 +110,6 @@
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
-import Vue3CanvasVideoPlayer from 'vue3-canvas-video-player';
-import 'vue3-canvas-video-player/dist/style.css';
 
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');
@@ -127,6 +118,7 @@ const sortDirection = ref('desc')
 
 const dialog = ref({
   show:false,
+  type:'',
   url: ''
 })
 
@@ -135,6 +127,7 @@ const contents = computed(() => store.state.contents);
 function openDialog(event) {
   dialog.value.show = true;
   dialog.value.url = event.target.src;
+  dialog.value.type = event.target.src;
 }
 
 onMounted(() => {
