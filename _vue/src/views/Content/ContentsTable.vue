@@ -19,20 +19,24 @@
                placeholder="Type to Search roles">
       </div>
     </div>
-
+    <br>
     <v-row class="w-full">
       <v-col
           v-for="content in contents.data"
           :key="content.url"
           class="d-flex child-flex"
-          cols="4"
+          cols="3"
       >
-        <v-img
+        <v-card class="w-100">
+          <v-card-title >{{content.title}}</v-card-title>
+          <v-card-text>
+            <v-img
+            @click="openDialog"
             :lazy-src="content.url"
             :src="content.url"
             aspect-ratio="1"
             cover
-            class="bg-grey-lighten-2"
+            class="bg-grey-lighten-2 rounded-3xl "
         >
           <template v-slot:placeholder>
             <v-row
@@ -47,9 +51,34 @@
             </v-row>
           </template>
         </v-img>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
 
+    <v-dialog
+        v-model="dialog.show"
+        width="60%"
+        max-height="90%"
+    >
+      <v-card>
+        <v-card-text>
+          <v-img
+              :lazy-src="dialog.url"
+              :src="dialog.url"
+              class="bg-grey-lighten-2 rounded"
+          ></v-img>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <div>
+      <video width="320" height="240" controls>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                      type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
     <div v-if="!contents.loading" class="flex justify-between items-center mt-5">
       <div v-if="contents.data.length">
         Showing from {{ contents.from }} to {{ contents.to }}
@@ -87,18 +116,26 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
-import Spinner from "../../components/core/Spinner.vue";
 import {USERS_PER_PAGE} from "../../constants";
-import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
+import Vue3CanvasVideoPlayer from 'vue3-canvas-video-player';
+import 'vue3-canvas-video-player/dist/style.css';
 
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
 
+const dialog = ref({
+  show:false,
+  url: ''
+})
+
 const contents = computed(() => store.state.contents);
+
+function openDialog(event) {
+  dialog.value.show = true;
+  dialog.value.url = event.target.src;
+}
 
 onMounted(() => {
   getContents();
@@ -121,21 +158,6 @@ function getContents(url = null) {
     sort_field: sortField.value,
     sort_direction: sortDirection.value
   });
-}
-
-function sortContents(field) {
-  if (field === sortField.value) {
-    if (sortDirection.value === 'desc') {
-      sortDirection.value = 'asc'
-    } else {
-      sortDirection.value = 'desc'
-    }
-  } else {
-    sortField.value = field;
-    sortDirection.value = 'asc'
-  }
-
-  getContents()
 }
 </script>
 
