@@ -27,7 +27,7 @@
         Orders
       </span>
     </router-link>
-    <router-link v-show="checkRole(['user'])" :to="{name: 'app.content'}"
+    <router-link v-show="checkRole(['user'])" :to="{name: 'app.contents'}"
                  class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
         <ViewListIcon class="w-5"/>

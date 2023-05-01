@@ -149,7 +149,7 @@ export function getPermissions({commit, state}, {url = null, search = '', per_pa
     commit('setPermissions', [true])
     url = url || '/permissions'
     const params = {
-        per_page: state.roles.limit,
+        per_page: state.permissions.limit,
     }
     return axiosClient.get(url, {
         params: {
@@ -162,6 +162,26 @@ export function getPermissions({commit, state}, {url = null, search = '', per_pa
         })
         .catch(() => {
             commit('setPermissions', [false])
+        })
+}
+
+export function getContents({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+    commit('setContents', [true])
+    url = url || '/contents'
+    const params = {
+        per_page: state.contents.limit,
+    }
+    return axiosClient.get(url, {
+        params: {
+            ...params,
+            search, per_page, sort_field, sort_direction
+        }
+    })
+        .then((response) => {
+            commit('setContents', [false, response.data])
+        })
+        .catch(() => {
+            commit('setContents', [false])
         })
 }
 

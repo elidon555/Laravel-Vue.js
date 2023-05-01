@@ -19,7 +19,7 @@ import Signup from "../views/Signup.vue";
 import Roles from "../views/Roles/Roles.vue";
 import Permissions from "../views/Permissions/Permissions.vue";
 import {computed} from "vue";
-import Content from "../views/Content/Content.vue";
+import Contents from "../views/Content/Contents.vue";
 
 
 const routes = [
@@ -47,9 +47,9 @@ const routes = [
         component: Products
       },
       {
-        path: 'content',
-        name: 'app.content',
-        component: Content
+        path: 'contents',
+        name: 'app.contents',
+        component: Contents
       },
       {
         path: 'users',
