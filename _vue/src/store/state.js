@@ -1,7 +1,7 @@
 export default {
   user: {
     token: sessionStorage.getItem('TOKEN'),
-    data: {}
+    data: JSON.parse(sessionStorage.getItem('AUTH')) ?? {},
   },
   products: {
     loading: false,
@@ -34,6 +34,16 @@ export default {
     total: null
   },
     permissions: {
+        loading: false,
+        data: [],
+        links: [],
+        from: null,
+        to: null,
+        page: 1,
+        limit: null,
+        total: null
+    },
+  contents: {
         loading: false,
         data: [],
         links: [],

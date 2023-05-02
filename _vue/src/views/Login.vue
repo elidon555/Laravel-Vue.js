@@ -121,12 +121,19 @@ function login() {
   store.dispatch('login', user)
     .then(() => {
       loading.value = false;
-      router.push({name: 'app.dashboard'})
+      redirect()
     })
     .catch(({response}) => {
       loading.value = false;
       errorMsg.value = response.data.message;
     })
+}
+
+function redirect(){
+  const userRoles = store.state.user.data.roles.map(role=>role['name'])
+  let route = '';
+  if (userRoles.includes('user')) route = 'app.contents'
+  router.push({name:route ?? 'app.dashboard'})
 }
 
 </script>

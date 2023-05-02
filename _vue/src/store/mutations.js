@@ -1,6 +1,11 @@
 
 export function setUser(state, user) {
   state.user.data = user;
+    if (user) {
+        sessionStorage.setItem('AUTH', JSON.stringify(user));
+    } else {
+        sessionStorage.removeItem('AUTH')
+    }
 }
 
 export function setRole(state, role) {
@@ -75,6 +80,22 @@ export function setPermissions(state, [loading, data = null]) {
     if (data) {
         state.permissions = {
             ...state.permissions,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+        }
+    }
+    state.products.loading = loading;
+}
+export function setContents(state, [loading, data = null]) {
+
+    if (data) {
+        state.contents = {
+            ...state.contents,
             data: data.data,
             links: data.meta?.links,
             page: data.meta.current_page,
