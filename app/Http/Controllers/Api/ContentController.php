@@ -25,13 +25,14 @@ class ContentController extends Controller
     {
         $perPage = request('per_page', 10);
         $search = request('search', '');
-        $sortField = request('sort_field', 'updated_at');
-        $sortDirection = request('sort_direction', 'desc');
+        $fileType = request('file_type', 'photo');
 
         $query = Content::query()
             ->where('title', 'like', "%$search%")
-            ->orderBy($sortField, $sortDirection)
+            ->where('type','=',$fileType)
+            ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
+
         return ContentResource::collection($query);
     }
 

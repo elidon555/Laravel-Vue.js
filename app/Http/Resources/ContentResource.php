@@ -22,7 +22,7 @@ class ContentResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'url' => env('APP_URL').Storage::url($this->file_path),
-            'type' => $this->photo,
+            'type' => $this->type,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
         ];
     }

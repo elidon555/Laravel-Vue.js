@@ -165,7 +165,7 @@ export function getPermissions({commit, state}, {url = null, search = '', per_pa
         })
 }
 
-export function getContents({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+export function getContents({commit, state}, {url = null, search = '', per_page, file_type} = {}) {
     commit('setContents', [true])
     url = url || '/contents'
     const params = {
@@ -174,7 +174,7 @@ export function getContents({commit, state}, {url = null, search = '', per_page,
     return axiosClient.get(url, {
         params: {
             ...params,
-            search, per_page, sort_field, sort_direction
+            search, per_page, file_type
         }
     })
         .then((response) => {

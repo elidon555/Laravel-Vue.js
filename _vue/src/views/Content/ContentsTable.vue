@@ -12,6 +12,11 @@
           <option value="100">100</option>
         </select>
         <span class="ml-3">Found {{contents.total}} contents</span>
+          <select @change="getContents(null)" v-model="fileType"
+                  class="appearance-none relative block w-24 ml-3 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+              <option value="photo" selected="selected">Photos</option>
+              <option value="video">Video</option>
+          </select>
       </div>
       <div>
         <input v-model="search" @change="getContents(null)"
@@ -23,7 +28,7 @@
     <v-row class="w-full">
       <v-col
           v-for="content in contents.data"
-          :key="content.url"
+          :key="content.id"
           class="d-flex child-flex"
           cols="3"
       >
@@ -31,13 +36,14 @@
           <v-card-title >{{content.title}}</v-card-title>
           <v-card-text>
             <v-img
-            @click="openDialog"
-            :lazy-src="content.url"
-            :src="content.url"
+            @click="openDialog(content)"
+            :lazy-src="(content.type==='photo') ? content.url : thumbnail"
+            :src="(content.type==='photo') ? content.url : thumbnail"
             aspect-ratio="1"
             cover
-            class="bg-grey-lighten-2 rounded-3xl "
-        >
+            class="bg-grey-lighten-2 rounded-3xl"
+            :class = "(content.type==='photo')?'photo':'video'"
+            >
           <template v-slot:placeholder>
             <v-row
                 class="fill-height ma-0"
@@ -63,11 +69,14 @@
     >
       <v-card>
         <v-card-text>
-          <v-img
+          <v-img v-if="dialog.type==='photo'"
               :lazy-src="dialog.url"
               :src="dialog.url"
               class="bg-grey-lighten-2 rounded"
           ></v-img>
+        <video class="w-auto m-auto" v-if="dialog.type==='video'" poster="http://localhost:8000/storage/contents/4zW1ffGSMAKvJWEQRqjhMDZUHMMQFrFob3IY82la.png" width="320" height="240" preload="none" controls>
+            <source :src="dialog.url" type="video/mp4">
+        </video>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -110,11 +119,14 @@
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
+import Img1 from "../../assets/thumbnail-video.png"
 
 const perPage = ref(USERS_PER_PAGE);
+const fileType = ref('photo');
 const search = ref('');
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
+const thumbnail = Img1
 
 const dialog = ref({
   show:false,
@@ -124,10 +136,10 @@ const dialog = ref({
 
 const contents = computed(() => store.state.contents);
 
-function openDialog(event) {
-  dialog.value.show = true;
-  dialog.value.url = event.target.src;
-  dialog.value.type = event.target.src;
+function openDialog(content) {
+    dialog.value.show = true;
+    dialog.value.url = content.url;
+    dialog.value.type = content.type;
 }
 
 onMounted(() => {
@@ -148,9 +160,15 @@ function getContents(url = null) {
     url,
     search: search.value,
     per_page: perPage.value,
-    sort_field: sortField.value,
-    sort_direction: sortDirection.value
+    file_type: fileType.value
   });
+}
+
+function isImagePath(path) {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+    const extension = path.substring(path.lastIndexOf('.')).toLowerCase();
+    console.log(extension)
+    return imageExtensions.includes(extension);
 }
 </script>
 

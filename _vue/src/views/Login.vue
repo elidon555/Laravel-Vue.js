@@ -131,9 +131,9 @@ function login() {
 
 function redirect(){
   const userRoles = store.state.user.data.roles.map(role=>role['name'])
-  let route = '';
+  let route = 'app.dashboard';
   if (userRoles.includes('user')) route = 'app.contents'
-  router.push({name:route ?? 'app.dashboard'})
+  router.push({name:route})
 }
 
 </script>
