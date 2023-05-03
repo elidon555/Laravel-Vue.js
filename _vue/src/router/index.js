@@ -20,6 +20,9 @@ import Roles from "../views/Roles/Roles.vue";
 import Permissions from "../views/Permissions/Permissions.vue";
 import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
+import Profile from "../views/Profile/Profile.vue";
+import CardLayout from "../views/Subscribe/CardLayout.vue";
+import CheckoutView from "../views/Subscribe/CheckoutView.vue";
 
 
 const routes = [
@@ -74,6 +77,16 @@ const routes = [
         meta: {
           roles: ["admin"],
         },
+      },
+      {
+        path: 'profile',
+        name: 'app.profile',
+        component: Profile,
+      },
+      {
+        path: 'subscribe',
+        name: 'app.subscribe',
+        component: CheckoutView,
       },
       {
         path: 'customers',

@@ -28,10 +28,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('contents', ContentController::class);
-    Route::post('/stripe/create-costumer', [StripeController::class, 'createCustomer'])->name('stripe.create');
+    Route::post('/stripe/create-costumer', [StripeController::class, 'createCustomer']);
+    Route::post('/stripe/create-subscription', [StripeController::class, 'createSubscription']);
 
 });
-Route::post('/stripe/create-subscription', [StripeController::class, 'createSubscription']);
 
 
 

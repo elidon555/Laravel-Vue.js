@@ -6,12 +6,7 @@ import * as mutations from './mutations'
 
 const store = createStore({
   state,
-  getters: {
-    approvedUsers: state => {
-      console.log(state.user)
-      return state.user.data
-    }
-  },
+  getters: {},
   actions,
   mutations,
 })

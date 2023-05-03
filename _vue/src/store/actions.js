@@ -239,6 +239,16 @@ export function createCustomer({commit}, customer) {
   return axiosClient.post('/customers', customer)
 }
 
+export function createStripleCustomer({commit}, stripeCustomer) {
+    return axiosClient.post('/stripe/create-costumer', stripeCustomer)
+        .then((response) => {
+            commit('setStripeCustomer', [false, response.data])
+        })
+        .catch(() => {
+            commit('setStripeCustomer', [false])
+        })
+}
+
 export function updateCustomer({commit}, customer) {
   return axiosClient.put(`/customers/${customer.id}`, customer)
 }
