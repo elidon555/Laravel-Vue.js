@@ -129,7 +129,6 @@ onUpdated(() => {
     }
     roles.value = props.user.roles.map(item => item.name);
     permissions.value = props.user.permissions.map(item => item.name);
-    console.log(permissions.value)
 })
 
 function closeModal() {

@@ -167,7 +167,6 @@ function getContents(url = null) {
 function isImagePath(path) {
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
     const extension = path.substring(path.lastIndexOf('.')).toLowerCase();
-    console.log(extension)
     return imageExtensions.includes(extension);
 }
 </script>

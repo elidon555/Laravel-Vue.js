@@ -1,9 +1,22 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import store from "../../store";
 
 const disabled = ref(false)
-const card = ref(null)
 
+async function redirectPaymentCheckout(plan) {
+  let data = {
+    planId: store.state.stripe.planId,
+  }
+  disabled.value = true
+  store.dispatch('redirectPaymentCheckout', data)
+      .then(response => {
+      })
+      .catch(err => {
+        // debugger;
+        disabled.value = false
+      })
+}
 
 const style = {
   base: {
@@ -22,15 +35,11 @@ const style = {
   }
 }
 
-
-onMounted(() => {
-})
-
 </script>
 
 <template>
 <!--  <div v-if="planStore.planData.clientSecret">-->
-  <div v-if="true">
+  <div>
     <ul role="list" class="my-7 mx-3 space-y-2">
       <li class="flex space-x-3">
         <!-- Icon -->
@@ -38,7 +47,7 @@ onMounted(() => {
           <path fill="currentColor" d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
         </svg>
         <span class="text-2xl font-normal leading-tight text-gray-500"
-          >Total: <b>${{ 'Total' }}</b></span
+          >Total: <b>${{ store.state.stripe.planPrice }}</b></span
         >
       </li>
       <li class="flex space-x-3">
@@ -46,7 +55,7 @@ onMounted(() => {
           <path fill="currentColor" d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
         </svg>
         <span class="text-2xl font-normal leading-tight text-gray-500"
-          >Plan: <b>{{'Total' }}</b></span
+          >Plan: <b>{{store.state.stripe.planName}}</b></span
         >
       </li>
       <li class="flex space-x-3">
@@ -54,7 +63,7 @@ onMounted(() => {
           <path fill="currentColor" d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
         </svg>
         <span class="text-2xl font-normal leading-tight text-gray-500"
-          >Name: <b>{{ 'Total' }}</b></span
+          >Name: <b>{{store.state.stripe.clientName}}</b></span
         >
       </li>
     </ul>
@@ -74,7 +83,7 @@ onMounted(() => {
         <button
           class="w-full h-8 mb-3 text-white shadow-md bg-indigo-500 border mt-5 rounded-md hover:bg-indigo-400 pb-1"
           :disabled="disabled"
-          @click=""
+          @click="redirectPaymentCheckout"
         >
           Pay with Stripe
         </button>

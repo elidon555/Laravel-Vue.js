@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateStripeCustomerRequest;
 use App\Http\Requests\CreateStripeSubscriptionRequest;
+use App\Http\Requests\PayStripeSubscriptionRequest;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
 use Stripe\StripeClient;
+use Stripe\Checkout\Session;
 
 class StripeController extends Controller
 {
@@ -24,30 +27,48 @@ class StripeController extends Controller
     {
 
         $inputs = $request->validated();
-//        $inputs['items']['price']= 'price_1N3cIwIMylWAuAdOtpBTlGre' ;
-        $stripe = new StripeClient(
-            'sk_test_51N3az7IMylWAuAdOiqH5AnAZoVVbUYI0VMrj0pn75NriAJwDlXgVvI7csLKpP91unpoc4GGXC1z4CTeFNEG41Tzq00HPKOarLL'
-        );
-        $data =  $stripe->subscriptions->create($inputs);
-        return response()->json($data);
+
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+        $data = $this->transformCreateSubscription($inputs);
+
+        $response =  $stripe->subscriptions->create($data);
+        return response()->json($response);
     }
 
-    public function pay() {
-        \Stripe\Stripe::setApiKey('sk_test_51N3az7IMylWAuAdOiqH5AnAZoVVbUYI0VMrj0pn75NriAJwDlXgVvI7csLKpP91unpoc4GGXC1z4CTeFNEG41Tzq00HPKOarLL');
+    private function transformCreateSubscription($inputs) {
+        return  [
+            'customer' => $inputs['customerId'],
+            'items' => [
+                ['price' => env("PLAN_".$inputs['planName'])]
+            ],
+            'payment_behavior' => 'default_incomplete',
+            'payment_settings' => [
+                'save_default_payment_method' => 'on_subscription',
+            ],
+            'expand' => ['latest_invoice.payment_intent'],
+        ];
 
-        $session = \Stripe\Checkout\Session::create([
+
+    }
+
+    public function paySubscription(Request $request) {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $data = $this->transformPaymentRequest($request->planId);
+        $session = Session::create($data);
+
+        return response()->json(["url"=>$session->url]);
+    }
+    private function transformPaymentRequest($planId) {
+        return [
             'payment_method_types' => ['card'],
             'subscription_data' => [
                 'items' => [
-                    ['plan' => 'price_1N3cIwIMylWAuAdOtpBTlGre']
+                    ['plan' => $planId]
                 ],
             ],
-            'success_url' => 'https://google.com',
-            'cancel_url' => 'https://facebook.com',
-        ]);
-        echo 'Location: https://checkout.stripe.com/checkout.js?sessionId=' . $session->id;exit;
-
-        header();
-
+            'success_url' => 'http://localhost:3000/app/profile',
+        ];
     }
 }

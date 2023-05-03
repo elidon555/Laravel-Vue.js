@@ -25,15 +25,8 @@ class CreateStripeSubscriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer' => 'required',
-            'items' => [
-                'price' => 'required'
-            ],
-            'payment_behavior' => 'nullable',
-            'payment_settings' => [
-                'save_default_payment_method' => 'nullable',
-            ],
-            'expand' => 'nullable',
+            'customerId' => 'required',
+            'planName' => 'required'
         ];
     }
 }

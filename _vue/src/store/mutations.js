@@ -141,10 +141,22 @@ export function setBillingInfo(state, data = null) {
     }
 }
 
-export function setStripeCustomerId(state, [loading,data = null]) {
+export function setStripeCustomerData(state, [loading,data = null]) {
 
     if (data) {
-        state.stripe.clientId = data.id
+        state.stripe.clientId = data.id;
+        state.stripe.clientName = data.name;
+    }
+}
+export function setStripeSubscriptionData(state, [loading,data = null]) {
+
+    if (data) {
+        console.log(data)
+        state.stripe.subscriptionId = data.id;
+        state.stripe.planName = data.planName;
+        state.stripe.planPrice = data.plan.amount.toFixed(2)
+        state.stripe.planId = data.plan.id;
+
     }
 }
 export function setStripeSubscriberData(state, [loading,data = null]) {

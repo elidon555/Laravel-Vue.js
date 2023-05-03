@@ -262,22 +262,31 @@ export function createCustomer({commit}, customer) {
 export function createStripeCustomer({commit}, stripeCustomer) {
     return axiosClient.post('/stripe/create-costumer', stripeCustomer)
         .then((response) => {
-            console.log(response.data)
-            commit('setStripeCustomerId', [false, response.data])
+            commit('setStripeCustomerData', [false, response.data])
         })
         .catch(() => {
-            commit('setStripeCustomerId', [false])
+            commit('setStripeCustomerData', [false])
         })
 }
 
 export function createStripeSubscription({commit}, stripeSubscription) {
-    return axiosClient.post('/stripe/create-costumer', stripeSubscription)
+    return axiosClient.post('/stripe/create-subscription', stripeSubscription)
         .then((response) => {
-            console.log(response.data)
-            commit('setStripeSubscriberData', [false, response.data])
+            console.log(stripeSubscription)
+            commit('setStripeSubscriptionData', [false, {...stripeSubscription,...response.data}])
         })
         .catch(() => {
-            commit('setStripeSubscriberData', [false])
+            commit('setStripeSubscriptionData', [false])
+        })
+}
+
+export function redirectPaymentCheckout({commit}, stripeSubscription) {
+    return axiosClient.post('/stripe/pay-subscription', stripeSubscription)
+        .then((response) => {
+            window.location.href = response.data.url;
+            console.log(response)
+        })
+        .catch(() => {
         })
 }
 
@@ -289,7 +298,6 @@ export function deleteCustomer({commit}, customer) {
   return axiosClient.delete(`/customers/${customer.id}`)
 }
 export function deleteRole({commit}, role) {
-    console.log(role)
   return axiosClient.delete(`/roles/${role.id}`)
 }
 export function deletePermission({commit}, permission) {

@@ -21,7 +21,6 @@ import Permissions from "../views/Permissions/Permissions.vue";
 import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
 import Profile from "../views/Profile/Profile.vue";
-import CardLayout from "../views/Subscribe/CardLayout.vue";
 import CheckoutView from "../views/Subscribe/CheckoutView.vue";
 
 

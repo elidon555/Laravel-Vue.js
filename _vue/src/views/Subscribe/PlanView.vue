@@ -4,7 +4,7 @@
       tablet:font-bold tablet:text-2xl">
             Choose your Subscription!
         </h2>
-        <div class="grid tablet:grid-cols-2 tablet:gap-2">
+        <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
             <!-- Build your card component -->
             <PlanCard
                 title="Standard Plan"
@@ -36,23 +36,17 @@
 import PlanCard from "./PlanCard.vue";
 import store from "../../store";
 
-function createSubscription(plan) {
+async function createSubscription(plan) {
     let data = {
         customerId: store.state.stripe.clientId,
         planName: plan
     }
-    console.log(data);
-    return;
+
     store.dispatch('createStripeSubscription', data)
         .then(response => {
-            console.log(store.state.stripe.clientId)
-            if (response.status === 201) {
-                // TODO show notification
-                store.dispatch('getRoles')
-            }
+
         })
         .catch(err => {
-            disabled.value = false;
             // debugger;
         })
 }

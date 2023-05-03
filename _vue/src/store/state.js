@@ -92,7 +92,11 @@ export default {
     },
     stripe:{
         clientId:"",
+        clientName:"",
+        subscriptionId:"",
+        planId:"",
         planName:"",
+        planPrice:"",
     },
     toast: {
         show: false,
