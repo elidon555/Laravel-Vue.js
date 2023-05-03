@@ -67,13 +67,9 @@ onUpdated(() => {
 
 function submit(){
     disabled.value = true;
-    store.dispatch('createStripleCustomer', postBillingInfo)
+    store.dispatch('createStripeCustomer', postBillingInfo)
         .then(response => {
             console.log(store.state.stripe.clientId)
-            if (response.status === 201) {
-                // TODO show notification
-                store.dispatch('getRoles')
-            }
         })
         .catch(err => {
             disabled.value = false;

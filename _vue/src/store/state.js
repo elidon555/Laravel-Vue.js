@@ -91,10 +91,8 @@ export default {
         postalCode: '',
     },
     stripe:{
-        clientId:""
-    },
-    subscription_plans: {
-      data:{}
+        clientId:"",
+        planName:"",
     },
     toast: {
         show: false,

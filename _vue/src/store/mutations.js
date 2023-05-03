@@ -143,9 +143,14 @@ export function setBillingInfo(state, data = null) {
 
 export function setStripeCustomerId(state, [loading,data = null]) {
 
-    console.log(data)
     if (data) {
         state.stripe.clientId = data.id
+    }
+}
+export function setStripeSubscriberData(state, [loading,data = null]) {
+
+    if (data) {
+        state.stripe.planName = data.planName
     }
 }
 
