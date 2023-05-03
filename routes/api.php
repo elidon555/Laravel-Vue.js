@@ -28,10 +28,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('contents', ContentController::class);
+
     Route::as('stripe')->prefix('stripe')->group(function(){
         Route::post('create-costumer', [StripeController::class, 'createCustomer']);
         Route::post('create-subscription', [StripeController::class, 'createSubscription']);
-        Route::post('pay-subscription', [StripeController::class, 'pay'])->name('pay');
+        Route::post('pay-subscription', [StripeController::class, 'paySubscription']);
     });
 
 });
