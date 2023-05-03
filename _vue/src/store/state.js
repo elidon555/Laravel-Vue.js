@@ -90,6 +90,12 @@ export default {
         state: '',
         postalCode: '',
     },
+    stripe:{
+        clientId:""
+    },
+    subscription_plans: {
+      data:{}
+    },
     toast: {
         show: false,
         message: '',

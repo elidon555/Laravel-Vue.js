@@ -3,7 +3,7 @@ import CardLayout from './CardLayout.vue'
 </script>
 
 <template>
-  <div v-if="true">
+  <div>
     <CardLayout :is-home-view="true" />
   </div>
 </template>
