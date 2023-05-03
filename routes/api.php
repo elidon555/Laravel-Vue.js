@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StripeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('contents', ContentController::class);
+    Route::post('/stripe/create-costumer', [StripeController::class, 'createCustomer'])->name('stripe.create');
 
 });
+Route::post('/stripe/create-subscription', [StripeController::class, 'createSubscription']);
 
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ContentController;
@@ -54,3 +55,6 @@ Route::get('/subscriptions/{id}', [SubscriptionController::class, 'show'])->name
 Route::get('/subscriptions/{id}/edit', [SubscriptionController::class, 'edit'])->name('subscriptions.edit');
 Route::put('/subscriptions/{id}', [SubscriptionController::class, 'update'])->name('subscriptions.update');
 Route::delete('/subscriptions/{id}', [SubscriptionController::class, 'destroy'])->name('subscriptions.destroy');
+
+
+//Route::post('/stripe/create', [StripeController::class, 'create'])->name('stripe.create');
