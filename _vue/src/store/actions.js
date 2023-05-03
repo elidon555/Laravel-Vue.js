@@ -125,6 +125,26 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
     })
 }
 
+export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+    commit('setSubscriptionPlans', [true])
+    url = url || '/users'
+    const params = {
+        per_page: state.users.limit,
+    }
+    return axiosClient.get(url, {
+        params: {
+            ...params,
+            search, per_page, sort_field, sort_direction
+        }
+    })
+        .then((response) => {
+            commit('setSubscriptionPlans', [false, response.data])
+        })
+        .catch(() => {
+            commit('setSubscriptionPlans', [false])
+        })
+}
+
 export function getRoles({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
     commit('setRoles', [true])
     url = url || '/roles'
@@ -242,10 +262,11 @@ export function createCustomer({commit}, customer) {
 export function createStripleCustomer({commit}, stripeCustomer) {
     return axiosClient.post('/stripe/create-costumer', stripeCustomer)
         .then((response) => {
-            commit('setStripeCustomer', [false, response.data])
+            console.log(response.data)
+            commit('setStripeCustomerId', [false, response.data])
         })
         .catch(() => {
-            commit('setStripeCustomer', [false])
+            commit('setStripeCustomerId', [false])
         })
 }
 

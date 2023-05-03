@@ -56,6 +56,15 @@ export function setUsers(state, [loading, data = null]) {
   }
   state.products.loading = loading;
 }
+export function setSubscriptionPlans(state, [loading, data = null]) {
+
+  if (data) {
+    state.subscription_plans = {
+      ...state.subscription_plans,
+      data: data.data,
+    }
+  }
+}
 
 export function setRoles(state, [loading, data = null]) {
 
@@ -132,17 +141,11 @@ export function setBillingInfo(state, data = null) {
     }
 }
 
-export function setStripeCustomer(state, data = null) {
+export function setStripeCustomerId(state, [loading,data = null]) {
 
+    console.log(data)
     if (data) {
-        state.billingInfo = {
-            email: data.email,
-            name: data.name,
-            address: data.address,
-            city: data.city,
-            state: data.state,
-            postal_code: data.postal_code,
-        }
+        state.stripe.clientId = data.id
     }
 }
 
