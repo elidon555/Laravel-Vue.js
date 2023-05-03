@@ -24,9 +24,7 @@
 
 <script setup>
 import {onUpdated, ref} from 'vue'
-import FormInput from './FormInput.vue'
 import store from "../../store/index.js";
-import CustomInput from "../../components/core/CustomInput.vue";
 
 const disabled = ref(false)
 const billingInfo = ref({
@@ -66,15 +64,15 @@ onUpdated(() => {
 })
 
 function submit(){
-  disabled.value = true;
-  store.dispatch('createStripeCustomer', postBillingInfo)
-      .then(response => {
-        console.log(store.state.stripe.clientId)
-      })
-      .catch(err => {
-        disabled.value = false;
-        // debugger;
-      })
+
+    disabled.value = true;
+    store.dispatch('createStripeCustomer', postBillingInfo)
+        .then(response => {
+        })
+        .catch(err => {
+            disabled.value = false;
+            // debugger;
+        })
 }
 
 </script>

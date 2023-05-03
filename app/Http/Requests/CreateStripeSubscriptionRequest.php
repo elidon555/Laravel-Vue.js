@@ -25,7 +25,8 @@ class CreateStripeSubscriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'priceId' => 'required',
+            'customerId' => 'required',
+            'planName' => 'required'
         ];
     }
 }

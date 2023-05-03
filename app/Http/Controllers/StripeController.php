@@ -27,15 +27,33 @@ class StripeController extends Controller
     {
 
         $inputs = $request->validated();
-        $stripe = new StripeClient(
-            env('STRIPE_KEY')
-        );
-        $data =  $stripe->subscriptions->create($inputs);
-        return response()->json($data);
+
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+        $data = $this->transformCreateSubscription($inputs);
+
+        $response =  $stripe->subscriptions->create($data);
+        return response()->json($response);
+    }
+
+    private function transformCreateSubscription($inputs) {
+        return  [
+            'customer' => $inputs['customerId'],
+            'items' => [
+                ['price' => env("PLAN_".$inputs['planName'])]
+            ],
+            'payment_behavior' => 'default_incomplete',
+            'payment_settings' => [
+                'save_default_payment_method' => 'on_subscription',
+            ],
+            'expand' => ['latest_invoice.payment_intent'],
+        ];
+
+
     }
 
     public function paySubscription(Request $request) {
-        Stripe::setApiKey(env('STRIPE_KEY'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $data = $this->transformPaymentRequest($request->planId);
         $session = Session::create($data);

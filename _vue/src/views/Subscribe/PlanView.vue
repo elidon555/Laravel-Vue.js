@@ -4,28 +4,28 @@
       tablet:font-bold tablet:text-2xl">
             Choose your Subscription!
         </h2>
-        <div class="grid tablet:grid-cols-2 tablet:gap-2">
+        <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
             <!-- Build your card component -->
             <PlanCard
                 title="Standard Plan"
                 :amount="1"
                 icon-1="2 team members"
                 icon-2="5gb"
-                @click=""
+                @click="basicPlan"
             />
             <PlanCard
-                title="Premium Plan"
+                title="Standard Plan"
                 :amount="10"
                 icon-1="4 team members"
                 icon-2="10gb"
-                @click=""
+                @click="standardPlan"
             />
             <PlanCard
                 title="Premium Plan"
-                :amount="10"
+                :amount="50"
                 icon-1="4 team members"
                 icon-2="10gb"
-                @click=""
+                @click="premiumPlan"
             />
         </div>
     </div>
@@ -36,14 +36,33 @@
 import PlanCard from "./PlanCard.vue";
 import store from "../../store";
 
-function getSubscriptionPlans(url = null) {
-    store.dispatch("getUsers", {
-        url,
-        search: search.value,
-        per_page: perPage.value,
-        sort_field: sortField.value,
-        sort_direction: sortDirection.value
-    });
+async function createSubscription(plan) {
+    let data = {
+        customerId: store.state.stripe.clientId,
+        planName: plan
+    }
+
+    store.dispatch('createStripeSubscription', data)
+        .then(response => {
+
+        })
+        .catch(err => {
+            // debugger;
+        })
+}
+const basicPlan = () => {
+    const plan = 'BASIC'
+    createSubscription(plan)
+}
+
+const standardPlan = () => {
+    const plan = 'STANDARD'
+    createSubscription(plan)
+}
+
+const premiumPlan = () => {
+    const plan = 'PREMIUM'
+    createSubscription(plan)
 }
 
 </script>

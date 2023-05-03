@@ -91,10 +91,12 @@ export default {
         postalCode: '',
     },
     stripe:{
-        clientId:""
-    },
-    subscription_plans: {
-      data:{}
+        clientId:"",
+        clientName:"",
+        subscriptionId:"",
+        planId:"",
+        planName:"",
+        planPrice:"",
     },
     toast: {
         show: false,

@@ -1,9 +1,23 @@
-<script setup lang="ts">
-import CardLayout from './CardLayout.vue'
+<script setup>
+import SignUpForm from './SignUpForm.vue'
+import CheckoutForm from './CheckoutForm.vue'
+import store from "../../store";
+import PlanView from "./PlanView.vue";
+
 </script>
 
 <template>
-  <div>
-    <CardLayout :is-home-view="true" />
+  <div class="border-slate-600 rounded-sm mx-auto mt-10 w-72 shadow-lg tablet:w-1/2 w-25">
+    <h5 class="bg-slate-300 h-10 text-center font-semibold py-2">Subscribe to our Newsletter</h5>
+    <p class="text-center mb-2">* Cancel anytime</p>
+    <div v-if="store.state.stripe.clientId ===''">
+      <SignUpForm />
+    </div>
+    <div v-else-if="store.state.stripe.subscriptionId ===''">
+      <PlanView />
+    </div>
+    <div  v-else>
+      <CheckoutForm />
+    </div>
   </div>
 </template>
