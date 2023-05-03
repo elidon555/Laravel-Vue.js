@@ -259,7 +259,7 @@ export function createCustomer({commit}, customer) {
   return axiosClient.post('/customers', customer)
 }
 
-export function createStripleCustomer({commit}, stripeCustomer) {
+export function createStripeCustomer({commit}, stripeCustomer) {
     return axiosClient.post('/stripe/create-costumer', stripeCustomer)
         .then((response) => {
             console.log(response.data)
@@ -267,6 +267,17 @@ export function createStripleCustomer({commit}, stripeCustomer) {
         })
         .catch(() => {
             commit('setStripeCustomerId', [false])
+        })
+}
+
+export function createStripeSubscription({commit}, stripeSubscription) {
+    return axiosClient.post('/stripe/create-costumer', stripeSubscription)
+        .then((response) => {
+            console.log(response.data)
+            commit('setStripeSubscriberData', [false, response.data])
+        })
+        .catch(() => {
+            commit('setStripeSubscriberData', [false])
         })
 }
 
