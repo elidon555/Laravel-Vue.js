@@ -159,6 +159,12 @@ export function setStripeSubscriptionData(state, [loading,data = null]) {
 
     }
 }
+export function setStripeSubscriberData(state, [loading,data = null]) {
+
+    if (data) {
+        state.stripe.planName = data.planName
+    }
+}
 
 export function setCustomers(state, [loading, data = null]) {
 
