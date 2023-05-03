@@ -39,7 +39,7 @@ class CreateStripeCustomerRequest extends FormRequest
             ],
             'address' => [
                 'city' => 'nullable',
-                'country' => 'US',
+                'country' => 'nullable',
                 'line1' => 'nullable',
                 'postal_code' => 'nullable',
                 'state' => 'nullable'

@@ -4,6 +4,6 @@ import CardLayout from './CardLayout.vue'
 
 <template>
   <div v-if="true">
-    <CardLayout :is-home-view="false" />
+    <CardLayout :is-home-view="true" />
   </div>
 </template>

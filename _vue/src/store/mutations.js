@@ -107,6 +107,44 @@ export function setContents(state, [loading, data = null]) {
     }
     state.products.loading = loading;
 }
+export function setPlans(state, [loading = null, data = null]) {
+
+    if (data) {
+        state.plans = {
+            ...state.plans,
+            data: data.data,
+        }
+    }
+    state.products.loading = loading;
+}
+
+export function setBillingInfo(state, data = null) {
+
+    if (data) {
+        state.billingInfo = {
+            email: data.email,
+            name: data.name,
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            postal_code: data.postal_code,
+        }
+    }
+}
+
+export function setStripeCustomer(state, data = null) {
+
+    if (data) {
+        state.billingInfo = {
+            email: data.email,
+            name: data.name,
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            postal_code: data.postal_code,
+        }
+    }
+}
 
 export function setCustomers(state, [loading, data = null]) {
 
