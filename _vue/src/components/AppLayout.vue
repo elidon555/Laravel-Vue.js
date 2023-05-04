@@ -42,7 +42,6 @@ function updateSidebarState() {
 
 onMounted(() => {
   store.dispatch('getCurrentUser')
-  store.dispatch('getCountries')
   window.addEventListener('resize', updateSidebarState)
 })
 

@@ -15,9 +15,7 @@ class StripeController extends Controller
     public function createCustomer(CreateStripeCustomerRequest $request)
     {
         $inputs = $request->validated();
-        $stripe = new StripeClient(
-            'sk_test_51N3az7IMylWAuAdOiqH5AnAZoVVbUYI0VMrj0pn75NriAJwDlXgVvI7csLKpP91unpoc4GGXC1z4CTeFNEG41Tzq00HPKOarLL'
-          );
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
         $data =  $stripe->customers->create($inputs);
 
         return response()->json($data);
