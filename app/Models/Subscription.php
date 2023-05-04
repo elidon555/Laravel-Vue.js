@@ -13,7 +13,6 @@ class Subscription extends Model
         'creator_id',
         'name',
         'price',
-        'content_id',
         'description',
         'is_active',
         'start_date',

@@ -163,6 +163,10 @@
       </nav>
     </div>
   </div>
+    <loading v-model:active="isLoading"
+             :can-cancel="true"
+             :on-cancel="onCancel"
+             :is-full-page="fullPage"/>
 </template>
 
 <script setup>
@@ -173,8 +177,13 @@ import {USERS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
-import UserModal from "./UserModal.vue";
+import * as notification from "@kyvg/vue3-notification";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 
+
+const isLoading = ref(false);
+const fullPage = ref(true);
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');
 const users = computed(() => store.state.users);
@@ -186,9 +195,14 @@ const showUserModal = ref(false);
 
 const emit = defineEmits(['clickEdit'])
 
+
 onMounted(() => {
   getUsers();
 })
+
+function onCancel() {
+    console.log('User cancelled the loader.')
+}
 
 function getForPage(ev, link) {
   ev.preventDefault();
@@ -200,12 +214,15 @@ function getForPage(ev, link) {
 }
 
 function getUsers(url = null) {
+  isLoading.value = true;
   store.dispatch("getUsers", {
     url,
     search: search.value,
     per_page: perPage.value,
     sort_field: sortField.value,
     sort_direction: sortDirection.value
+  }).then(function(response){
+      isLoading.value = false;
   });
 }
 
@@ -234,8 +251,11 @@ function deleteUser(user) {
   }
   store.dispatch('deleteUser', user.id)
     .then(res => {
-      // TODO Show notification
       store.dispatch('getUsers')
+        notification.notify({
+            title: "Success!",
+            type: "success",
+        });
     })
 }
 

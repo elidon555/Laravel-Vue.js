@@ -25,7 +25,7 @@
       </div>
     </div>
     <br>
-    <v-row class="w-full">
+    <v-row class="w-full ">
       <v-col
           v-for="content in contents.data"
           :key="content.id"
@@ -41,7 +41,7 @@
             :src="(content.type==='photo') ? content.url : thumbnail"
             aspect-ratio="1"
             cover
-            class="bg-grey-lighten-2 rounded-3xl"
+            class="bg-grey-lighten-2 rounded-3xl w-auto"
             :class = "(content.type==='photo')?'photo':'video'"
             >
           <template v-slot:placeholder>
@@ -64,20 +64,29 @@
 
     <v-dialog
         v-model="dialog.show"
-        width="60%"
-        max-height="90%"
+        :width="dialog.type==='photo' ? '70%' : 'auto'"
+        max-height="85%"
+        max-width="75%"
     >
-      <v-card>
+      <v-card  :title="dialog.title">
+
         <v-card-text>
           <v-img v-if="dialog.type==='photo'"
               :lazy-src="dialog.url"
               :src="dialog.url"
-              class="bg-grey-lighten-2 rounded"
+                 width="500px"
+              class="bg-grey-lighten-2 rounded w-100"
           ></v-img>
         <video class="w-auto m-auto" v-if="dialog.type==='video'" poster="http://localhost:8000/storage/contents/4zW1ffGSMAKvJWEQRqjhMDZUHMMQFrFob3IY82la.png" width="320" height="240" preload="none" controls>
             <source :src="dialog.url" type="video/mp4">
         </video>
+            <v-card-actions class="bg-gray-50 px-2 sm:px-6 sm:flex sm:flex-row-reverse">
+                <v-btn color="red" variant="elevated" class="mt-3 ml-3">
+                    Delete
+                </v-btn>
+            </v-card-actions>
         </v-card-text>
+
       </v-card>
     </v-dialog>
 
@@ -120,6 +129,7 @@ import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
 import Img1 from "../../assets/thumbnail-video.png"
+import {right} from "vue-multiselect/dist/vue3-multiselect.common";
 
 const perPage = ref(USERS_PER_PAGE);
 const fileType = ref('photo');
@@ -140,6 +150,7 @@ function openDialog(content) {
     dialog.value.show = true;
     dialog.value.url = content.url;
     dialog.value.type = content.type;
+    dialog.value.title = content.title
 }
 
 onMounted(() => {

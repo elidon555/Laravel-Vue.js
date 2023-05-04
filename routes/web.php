@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\StripeController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubscriptionController;
+use Illuminate\Support\Facades\Route;
 
 
 /*

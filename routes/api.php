@@ -3,10 +3,10 @@
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StripeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('create-costumer', [StripeController::class, 'createCustomer']);
         Route::post('create-subscription', [StripeController::class, 'createSubscription']);
         Route::post('pay-subscription', [StripeController::class, 'paySubscription']);
+        Route::get('pay-success/{params}', [StripeController::class, 'payConfirm'])->name('pay.success');
     });
 
 });
