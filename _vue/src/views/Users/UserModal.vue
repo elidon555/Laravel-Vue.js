@@ -2,9 +2,8 @@
 <template>
     <TransitionRoot as="template" :show="show">
         <Dialog as="div" class="relative z-10" @close="show = false">
-            <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
-                             leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
-                <div class="fixed inset-0 bg-black opacity-70 transition-opacity"/>
+            <TransitionChild as="template">
+                <div class="fixed inset-0 bg-black opacity-70"/>
             </TransitionChild>
 
             <div class="fixed z-10 inset-0 overflow-y-auto">
@@ -134,11 +133,6 @@ onUpdated(() => {
 function closeModal() {
     show.value = false
     emit('close')
-    notification.notify({
-        title: "Vue 3 notification 🎉",
-        type: "success",
-
-    });
 }
 
 function onSubmit() {
@@ -151,7 +145,10 @@ function onSubmit() {
             .then(response => {
                 loading.value = false;
                 if (response.status === 200) {
-
+                    notification.notify({
+                        title: "Success!",
+                        type: "success",
+                    });
                     // TODO show notification
                     store.dispatch('getUsers')
                     closeModal()
@@ -164,6 +161,10 @@ function onSubmit() {
                 if (response.status === 201) {
                     // TODO show notification
                     store.dispatch('getUsers')
+                    notification.notify({
+                        title: "Success!",
+                        type: "success",
+                    });
                     closeModal()
                 }
             })

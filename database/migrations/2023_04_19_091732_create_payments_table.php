@@ -15,16 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('subscriber_id');
-            $table->unsignedBigInteger('content_id');
             $table->float('amount');
             $table->string('transaction_id', 36);
             $table->date('paid_at');
             $table->timestamps();
-        
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('subscriber_id')->references('id')->on('subscriptions');
-            $table->foreign('content_id')->references('id')->on('contents');
-        });        
+        });
     }
 
     /**

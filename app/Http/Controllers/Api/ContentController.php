@@ -10,7 +10,9 @@ use App\Http\Resources\ContentResource;
 use App\Http\Resources\UserResource;
 use App\Models\Content;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -42,54 +44,43 @@ class ContentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateUserRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $data['is_admin'] = true;
-        $data['email_verified_at'] = date('Y-m-d H:i:s');
-        $data['password'] = Hash::make($data['password']);
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'type' => 'required',
+            'file' => 'required|file|max:10240', // max 10MB
+            'price' => 'required|numeric|min:0',
+        ]);
 
-        $data['created_by'] = $request->user()->id;
-        $data['updated_by'] = $request->user()->id;
+        $file = $request->file('file');
+        $filePath = $file->store('public/content_files');
 
-        $user = User::create($data);
+        $content = new Content();
+        $content->user_id = Auth::user()->id;
+        $content->title = $request->input('title');
+        $content->description = $request->input('description');
+        $content->type = $request->input('type');
+        $content->file_path = $filePath;
+        $content->price = $request->input('price');
+        $content->save();
 
-        return new UserResource($user);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateUserRequest $request, User $user)
-    {
-        $data = $request->validated();
-
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        $data['updated_by'] = $request->user()->id;
-
-        $user->syncRoles($data['roles']);
-        $user->syncPermissions($data['permissions']);
-        $user->update($data);
-
-        return new UserResource($user);
+        return redirect()->route('contents.index')->with('success', 'Content created successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\User $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
-
-        return response()->noContent();
+        $content = Content::findOrFail($id);
+        Storage::disk('public')->delete(str_replace('/storage', '', $content->file_path));
+        $content->delete();
     }
+
+
 }

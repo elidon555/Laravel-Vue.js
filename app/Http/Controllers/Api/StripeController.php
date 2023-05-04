@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateStripeCustomerRequest;
 use App\Http\Requests\CreateStripeSubscriptionRequest;
 use App\Http\Requests\PayStripeSubscriptionRequest;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Stripe\StripeClient;
-use Stripe\Checkout\Session;
 
 class StripeController extends Controller
 {
@@ -34,6 +36,17 @@ class StripeController extends Controller
         return response()->json($response);
     }
 
+
+
+    public function paySubscription(Request $request) {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $data = $this->transformPaymentRequest($request->planId);
+        $session = Session::create($data);
+
+        return response()->json(["url"=>$session->url]);
+    }
+
     private function transformCreateSubscription($inputs) {
         return  [
             'customer' => $inputs['customerId'],
@@ -46,17 +59,6 @@ class StripeController extends Controller
             ],
             'expand' => ['latest_invoice.payment_intent'],
         ];
-
-
-    }
-
-    public function paySubscription(Request $request) {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        $data = $this->transformPaymentRequest($request->planId);
-        $session = Session::create($data);
-
-        return response()->json(["url"=>$session->url]);
     }
     private function transformPaymentRequest($planId) {
         return [
@@ -66,7 +68,14 @@ class StripeController extends Controller
                     ['plan' => $planId]
                 ],
             ],
-            'success_url' => 'http://localhost:3000/app/profile',
+            'success_url' => route('pay.success',[
+                'userId' => auth()->user()->id,
+                'userId' => auth()->user()->id
+            ]),
         ];
+    }
+
+    public function purchaseSuccess() {
+
     }
 }
