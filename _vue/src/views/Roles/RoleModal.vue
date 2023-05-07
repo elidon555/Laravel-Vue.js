@@ -46,15 +46,14 @@
                 <div class="bg-white px-4 pt-5 pb-4">
                   <CustomInput class="mb-2" v-model="role.name" label="Name"/>
                   <CustomInput class="mb-2" v-model="role.guard_name" label="Guard name"/>
-                    Roles
 
-                    <div>
-                        <div v-for="(permission, index) of roles.permissions" :key="permission.name">
-                            <input type="checkbox" :value="permission.name" v-model="permissions">
-                            <label for="jack">{{ permission.name }}</label>
-                            <br>
-                        </div>
-                    </div>
+                  <v-select
+                      v-model="permissions"
+                      :items="roles.permissions.map((item)=>item.name)"
+                      chips
+                      label="Roles"
+                      multiple
+                  ></v-select>
 
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button type="submit"

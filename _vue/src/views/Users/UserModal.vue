@@ -25,29 +25,27 @@
                             </header>
                             <form @submit.prevent="onSubmit">
                                 <div class="bg-white px-4 pt-5 pb-4">
-                                    <v-text-field v-model="user.name"  label="Name" variant="outlined"></v-text-field>
-                                    <v-text-field v-model="user.email"  label="Email" variant="outlined"></v-text-field>
-                                    <v-text-field v-model="user.password"  label="Password" variant="outlined"></v-text-field>
+                                    <v-text-field density="compact" v-model="user.name"  label="Name" variant="outlined"></v-text-field>
+                                    <v-text-field density="compact" v-model="user.email"  label="Email" variant="outlined"></v-text-field>
+                                    <v-text-field density="compact" v-model="user.password"  label="Password" variant="outlined"></v-text-field>
                                     <hr>
                                     <br>
-                                    Roles
-                                    <div class="d-flex flex-wrap">
-                                        <div v-for="(role, index) of users.roles" :key="role.name">
-                                            <div class="mr-3">
-                                                <v-switch color="blue" :label="role.name" :value="role.name" v-model="roles" inset></v-switch>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <br>
-                                    Permissions
-                                    <div class="d-flex flex-wrap ">
-                                        <div v-for="(permission, index) of users.permissions" :key="permission.name">
-                                            <div class="mr-3">
-                                                <v-switch color="blue" :label="permission.name" :value="permission.name" v-model="permissions" inset></v-switch>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  <v-select
+                                      v-model="roles"
+                                      :items="users.roles.map((item)=>item.name)"
+                                      chips
+                                      label="Roles"
+                                      multiple
+                                  ></v-select>
+                                  <hr>
+                                  <br>
+                                  <v-select
+                                      v-model="permissions"
+                                      :items="users.permissions.map((item)=>item.name)"
+                                      chips
+                                      label="Permissions"
+                                      multiple
+                                  ></v-select>
 
                                     <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                         <v-btn color="green" variant="elevated" class="mt-3 ml-3" type="submit">

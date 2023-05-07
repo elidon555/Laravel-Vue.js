@@ -1,129 +1,76 @@
 <template>
-    <GuestLayout title="Sign up!">
-        <form class="mt-8 space-y-6" method="POST" @submit.prevent="signup">
-            <div v-if="errorMsg" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded">
-                {{ errorMsg }}
-                <span
-                    @click="errorMsg = ''"
-                    class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]"
-                >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-        >
-          <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </span>
-            </div>
-            <input type="hidden" name="remember" value="true"/>
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div>
-                    <label for="name" class="sr-only">Name</label>
-                    <input id="name" name="email" type="text" autocomplete="name" required="" v-model="user.name"
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Name"/>
-                </div>
-                <div>
-                    <label for="email-address" class="sr-only">Email address</label>
-                    <input id="email-address" name="email" type="email" autocomplete="email" required="" v-model="user.email"
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Email address"/>
-                </div>
-                <div>
-                    <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="current-password" required=""
-                           v-model="user.password"
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Password"/>
-                </div>
-                <div>
-                    <label for="confirm_password" class="sr-only">Password</label>
-                    <input id="confirm_password" name="confirm_password" type="password" autocomplete="confirm_password" required=""
-                           v-model="user.confirm_password"
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Password"/>
-                </div>
-            </div>
+    <GuestLayout>
+      <form  method="POST" @submit.prevent="signup">
+        <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+          Signup
+        </h1>
+        <v-text-field
+            density="compact"
+            class="focus:outline-none dark:text-gray-100"
+            label="Email"
+            v-model="user.name"
+        ></v-text-field>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input type="hidden"
-                           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
-                </div>
+        <v-text-field
+            density="compact"
+            class="focus:outline-none dark:text-gray-100"
+            label="Email"
+            v-model="user.email"
+        ></v-text-field>
 
-                <div class="text-sm">
-                    <router-link :to="{name: 'login'}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Already have an account?
-                    </router-link>
-                </div>
-            </div>
+        <v-text-field
+            density="compact"
+            :type="'password'"
+            class="focus:outline-none dark:text-gray-100"
+            label="Password"
+            placeholder="Enter your password"
+            v-model="user.password"
+        ></v-text-field>
 
-            <div>
-                <button type="submit"
-                        :disabled="loading"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        :class="{
-                  'cursor-not-allowed': loading,
-                  'hover:bg-indigo-500': loading,
-                }">
-                    <svg
-                        v-if="loading"
-                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            class="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            stroke-width="4"
-                        ></circle>
-                        <path
-                            class="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                    </svg>
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <LockClosedIcon class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true"/>
-            </span>
-                    Sign in
-                </button>
-            </div>
-        </form>
+        <v-checkbox density="compact" required class="shrink mr-0 mt-0 focus:outline-none dark:text-gray-100" label="I agree to the privacy policy"></v-checkbox>
+
+        <v-btn
+            :loading="loading"
+            type="submit"
+            class="block w-full bg-purple-darken-3  text-sm font-medium
+           duration-150 rounded-lg active:bg-purple-600
+           hover:bg-purple-800  ">
+          Signup
+        </v-btn>
+
+        <hr class="my-6 text-white">
+
+        <p class="mt-4">
+          <router-link :to="{name: 'login'}">
+            <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
+              Already have an account? Login
+            </a>
+          </router-link>
+        </p>
+      </form>
     </GuestLayout>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {LockClosedIcon} from '@heroicons/vue/solid'
 import GuestLayout from "../components/GuestLayout.vue";
 import store from "../store";
 import router from "../router";
+import image from "../assets/signup.png";
 
 let loading = ref(false);
 let errorMsg = ref("");
 
-const user = {
+const user = ref({
     email: '',
     name: '',
     password: '',
-}
+})
 
 function signup() {
     loading.value = true;
-    store.dispatch('signup', user)
+    store.dispatch('signup', user.value)
         .then(() => {
             loading.value = false;
             router.push({name: 'app.dashboard'})
@@ -133,5 +80,9 @@ function signup() {
             errorMsg.value = response.data.message;
         })
 }
+
+onMounted(()=>{
+  store.dispatch('guestImage',image)
+})
 
 </script>

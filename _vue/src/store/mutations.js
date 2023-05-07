@@ -216,3 +216,7 @@ export function hideToast(state) {
   state.toast.message = '';
 }
 
+export function setGuestLayoutImage(state,[image]) {
+    state.guestImage = image;
+}
+

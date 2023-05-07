@@ -6,7 +6,6 @@ import currencyUSD from './filters/currency.js'
 
 import App from './App.vue'
 import Notifications from '@kyvg/vue3-notification'
-import 'vuetify/styles'
 import "@mdi/font/css/materialdesignicons.css";
 
 import { createVuetify } from 'vuetify'

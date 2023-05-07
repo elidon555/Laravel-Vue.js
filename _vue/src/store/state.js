@@ -99,6 +99,7 @@ export default {
         message: '',
         delay: 5000
     },
+    guestImage : '',
     dateOptions: [
         {key: '1d', text: 'Last Day'},
         {key: '1k', text: 'Last Week'},
