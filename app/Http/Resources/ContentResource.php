@@ -20,9 +20,10 @@ class ContentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'url' => env('APP_URL').Storage::url($this->file_path),
-            'type' => $this->type,
+            'title' => $this->getCustomProperty('title'),
+            'description' => $this->getCustomProperty('description'),
+            'url' => $this->getFullUrl(),
+            'type' => str_contains($this->mime_type,'image') ? 'photo' : 'video',
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
         ];
     }

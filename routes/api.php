@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('create-costumer', [StripeController::class, 'createCustomer']);
         Route::post('create-subscription', [StripeController::class, 'createSubscription']);
         Route::post('pay-subscription', [StripeController::class, 'paySubscription']);
+        Route::post('pay-intent', [StripeController::class, 'createPaymentIntent']);
         Route::get('pay-success/{params}', [StripeController::class, 'payConfirm'])->name('pay.success');
     });
 

@@ -73,13 +73,9 @@ export default {
         limit: null,
         total: null
     },
-    plans: {
-        data: [],
-    },
     plan: {
-        subscriptionId: '',
-        priceId: '',
-        planId: '',
+        name:"",
+        price:""
     },
     billingInfo: {
         email: '',
@@ -91,6 +87,7 @@ export default {
     },
     stripe:{
         clientId:"",
+        clientSecret:"",
         clientName:"",
         subscriptionId:"",
         planId:"",

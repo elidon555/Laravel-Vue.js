@@ -4,15 +4,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ContentResource;
 use App\Http\Resources\UserResource;
 use App\Models\Content;
 use App\Models\User;
+use FFMpeg\FFMpeg;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\Conversions\Conversion;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -27,11 +32,12 @@ class ContentController extends Controller
     {
         $perPage = request('per_page', 10);
         $search = request('search', '');
-        $fileType = request('file_type', 'photo');
+//        $fileType = request('file_type', 'photo');
 
-        $query = Content::query()
-            ->where('title', 'like', "%$search%")
-            ->where('type','=',$fileType)
+        $query = auth()->user()->media()
+//            ->where('title', 'like', "%$search%")
+//            ->where('type','=',$fileType)
+            ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
@@ -41,32 +47,26 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CreateContentRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateContentRequest $request)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'type' => 'required',
-            'file' => 'required|file|max:10240', // max 10MB
-            'price' => 'required|numeric|min:0',
-        ]);
-
+        $inputs = $request->validated();
         $file = $request->file('file');
-        $filePath = $file->store('public/content_files');
+        $user = auth()->user();
 
-        $content = new Content();
-        $content->user_id = Auth::user()->id;
-        $content->title = $request->input('title');
-        $content->description = $request->input('description');
-        $content->type = $request->input('type');
-        $content->file_path = $filePath;
-        $content->price = $request->input('price');
-        $content->save();
+        if ($this->isImage($file)){
+            $user->addMediaFromRequest('file')
+                ->withCustomProperties($inputs['properties'])
+                ->toMediaCollection('images');
+        } else if ($this->isVideo($file)) {
+            $user->addMediaFromRequest('file')
+                ->withCustomProperties($inputs['properties'])
+                ->toMediaCollection('videos');
+        }
 
-        return redirect()->route('contents.index')->with('success', 'Content created successfully.');
+        return response()->json();
     }
 
     /**
@@ -80,6 +80,16 @@ class ContentController extends Controller
         $content = Content::findOrFail($id);
         Storage::disk('public')->delete(str_replace('/storage', '', $content->file_path));
         $content->delete();
+    }
+
+    protected function isImage($file)
+    {
+        return in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif']);
+    }
+
+    protected function isVideo($file)
+    {
+        return in_array($file->getMimeType(), ['video/mp4', 'video/quicktime', 'video/x-msvideo']);
     }
 
 
