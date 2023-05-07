@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import store from "../../store";
 import UserModal from "./UserModal.vue";
 import UsersTable from "./UsersTable.vue";
@@ -22,8 +22,8 @@ const DEFAULT_USER = {
   id: '',
   name: '',
   email: '',
-    roles: [],
-    permissions: []
+  roles: [],
+  permissions: []
 }
 
 const users = computed(() => store.state.users);

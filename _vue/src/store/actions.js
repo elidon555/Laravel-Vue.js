@@ -138,6 +138,7 @@ export function createUser({commit}, user) {
 }
 
 export function updateUser({commit}, user) {
+    console.log(user)
   return axiosClient.put(`/users/${user.id}`, user)
 }
 
