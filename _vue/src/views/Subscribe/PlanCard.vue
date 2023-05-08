@@ -1,22 +1,27 @@
 <script setup>
 
+import {ref} from "vue";
+
+const loading = ref(false)
+
 const props = defineProps({
   title:String,
   amount: Number,
   icon1: String,
-  icon2: String
+  icon2: String,
+  duration:String
 })
 </script>
 
 <template>
   <div
-    class="p-4 my-2 w-72 text-center max-w-sm bg-white rounded-lg border shadow-md mobile:p-8 laptop:mt-12"
+    class=" m-3 p-4 my-2 w-72 text-center max-w-sm bg-white rounded-lg border shadow-md mobile:p-8 laptop:mt-12"
   >
     <h5 class="mb-4 text-xl font-medium text-gray-500">{{ title }}</h5>
     <div class="flex items-baseline justify-center text-gray-900">
       <span class="text-3xl font-semibold">$</span>
       <span class="text-5xl font-extrabold tracking-tight">{{ amount }}</span>
-      <span class="ml-1 text-xl font-normal text-gray-500">/month</span>
+      <span class="ml-1 text-xl font-normal text-gray-500">/{{ duration }}</span>
     </div>
     <!-- List -->
     <ul role="list" class="my-7 space-y-5">
@@ -57,11 +62,14 @@ const props = defineProps({
         <span class="text-base font-normal leading-tight text-gray-500">{{ icon2 }}</span>
       </li>
     </ul>
-    <button
+    <v-btn
+        @click="loading=!loading"
+        :loading="loading"
+        color="blue"
       type="button"
       class="text-white bg-indigo-500 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center"
     >
       Choose plan
-    </button>
+    </v-btn>
   </div>
 </template>

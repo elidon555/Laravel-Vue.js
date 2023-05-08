@@ -113,7 +113,7 @@ const Submit = async () => {
     </ul>
     <div class="mt-5">
       <!-- stripe -->
-      <div ref="card" class="mx-3 p-2.5 rounded-md border-2 border-solid">
+      <div ref="card" class="mx-3 p-2.5 rounded-md border-2 border-solid bg-light">
         <!-- Elements will create input elements here -->
       </div>
 
@@ -124,13 +124,14 @@ const Submit = async () => {
           role="alert"
       ></div>
       <div class="justify-center mx-3">
-        <button
-            :disabled="disabled"
+        <v-btn
+            color="blue"
+            :loading="disabled"
             class="w-full h-8 mb-3 text-white shadow-md bg-indigo-500 border mt-5 rounded-md hover:bg-indigo-400 pb-1"
             @click="Submit"
         >
           Pay with Stripe
-        </button>
+        </v-btn>
       </div>
     </div>
   </div>

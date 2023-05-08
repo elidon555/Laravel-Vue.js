@@ -17,6 +17,7 @@ import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
 import Profile from "../views/Profile/Profile.vue";
 import CheckoutView from "../views/Subscribe/CheckoutView.vue";
+import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
 
 
 const routes = [
@@ -65,6 +66,14 @@ const routes = [
         component: Permissions,
         meta: {
           roles: ["admin"],
+        },
+      },
+      {
+        path: 'subscriptionPlans',
+        name: 'app.subscriptionPlans',
+        component: SubscriptionPlans,
+        meta: {
+          roles: ["admin","user"],
         },
       },
       {
