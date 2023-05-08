@@ -4,79 +4,7 @@
 <!--            class="flex items-center justify-center rounded transition-colors w-8 h-8 text-gray-700 hover:bg-black/10">-->
 <!--      <MenuIcon class="w-6"/>-->
 <!--    </button>-->
-<!--    <Menu as="div" class="relative inline-block text-left">-->
-<!--      <MenuButton class="flex items-center">-->
-<!--        <span>Subscribe</span>-->
-<!--        <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">-->
-<!--        <small>{{currentUser.name}}</small>-->
-<!--        <ChevronDownIcon-->
-<!--          class="h-5 w-5 text-violet-200 hover:text-violet-100"-->
-<!--          aria-hidden="true"-->
-<!--        />-->
-<!--      </MenuButton>-->
 
-<!--      <transition-->
-<!--        enter-active-class="transition duration-100 ease-out"-->
-<!--        enter-from-class="transform scale-95 opacity-0"-->
-<!--        enter-to-class="transform scale-100 opacity-100"-->
-<!--        leave-active-class="transition duration-75 ease-in"-->
-<!--        leave-from-class="transform scale-100 opacity-100"-->
-<!--        leave-to-class="transform scale-95 opacity-0"-->
-<!--      >-->
-<!--        <MenuItems-->
-<!--          class="absolute right-0 mt-2 w-36 z-10 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"-->
-<!--        >-->
-<!--          <div class="px-1 py-1">-->
-<!--            <router-link :to="{name: 'app.profile'}" >-->
-<!--              <MenuItem v-slot="{ active }">-->
-<!--                <button-->
-<!--                  :class="[-->
-<!--                    active ? 'bg-indigo-600 text-white' : 'text-gray-900',-->
-<!--                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',-->
-<!--                  ]"-->
-<!--                >-->
-<!--                  <UserIcon-->
-<!--                    :active="active"-->
-<!--                    class="mr-2 h-5 w-5 text-indigo-400"-->
-<!--                    aria-hidden="true"-->
-<!--                  />-->
-<!--                  Profile-->
-<!--                </button>-->
-<!--              </MenuItem>-->
-<!--            </router-link>-->
-<!--            <router-link :to="{name: 'app.subscribe'}" >-->
-<!--              <MenuItem v-slot="{ active }">-->
-<!--                <button-->
-<!--                    :class="[-->
-<!--                    active ? 'bg-indigo-600 text-white' : 'text-gray-900',-->
-<!--                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',-->
-<!--                  ]"-->
-<!--                >-->
-<!--                  <v-icon class="mr-2" color="red" icon="mdi-play-circle-outline"></v-icon>-->
-<!--                  Subscribe!-->
-<!--                </button>-->
-<!--              </MenuItem>-->
-<!--            </router-link>-->
-<!--            <MenuItem v-slot="{ active }">-->
-<!--              <button-->
-<!--                @click="logout"-->
-<!--                :class="[-->
-<!--                  active ? 'bg-indigo-600 text-white' : 'text-gray-900',-->
-<!--                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',-->
-<!--                ]"-->
-<!--              >-->
-<!--                <LogoutIcon-->
-<!--                  :active="active"-->
-<!--                  class="mr-2 h-5 w-5 text-indigo-400"-->
-<!--                  aria-hidden="true"-->
-<!--                />-->
-<!--                Logout-->
-<!--              </button>-->
-<!--            </MenuItem>-->
-<!--          </div>-->
-<!--        </MenuItems>-->
-<!--      </transition>-->
-<!--    </Menu>-->
 <!--  </header>-->
   <v-app-bar density="comfortable"
   >
@@ -93,13 +21,45 @@
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn icon>
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
+      <v-menu location="start">
+          <template v-slot:activator="{ props }">
+              <v-btn
+                  v-bind="props"
+                  icon>
+                  <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+          </template>
 
-    <v-btn icon>
-      <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn>
+          <v-list>
+              <router-link :to="{name: 'app.profile'}" >
+                  <v-list-item>
+                          <v-list-item-title>
+                              <div class="d-flex">
+                                  <span>Profile</span>
+                              </div>
+                          </v-list-item-title>
+                  </v-list-item>
+              </router-link>
+
+              <router-link :to="{name: 'app.subscribe'}" >
+                  <v-list-item>
+                      <v-list-item-title >
+                          <div class="d-flex">
+                              <span>Subscribe</span>
+                          </div>
+                      </v-list-item-title>
+                  </v-list-item>
+              </router-link>
+
+              <v-list-item @click="logout">
+                  <v-list-item-title>
+                      <div class="d-flex">
+                          Logout
+                      </div>
+                  </v-list-item-title>
+              </v-list-item>
+          </v-list>
+      </v-menu>
   </v-app-bar>
 </template>
 
