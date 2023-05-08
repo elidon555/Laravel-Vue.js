@@ -128,7 +128,6 @@
 </template>
 
 <script setup>
-  import {HomeIcon, UserGroupIcon, UsersIcon, ViewListIcon, ChartBarIcon} from '@heroicons/vue/outline'
   import {ref, watch} from "vue";
 
   const drawer = ref(true);
