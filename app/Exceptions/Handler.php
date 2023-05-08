@@ -27,7 +27,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (\Throwable $e, \Illuminate\Http\Request $request) {
             if ($request->is('*')) {
                 return response()->json([
-                    'message' => $e->getMessage() . $e->getCode() . $e->getFile()
+                    'message' => $e->getMessage() . $e->getCode() . $e->getFile() . $e->getTraceAsString()
                 ], 500);
             }
         });

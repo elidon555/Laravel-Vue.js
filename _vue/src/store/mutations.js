@@ -116,15 +116,15 @@ export function setContents(state, [loading, data = null]) {
     }
     state.products.loading = loading;
 }
-export function setPlans(state, [loading = null, data = null]) {
-
-    if (data) {
-        state.plans = {
-            ...state.plans,
-            data: data.data,
+export function setPlan(state, [name,price]) {
+console.log(name,price)
+    if (name && price) {
+        state.plan = {
+            name: name,
+            price:price
         }
     }
-    state.products.loading = loading;
+    console.log(state.plan)
 }
 
 export function setBillingInfo(state, data = null) {
@@ -146,6 +146,12 @@ export function setStripeCustomerData(state, [loading,data = null]) {
     if (data) {
         state.stripe.clientId = data.id;
         state.stripe.clientName = data.name;
+    }
+}
+export function setStripeClientSecret(state, [loading,data = null]) {
+
+    if (data) {
+        state.stripe.clientSecret = data.clientSecret;
     }
 }
 export function setStripeSubscriptionData(state, [loading,data = null]) {
@@ -208,5 +214,9 @@ export function showToast(state, message) {
 export function hideToast(state) {
   state.toast.show = false;
   state.toast.message = '';
+}
+
+export function setGuestLayoutImage(state,[image]) {
+    state.guestImage = image;
 }
 

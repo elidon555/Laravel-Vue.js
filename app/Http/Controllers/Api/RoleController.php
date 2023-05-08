@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateRoleRequest;
+use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -45,7 +45,7 @@ class RoleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRoleRequest $request)
+    public function store(CreateContentRequest $request)
     {
         $data = $request->validated();
         $user = Role::create($data);
