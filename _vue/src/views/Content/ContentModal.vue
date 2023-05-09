@@ -1,50 +1,42 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-  <TransitionRoot as="template" :show="show">
-    <Dialog as="div" class="relative z-10" @close="show = false">
-      <TransitionChild as="template">
-        <div class="fixed inset-0 bg-black opacity-70"/>
-      </TransitionChild>
+    <v-dialog v-model="show" width="576">
+        <v-card>
+            <form @submit.prevent="onSubmit">
+                <v-card-title>
+                    <span class="text-h5"> {{ content.id ? `Update content: "${props.content.title}"` : 'Create new Content' }}</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
 
-      <div class="fixed z-10 inset-0 overflow-y-auto">
-        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-          <TransitionChild as="template" enter="ease-out duration-300"
-                           enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                           enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
-                           leave-from="opacity-100 translate-y-0 sm:scale-100"
-                           leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-            <DialogPanel
-                class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-[700px] sm:w-full">
-              <Spinner v-if="loading"
-                       class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center"/>
-              <header class="py-3 px-4 flex justify-between items-center">
-                <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Create new Content
-                </DialogTitle>
-                <v-btn icon="mdi-close" variant="text" @click="closeModal()"></v-btn>
-              </header>
-              <form @submit.prevent="onSubmit">
-                <div class="bg-white px-4 pt-5 pb-4">
-                  <v-text-field v-model="content.title"  label="Title" variant="outlined"></v-text-field>
-                  <v-text-field v-model="content.description"  label="Description" variant="outlined"></v-text-field>
-                  <v-file-input @change="onFileSelected"></v-file-input>
+                            <v-col cols="12" sm="6" md="12">
+                                <v-text-field v-model="content.title"  label="Title" variant="outlined"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="12">
+                                <v-text-field v-model="content.description"  label="Description" variant="outlined"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="12">
+                                <v-file-input @change="onFileSelected"></v-file-input>
+                            </v-col>
 
-                  <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <v-btn color="green" variant="elevated" class="mt-3 ml-3" type="submit">
-                      Submit
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue-darken-1" variant="text" @click="show = false"  >
+                        Close
                     </v-btn>
-                    <v-btn variant="tonal" class="mt-3" @click="closeModal" ref="cancelButtonRef">
-                      Cancel
+                    <v-btn type="submit" color="blue-darken-1" variant="text" :loading="loading"  >
+                        Save
                     </v-btn>
-                  </footer>
-                </div>
-              </form>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+                </v-card-actions>
+            </form>
+        </v-card>
+    </v-dialog>
+
+
 </template>
 
 <script setup>

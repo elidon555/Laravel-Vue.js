@@ -117,7 +117,7 @@
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
       </router-link>
-      <router-link v-show="checkRole(['admin'])" :to="{name: 'app.subscriptionPlans'}">
+      <router-link v-show="checkRole(['user'])" :to="{name: 'app.subscriptionPlans'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Subscription plans" value="Subscription plans"></v-list-item>
       </router-link>
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.roles'}">
