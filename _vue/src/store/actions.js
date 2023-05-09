@@ -155,7 +155,7 @@ export function createSubscriptionPlan({commit}, subscriptionPlan) {
 }
 
 export function updateSubscriptionPlan({commit}, subscriptionPlan) {
-    return axiosClient.put(`/subscription-plan/${subscriptionPlan.id}`, subscriptionPlan)
+    return axiosClient.put(`/subscription-plans/${subscriptionPlan.id}`, subscriptionPlan)
 }
 
 export function createPermission({commit}, permission) {

@@ -41,13 +41,12 @@ class SubscriptionPlanController extends Controller
     public function store(SetSubscriptionPlanRequest $request)
     {
         $data = $request->validated();
-        $data['price_id'] = 121;
         $data['user_id'] = auth()->user()->id;
 
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
 
         $response = $stripe->prices->create([
-            'unit_amount' => $data['price']*10,
+            'unit_amount' => $data['price']*100,
             'currency' => 'usd',
             'recurring' => ['interval' => strtolower(substr($data['interval'],0,-2))],
             'product' => 'prod_NqCbtic5sUZenP',
@@ -74,7 +73,13 @@ class SubscriptionPlanController extends Controller
 
         $stripe->prices->update(
             $subscriptionPlan->price_id,
-            ['currency_options' => ['unit_amount' => $data['price']*100]]
+            [
+                'currency_options' => [
+                    'usd' => [
+                        'unit_amount' => $data['price']*100
+                    ]
+                ]
+            ]
         );
 
         $subscriptionPlan->update($data);
