@@ -150,6 +150,14 @@ export function updateRole({commit}, role) {
   return axiosClient.put(`/roles/${role.id}`, role)
 }
 
+export function createSubscriptionPlan({commit}, subscriptionPlan) {
+    return axiosClient.post('/subscription-plans', subscriptionPlan)
+}
+
+export function updateSubscriptionPlan({commit}, subscriptionPlan) {
+    return axiosClient.put(`/subscription-plan/${subscriptionPlan.id}`, subscriptionPlan)
+}
+
 export function createPermission({commit}, permission) {
     return axiosClient.post('/permissions', permission)
 }

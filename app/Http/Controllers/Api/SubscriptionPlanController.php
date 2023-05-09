@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateContentRequest;
+use App\Http\Requests\SetSubscriptionPlanRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Resources\SubscriptionPlanResource;
 use App\Models\SubscriptionPlan;
@@ -37,12 +38,26 @@ class SubscriptionPlanController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateContentRequest $request)
+    public function store(SetSubscriptionPlanRequest $request)
     {
         $data = $request->validated();
-        $user = SubscriptionPlan::create($data);
+        $data['price_id'] = 121;
+        $data['user_id'] = auth()->user()->id;
 
-        return new SubscriptionPlanResource($user);
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
+
+        $response = $stripe->prices->create([
+            'unit_amount' => $data['price']*10,
+            'currency' => 'usd',
+            'recurring' => ['interval' => strtolower(substr($data['interval'],0,-2))],
+            'product' => 'prod_NqCbtic5sUZenP',
+        ]);
+        $data['price_id']=$response->id;
+
+        $subscriptionPlan = SubscriptionPlan::create($data);
+
+
+        return new SubscriptionPlanResource($subscriptionPlan);
     }
 
     /**
@@ -51,14 +66,20 @@ class SubscriptionPlanController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePermissionRequest $request, SubscriptionPlan $SubscriptionPlan)
+    public function update(SetSubscriptionPlanRequest $request, SubscriptionPlan $subscriptionPlan)
     {
         $data = $request->validated();
 
-        $SubscriptionPlan->syncPermissions($data['permissions']);
-        $SubscriptionPlan->update($data);
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
 
-        return new SubscriptionPlanResource($SubscriptionPlan);
+        $stripe->prices->update(
+            $subscriptionPlan->price_id,
+            ['currency_options' => ['unit_amount' => $data['price']*100]]
+        );
+
+        $subscriptionPlan->update($data);
+
+        return new SubscriptionPlanResource($subscriptionPlan);
     }
 
     /**
