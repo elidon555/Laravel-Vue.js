@@ -99,6 +99,16 @@ export default {
         message: '',
         delay: 5000
     },
+    subscriptionPlans:{
+        loading: false,
+        data: [],
+        links: [],
+        from: null,
+        to: null,
+        page: 1,
+        limit: null,
+        total: null
+    },
     guestImage : '',
     dateOptions: [
         {key: '1d', text: 'Last Day'},

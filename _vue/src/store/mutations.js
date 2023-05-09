@@ -58,12 +58,18 @@ export function setUsers(state, [loading, data = null]) {
 }
 export function setSubscriptionPlans(state, [loading, data = null]) {
 
-  if (data) {
-    state.subscription_plans = {
-      ...state.subscription_plans,
-      data: data.data,
+    if (data) {
+        state.subscriptionPlans = {
+            ...state.subscriptionPlans,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+        }
     }
-  }
 }
 
 export function setRoles(state, [loading, data = null]) {

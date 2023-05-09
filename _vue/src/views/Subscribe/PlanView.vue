@@ -2,31 +2,87 @@
   <div class="mx-auto">
     <h2 class="text-center text-lg font-bold my-7
       tablet:font-bold tablet:text-2xl">
+      <br>
       Choose your Subscription!
     </h2>
     <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
+
+      <v-tabs
+          v-model="tab"
+          color="deep-purple-accent-4"
+          align-tabs="center"
+      >
+        <v-tab @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
+        <v-tab  @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
+      </v-tabs>
+      <v-divider class="m-6"></v-divider>
+      <v-window v-model="tab" class="w-full" >
+          <v-window-item value="monthly" class="w-full">
+            <Transition>
+            <div v-if="showMonthly" class="flex">
+                <PlanCard
+                    title="Basic Plan"
+                    :amount="10"
+                    icon-1="480p"
+                    icon-2="5 GB"
+                    duration="month"
+                    @click="basicPlan"
+                />
+                <PlanCard
+                    title="Standard Plan"
+                    :amount="20"
+                    icon-1="720p"
+                    icon-2="20 GB"
+                    duration="month"
+                    @click="standardPlan"
+                />
+                <PlanCard
+                    title="Premium Plan"
+                    :amount="50"
+                    icon-1="1080p"
+                    icon-2="100 GB"
+                    duration="month"
+                    @click="premiumPlan"
+                />
+              </div>
+            </Transition>
+          </v-window-item>
+          <v-window-item value="yearly">
+            <Transition>
+              <div v-if="showYearly" class="flex">
+                <PlanCard
+                    title="Basic Plan"
+                    :amount="99"
+                    icon-1="480p"
+                    icon-2="5 GB"
+                    duration="year"
+                    @click="basicPlan"
+                />
+                <PlanCard
+                    title="Standard Plan"
+                    :amount="199"
+                    icon-1="720p"
+                    icon-2="10 GB"
+                    duration="year"
+                    @click="standardPlan"
+                />
+                <PlanCard
+                    title="Premium Plan"
+                    :amount="249"
+                    icon-1="1080p"
+                    icon-2="100 GB"
+                    duration="year"
+                    @click="premiumPlan"
+                />
+              </div>
+            </Transition>
+          </v-window-item>
+      </v-window>
+
+
+
       <!-- Build your card component -->
-      <PlanCard
-          title="Standard Plan"
-          :amount="1"
-          icon-1="2 team members"
-          icon-2="5gb"
-          @click="basicPlan"
-      />
-      <PlanCard
-          title="Standard Plan"
-          :amount="10"
-          icon-1="4 team members"
-          icon-2="10gb"
-          @click="standardPlan"
-      />
-      <PlanCard
-          title="Premium Plan"
-          :amount="50"
-          icon-1="4 team members"
-          icon-2="10gb"
-          @click="premiumPlan"
-      />
+
     </div>
   </div>
 </template>
@@ -35,7 +91,11 @@
 
 import PlanCard from "./PlanCard.vue";
 import store from "../../store";
+import {ref} from "vue";
 
+const tab = ref('monthly')
+const showMonthly = ref(true)
+const showYearly = ref(false)
 async function createPaymentIntent(plan,price) {
   store.dispatch('createPaymentIntent')
       .then(response => {
@@ -48,13 +108,13 @@ async function createPaymentIntent(plan,price) {
 }
 const basicPlan = () => {
   const plan = 'BASIC'
-  const price = 1
+  const price = 10
   createPaymentIntent(plan,price)
 }
 
 const standardPlan = () => {
   const plan = 'STANDARD'
-  const price = 10
+  const price = 20
   createPaymentIntent(plan,price)
 }
 
@@ -65,3 +125,15 @@ const premiumPlan = () => {
 }
 
 </script>
+
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

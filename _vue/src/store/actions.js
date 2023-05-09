@@ -55,7 +55,7 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
 
 export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
     commit('setSubscriptionPlans', [true])
-    url = url || '/users'
+    url = url || '/subscription-plans'
     const params = {
         per_page: state.users.limit,
     }
