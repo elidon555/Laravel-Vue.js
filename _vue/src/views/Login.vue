@@ -76,17 +76,13 @@ function login() {
         loading.value = false;
         redirect()
       })
-      .catch(({response}) => {
-        loading.value = false;
-        errorMsg.value = response.data.message;
-      })
 }
 
 function redirect(){
   const userRoles = store.state.user.data.roles.map(role=>role['name'])
   let route = 'app.dashboard';
   if (userRoles.includes('user')) route = 'app.contents'
-  router.push({name:route})
+  router.push({name:route,params:{id:store.state.user.data.id}})
 }
 
 onMounted(()=>{

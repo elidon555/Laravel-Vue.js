@@ -53,7 +53,7 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
     })
 }
 
-export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction, userId} = {}) {
     commit('setSubscriptionPlans', [true])
     url = url || '/subscription-plans'
     const params = {
@@ -62,13 +62,16 @@ export function getSubscriptionPlans({commit, state}, {url = null, search = '', 
     return axiosClient.get(url, {
         params: {
             ...params,
-            search, per_page, sort_field, sort_direction
+            search, per_page, sort_field, sort_direction, userId
         }
     })
         .then((response) => {
-            commit('setSubscriptionPlans', [false, response.data])
+            console.log(response)
+
+            commit('setSubscriptionPlans', [false, response.data,userId])
         })
-        .catch(() => {
+        .catch((response) => {
+            console.log(response)
             commit('setSubscriptionPlans', [false])
         })
 }

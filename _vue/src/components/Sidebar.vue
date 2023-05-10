@@ -132,6 +132,7 @@
 
 <script setup>
   import {ref, watch} from "vue";
+  import store from "../store";
 
   const drawer = ref(true);
   const rail = ref(props.rail);

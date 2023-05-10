@@ -56,9 +56,9 @@ export function setUsers(state, [loading, data = null]) {
   }
   state.products.loading = loading;
 }
-export function setSubscriptionPlans(state, [loading, data = null]) {
+export function setSubscriptionPlans(state, [loading, data = null,userId= null]) {
 
-    if (data) {
+    if (data && userId===null) {
         state.subscriptionPlans = {
             ...state.subscriptionPlans,
             data: data.data,
@@ -68,6 +68,10 @@ export function setSubscriptionPlans(state, [loading, data = null]) {
             from: data.meta.from,
             to: data.meta.to,
             total: data.meta.total,
+        }
+    } else if (userId) {
+        for (const stateKey in data.data) {
+            console.log(stateKey)
         }
     }
 }

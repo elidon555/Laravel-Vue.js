@@ -91,11 +91,17 @@
 
 import PlanCard from "./PlanCard.vue";
 import store from "../../store";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {useRoute} from "vue-router";
+import {getSubscriptionPlans} from "../../store/actions";
 
 const tab = ref('monthly')
 const showMonthly = ref(true)
 const showYearly = ref(false)
+
+
+const route = useRoute()
+const userId = computed(() => route.params.id)
 
 async function createPaymentIntent(plan,price) {
   store.dispatch('createPaymentIntent')
@@ -125,8 +131,19 @@ const premiumPlan = () => {
   createPaymentIntent(plan,price)
 }
 
+function getSubscriptionPlansData(url = null) {
+    store.dispatch("getSubscriptionPlans", {
+        url,
+        search: '',
+        per_page: '',
+        sort_field: 'price',
+        sort_direction: 'asc',
+        id:userId
+    }).then(function(response){
+    });
+}
 onMounted(()=>{
-    console.log('ok')
+    getSubscriptionPlansData()
 })
 
 </script>
