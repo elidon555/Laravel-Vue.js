@@ -130,6 +130,7 @@ import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
 import Img1 from "../../assets/thumbnail-video.png"
 import {right} from "vue-multiselect/dist/vue3-multiselect.common";
+import {useRoute} from "vue-router";
 
 const perPage = ref(USERS_PER_PAGE);
 const fileType = ref('photo');
@@ -143,6 +144,9 @@ const dialog = ref({
   type:'',
   url: ''
 })
+
+const route = useRoute()
+const userId = computed(() => route.params.id)
 
 const contents = computed(() => store.state.contents);
 
@@ -171,7 +175,7 @@ function getContents(url = null) {
     url,
     search: search.value,
     per_page: perPage.value,
-    file_type: fileType.value
+    id:userId.value
   });
 }
 

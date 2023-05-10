@@ -110,7 +110,7 @@
       <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
       <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
 
-      <router-link v-show="checkRole(['user'])" :to="{name: 'app.contents'}">
+      <router-link v-show="checkRole(['user'])" :to="{name: 'app.contents',params:{id:user.id}}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Contents" value="contents"></v-list-item>
       </router-link>
       <v-divider class="m-2"></v-divider>

@@ -113,24 +113,32 @@ export function getPermissions({commit, state}, {url = null, search = '', per_pa
         })
 }
 
-export function getContents({commit, state}, {url = null, search = '', per_page, file_type} = {}) {
+export function getContents({commit, state}, {url = null, search = '', per_page, id} = {}) {
     commit('setContents', [true])
     url = url || '/contents'
     const params = {
         per_page: state.contents.limit,
     }
+    // let params1 = {
+    // ...params,
+    //         search, per_page, id
+    // }
     return axiosClient.get(url, {
         params: {
             ...params,
-            search, per_page, file_type
+            search, per_page, id
         }
     })
         .then((response) => {
+            console.log(response)
             commit('setContents', [false, response.data])
         })
-        .catch(() => {
+        .catch((response) => {
+            console.log(response)
+
             commit('setContents', [false])
         })
+
 }
 
 export function createUser({commit}, user) {

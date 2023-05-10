@@ -1,5 +1,14 @@
 <template>
+
+    <div v-if="store.state.user.data.id !== parseInt(userId)">
+        {{store.state.user.data.id}} {{userId}}
+        <PlanView v-if="store.state.stripe.clientSecret ===''"></PlanView>
+        <CheckoutForm v-if="store.state.stripe.clientSecret !==''" />
+    </div>
+
   <div class="flex items-center justify-between mb-3">
+
+
     <h1 class="text-3xl font-semibold">Contents</h1>
     <button type="button"
             @click="showAddNewModal"
@@ -20,9 +29,15 @@ import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import ContentsTable from "./ContentsTable.vue";
 import ContentModal from "./ContentModal.vue";
+import PlanView from "../Subscribe/PlanView.vue";
+import CheckoutForm from "../Subscribe/CheckoutForm.vue";
+import {useRoute} from "vue-router";
 
 const contents = computed(() => store.state.contents);
 const showContentModal = ref(false);
+
+const route = useRoute()
+const userId = computed(() => route.params.id)
 
 const DEFAULT_CONTENT = {
   id: '',
@@ -33,7 +48,7 @@ const DEFAULT_CONTENT = {
 const contentModel = ref({...DEFAULT_CONTENT})
 
 function showAddNewModal() {
-  showContentModal.value = true
+    showContentModal.value = true
 }
 
 function editContent(u) {
@@ -42,7 +57,7 @@ function editContent(u) {
 }
 
 function onModalClose() {
-  contentModel.value = {...DEFAULT_CONTENT}
+    contentModel.value = {...DEFAULT_CONTENT}
 }
 
 </script>

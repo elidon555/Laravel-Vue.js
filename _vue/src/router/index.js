@@ -40,7 +40,7 @@ const routes = [
         component: Dashboard
       },
       {
-        path: 'contents',
+        path: 'contents/:id',
         name: 'app.contents',
         component: Contents
       },
@@ -69,7 +69,7 @@ const routes = [
         },
       },
       {
-        path: 'subscriptionPlans',
+        path: 'subscription-plans',
         name: 'app.subscriptionPlans',
         component: SubscriptionPlans,
         meta: {

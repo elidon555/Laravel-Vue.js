@@ -17,7 +17,7 @@
           :loading="loading"
           @click="submit"
       >
-        Subscribe
+        Update payment method
       </v-btn>
     </div>
   </form>

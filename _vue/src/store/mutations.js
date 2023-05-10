@@ -159,6 +159,7 @@ export function setStripeClientSecret(state, [loading,data = null]) {
     if (data) {
         state.stripe.clientSecret = data.clientSecret;
     }
+    console.log(state.stripe.clientSecret,data)
 }
 export function setStripeSubscriptionData(state, [loading,data = null]) {
 

@@ -68,7 +68,6 @@ const Submit = async () => {
       name: store.state.plan.name,
       paymentMethodId: result.setupIntent.payment_method,
     }
-    console.log(data)
     store.dispatch('createStripeSubscription', data)
         .then(response => {
           router.push({name: 'app.profile'})

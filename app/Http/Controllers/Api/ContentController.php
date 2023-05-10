@@ -32,11 +32,11 @@ class ContentController extends Controller
     {
         $perPage = request('per_page', 10);
         $search = request('search', '');
-//        $fileType = request('file_type', 'photo');
+        $userId = request('id',auth()->user());
 
-        $query = auth()->user()->media()
+        $user = User::findOrFail($userId);
+        $query = $user->media()
 //            ->where('title', 'like', "%$search%")
-//            ->where('type','=',$fileType)
             ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);

@@ -91,11 +91,12 @@
 
 import PlanCard from "./PlanCard.vue";
 import store from "../../store";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const tab = ref('monthly')
 const showMonthly = ref(true)
 const showYearly = ref(false)
+
 async function createPaymentIntent(plan,price) {
   store.dispatch('createPaymentIntent')
       .then(response => {
@@ -123,6 +124,10 @@ const premiumPlan = () => {
   const price = 50
   createPaymentIntent(plan,price)
 }
+
+onMounted(()=>{
+    console.log('ok')
+})
 
 </script>
 
