@@ -40,9 +40,12 @@ const routes = [
         component: Dashboard
       },
       {
-        path: 'contents/:id',
+        path: 'contents/:id?',
         name: 'app.contents',
-        component: Contents
+        component: Contents,
+        meta: {
+          requiresAuth: false
+        },
       },
       {
         path: 'users',
@@ -106,7 +109,7 @@ const routes = [
     ]
   },
   {
-    path: '/login',
+    path: '/login/:user_id?',
     name: 'login',
     component: Login,
     meta: {

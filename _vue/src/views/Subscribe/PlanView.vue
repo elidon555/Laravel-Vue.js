@@ -19,61 +19,33 @@
       <v-window v-model="tab" class="w-full" >
           <v-window-item value="monthly" class="w-full">
             <Transition>
-            <div v-if="showMonthly" class="flex">
-                <PlanCard
-                    title="Basic Plan"
-                    :amount="10"
-                    icon-1="480p"
-                    icon-2="5 GB"
-                    duration="month"
-                    @click="basicPlan"
-                />
-                <PlanCard
-                    title="Standard Plan"
-                    :amount="20"
-                    icon-1="720p"
-                    icon-2="20 GB"
-                    duration="month"
-                    @click="standardPlan"
-                />
-                <PlanCard
-                    title="Premium Plan"
-                    :amount="50"
-                    icon-1="1080p"
-                    icon-2="100 GB"
-                    duration="month"
-                    @click="premiumPlan"
-                />
+              <div v-if="showMonthly" class="flex">
+                <div v-for="plan in store.state.subscriptionPlans.monthly">
+                  <PlanCard
+                      :title="plan.name"
+                      :amount="parseInt(plan.price)"
+                      :icon-1="plan.features.split(' | ')[0]"
+                      :icon-2="plan.features.split(' | ')[1]"
+                      :duration="plan.interval"
+                      @click="createPaymentIntent(plan)"
+                  />
+                </div>
               </div>
             </Transition>
           </v-window-item>
           <v-window-item value="yearly">
             <Transition>
               <div v-if="showYearly" class="flex">
-                <PlanCard
-                    title="Basic Plan"
-                    :amount="99"
-                    icon-1="480p"
-                    icon-2="5 GB"
-                    duration="year"
-                    @click="basicPlan"
-                />
-                <PlanCard
-                    title="Standard Plan"
-                    :amount="199"
-                    icon-1="720p"
-                    icon-2="10 GB"
-                    duration="year"
-                    @click="standardPlan"
-                />
-                <PlanCard
-                    title="Premium Plan"
-                    :amount="249"
-                    icon-1="1080p"
-                    icon-2="100 GB"
-                    duration="year"
-                    @click="premiumPlan"
-                />
+                <div v-for="plan in store.state.subscriptionPlans.yearly">
+                  <PlanCard
+                      :title="plan.name"
+                      :amount="parseInt(plan.price)"
+                      :icon-1="plan.features.split(' | ')[0]"
+                      :icon-2="plan.features.split(' | ')[1]"
+                      :duration="plan.interval"
+                      @click="createPaymentIntent(plan)"
+                  />
+                </div>
               </div>
             </Transition>
           </v-window-item>
@@ -94,6 +66,7 @@ import store from "../../store";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {getSubscriptionPlans} from "../../store/actions";
+import router from "../../router";
 
 const tab = ref('monthly')
 const showMonthly = ref(true)
@@ -103,32 +76,20 @@ const showYearly = ref(false)
 const route = useRoute()
 const userId = computed(() => route.params.id)
 
-async function createPaymentIntent(plan,price) {
+async function createPaymentIntent(plan) {
+  if (store.state.user.data.id === undefined) {
+    await router.push({name: 'login',params:{user_id:userId.value}})
+    return;
+  }
+
   store.dispatch('createPaymentIntent')
       .then(response => {
-        store.commit('setPlan', [plan,price])
+        store.commit('setPlan', [plan.name,plan.price,plan.price_id])
         store.commit('setStripeClientSecret',[response.data])
       })
       .catch(err => {
         // debugger;
       })
-}
-const basicPlan = () => {
-  const plan = 'BASIC'
-  const price = 10
-  createPaymentIntent(plan,price)
-}
-
-const standardPlan = () => {
-  const plan = 'STANDARD'
-  const price = 20
-  createPaymentIntent(plan,price)
-}
-
-const premiumPlan = () => {
-  const plan = 'PREMIUM'
-  const price = 50
-  createPaymentIntent(plan,price)
 }
 
 function getSubscriptionPlansData(url = null) {
@@ -138,7 +99,7 @@ function getSubscriptionPlansData(url = null) {
         per_page: '',
         sort_field: 'price',
         sort_direction: 'asc',
-        id:userId
+        id:userId.value
     }).then(function(response){
     });
 }

@@ -1,3 +1,4 @@
+import {pl} from "vuetify/locale";
 
 export function setUser(state, user) {
   state.user.data = user;
@@ -58,6 +59,8 @@ export function setUsers(state, [loading, data = null]) {
 }
 export function setSubscriptionPlans(state, [loading, data = null,userId= null]) {
 
+    console.log(data,userId)
+
     if (data && userId===null) {
         state.subscriptionPlans = {
             ...state.subscriptionPlans,
@@ -70,9 +73,18 @@ export function setSubscriptionPlans(state, [loading, data = null,userId= null])
             total: data.meta.total,
         }
     } else if (userId) {
-        for (const stateKey in data.data) {
-            console.log(stateKey)
+        let monthlyPlans = [];
+        let yearlyPlans = [];
+        for (const plan of data.data) {
+            console.log(plan)
+            if (plan['interval']==='Monthly') {
+                monthlyPlans.push(plan)
+            } else {
+                yearlyPlans.push(plan)
+            }
         }
+        state.subscriptionPlans.monthly = monthlyPlans;
+        state.subscriptionPlans.yearly = yearlyPlans;
     }
 }
 
@@ -126,12 +138,13 @@ export function setContents(state, [loading, data = null]) {
     }
     state.products.loading = loading;
 }
-export function setPlan(state, [name,price]) {
-console.log(name,price)
+export function setPlan(state, [name,price,price_id]) {
+console.log(name,price,price_id)
     if (name && price) {
         state.plan = {
             name: name,
-            price:price
+            price:price,
+            price_id:price_id
         }
     }
     console.log(state.plan)

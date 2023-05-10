@@ -52,16 +52,20 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {LockClosedIcon} from '@heroicons/vue/solid'
 import GuestLayout from "../components/GuestLayout.vue";
 import store from "../store";
 import router from "../router";
 import {setStripeClientSecret} from "../store/mutations";
 import image from '../assets/login.png'
+import {useRoute} from "vue-router";
 
 let loading = ref(false);
 let errorMsg = ref("");
+
+const route = useRoute()
+const userId = computed(() => route.params.user_id)
 
 const user = ref({
   email: '',
@@ -81,8 +85,9 @@ function login() {
 function redirect(){
   const userRoles = store.state.user.data.roles.map(role=>role['name'])
   let route = 'app.dashboard';
+
   if (userRoles.includes('user')) route = 'app.contents'
-  router.push({name:route,params:{id:store.state.user.data.id}})
+  router.push({name:route,params:{id:userId.value ?? store.state.user.data.id}})
 }
 
 onMounted(()=>{

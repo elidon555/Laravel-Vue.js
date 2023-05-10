@@ -1,7 +1,7 @@
 <template>
   <div v-if="currentUser" class="min-h-full bg-gray-200 flex">
     <v-layout>
-      <Sidebar :rail=sidebarOpened :user="currentUser" ref="childComponent"/>
+      <Sidebar v-if="currentUser.id" :rail=sidebarOpened :user="currentUser" ref="childComponent"/>
       <Navbar @toggle-sidebar="toggleSidebar"/>
       <v-main class="bg-black">
         <v-container>
@@ -12,6 +12,7 @@
     </v-layout>
   </div>
   <div v-else class="min-h-full bg-gray-200 flex items-center justify-center">
+    <router-view></router-view>
     <Spinner />
   </div>
   <Toast />

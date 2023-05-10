@@ -75,7 +75,8 @@ export default {
     },
     plan: {
         name:"",
-        price:""
+        price:"",
+        price_id:""
     },
     billingInfo: {
         email: '',
@@ -107,7 +108,9 @@ export default {
         to: null,
         page: 1,
         limit: null,
-        total: null
+        total: null,
+        monthly: [],
+        yearly: []
     },
     guestImage : '',
     dateOptions: [

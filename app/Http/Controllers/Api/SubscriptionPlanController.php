@@ -22,7 +22,7 @@ class SubscriptionPlanController extends Controller
         $perPage = request('per_page', 10);
         $search = request('search', '');
         $sortField = request('sort_field', 'updated_at');
-        $sortDirection = request('sort_direction', 'desc');
+        $sortDirection = request('sort_direction', 'asc');
 
         $query = SubscriptionPlan::query()
             ->where('name', 'like', "%$search%")

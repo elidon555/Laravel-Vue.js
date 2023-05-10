@@ -16,12 +16,22 @@
     <v-app-bar-title>Title</v-app-bar-title>
 
     <v-spacer></v-spacer>
+    <v-spacer></v-spacer>
+    <v-spacer></v-spacer>
+    <v-spacer></v-spacer>
 
-    <v-btn icon>
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
 
-      <v-menu location="start">
+    <v-spacer></v-spacer>
+
+
+    <router-link :to="{name: 'login'}">
+      <v-btn v-if="currentUser.id === undefined" class="mr-5" icon>
+        Login
+        <v-icon>mdi-login</v-icon>
+      </v-btn>
+    </router-link>
+
+    <v-menu v-if = "currentUser.id" location="start">
           <template v-slot:activator="{ props }">
               <v-btn
                   v-bind="props"

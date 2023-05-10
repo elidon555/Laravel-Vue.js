@@ -23,6 +23,7 @@ class SubscriptionPlanResource extends JsonResource
             'price' => $this->price,
             'features' => $this->features,
             'interval' => $this->interval,
+            'price_id' => $this->price_id,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
         ];
     }

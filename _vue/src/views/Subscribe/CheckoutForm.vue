@@ -67,6 +67,7 @@ const Submit = async () => {
     let data = {
       name: store.state.plan.name,
       paymentMethodId: result.setupIntent.payment_method,
+      priceId: store.state.plan.price_id,
     }
     store.dispatch('createStripeSubscription', data)
         .then(response => {

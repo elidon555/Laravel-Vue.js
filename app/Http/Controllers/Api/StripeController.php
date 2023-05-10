@@ -35,7 +35,7 @@ class StripeController extends Controller
         }
 
         $response = $user->newSubscription(
-            'default', env('PLAN_'.$inputs['name'])
+            'default',$inputs['priceId']
         )->create($inputs['paymentMethodId']);
         return response()->json($response,500);
     }
