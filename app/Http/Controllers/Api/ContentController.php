@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ContentResource;
 use App\Http\Resources\UserResource;
 use App\Models\Content;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use FFMpeg\FFMpeg;
 use Illuminate\Http\JsonResponse;
@@ -40,8 +41,8 @@ class ContentController extends Controller
             ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
-
-        return ContentResource::collection($query);
+        $subscriptionPlans['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
+        return ContentResource::collection($query)->additional($subscriptionPlans);
     }
 
     /**

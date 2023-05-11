@@ -127,10 +127,7 @@ export function getContents({commit, state}, {url = null, search = '', per_page,
     const params = {
         per_page: state.contents.limit,
     }
-    // let params1 = {
-    // ...params,
-    //         search, per_page, id
-    // }
+
     return axiosClient.get(url, {
         params: {
             ...params,

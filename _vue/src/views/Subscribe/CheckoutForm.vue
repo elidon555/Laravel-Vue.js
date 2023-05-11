@@ -2,13 +2,13 @@
 import {ref, onMounted} from 'vue'
 import store from "../../store";
 import router from "../../router";
+import * as notification from "@kyvg/vue3-notification";
 
 const disabled = ref(false)
 const card = ref(null)
 
 const stripe = window.Stripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 const elements = stripe.elements()
-console.log(store.state.plan)
 const style = {
   base: {
     color: '#32325d',
@@ -48,7 +48,6 @@ onMounted(() => {
 const Submit = async () => {
   disabled.value = true
   const clientSecret = store.state.stripe.clientSecret
-  console.log(clientSecret)
   const fullName = store.state.stripe.clientName
 
   const result = await stripe.confirmCardSetup(clientSecret, {
@@ -72,6 +71,11 @@ const Submit = async () => {
     store.dispatch('createStripeSubscription', data)
         .then(response => {
           router.push({name: 'app.profile'})
+            // notification.notify({
+            //     title: "Success!",
+            //     type: "success",
+            // });
+            store.dispatch("getCurrentUser")
         })
         .catch(err => {
           // debugger;

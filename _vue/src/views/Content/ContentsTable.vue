@@ -1,27 +1,31 @@
 <template>
-  <div class="bg-white p-4 rounded-lg shadow animate-fade-in-down">
+  <div class="bg-dark p-4 rounded-lg shadow animate-fade-in-down">
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
-        <span class="whitespace-nowrap mr-3">Per Page</span>
-        <select @change="getContents(null)" v-model="perPage"
-                class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-        <span class="ml-3">Found {{contents.total}} contents</span>
-          <select @change="getContents(null)" v-model="fileType"
-                  class="appearance-none relative block w-24 ml-3 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-              <option value="photo" selected="selected">Photos</option>
-              <option value="video">Video</option>
-          </select>
+          <v-select
+              :items="[5,10,20,50]"
+              v-model="perPage"
+              density="compact"
+              @update:modelValue="getContents()"
+          >
+              <template  v-slot:prepend>Per page</template>
+              <template  v-slot:append>Found {{contents.total}} users</template>
+          </v-select>
       </div>
       <div>
-        <input v-model="search" @change="getContents(null)"
-               class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-               placeholder="Type to Search roles">
+          <div>
+              <v-text-field
+                  class="w-48 px-3 py-2"
+                  @change="getContents(null)"
+                  v-model="search"
+                  density="compact"
+                  variant="underlined"
+                  label="Search templates"
+                  append-inner-icon="mdi-magnify"
+                  single-line
+                  hide-details
+              ></v-text-field>
+          </div>
       </div>
     </div>
     <br>
@@ -107,16 +111,15 @@
             href="#"
             @click="getForPage($event, link)"
             aria-current="page"
-            class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap"
+            class="relative rounded-lg pointer-events-auto ml-1 mr-1 inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap"
             :class="[
               link.active
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
+                : 'bg-dark border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
               i === contents.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
-            v-html="link.label"
         >
         </a>
       </nav>

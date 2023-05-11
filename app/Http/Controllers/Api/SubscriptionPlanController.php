@@ -23,9 +23,12 @@ class SubscriptionPlanController extends Controller
         $search = request('search', '');
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'asc');
+        $sortDirection = request('sort_direction', 'asc');
+        $userId = request('id', '');
 
         $query = SubscriptionPlan::query()
             ->where('name', 'like', "%$search%")
+            ->where('user_id','like',"%$userId%")
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 

@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'roles' => $this->roles,
             'permissions' => $this->permissions,
+            'subscriptions' =>$this->subscriptions,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
         ];
     }

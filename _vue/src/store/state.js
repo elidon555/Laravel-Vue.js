@@ -46,6 +46,7 @@ export default {
     contents: {
         loading: false,
         data: [],
+        subscriptionPlans:[],
         links: [],
         from: null,
         to: null,

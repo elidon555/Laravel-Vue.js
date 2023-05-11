@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateStripeCustomerRequest;
 use App\Http\Requests\CreateStripeSubscriptionRequest;
+use App\Models\SubscriptionPlan;
 use Stripe\Stripe;
 
 class StripeController extends Controller
@@ -34,10 +35,11 @@ class StripeController extends Controller
             $user->updateDefaultPaymentMethod($inputs['paymentMethodId']);
         }
 
+        $userIdSubscription = SubscriptionPlan::query()->select('user_id')->where('price_id',$inputs['priceId'])->first();
         $response = $user->newSubscription(
-            'default',$inputs['priceId']
+            $userIdSubscription->user_id,$inputs['priceId']
         )->create($inputs['paymentMethodId']);
-        return response()->json($response,500);
+        return response()->json($response);
     }
 
 }
