@@ -21,8 +21,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
+
     return new \App\Http\Resources\UserResource($request->user());
 });
+
 
 Route::apiResource('contents', ContentController::class);
 Route::apiResource('subscription-plans', SubscriptionPlanController::class);
@@ -31,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('permissions', PermissionController::class);
+
 
     Route::prefix('stripe')->group(function(){
         Route::post('create-costumer', [StripeController::class, 'createCustomer']);

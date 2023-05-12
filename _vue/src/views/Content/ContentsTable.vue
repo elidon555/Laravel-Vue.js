@@ -151,6 +151,7 @@ const route = useRoute()
 const userId = computed(() => route.params.id)
 
 const contents = computed(() => store.state.contents);
+const user = computed(() => store.state.user);
 
 function openDialog(content) {
     dialog.value.show = true;

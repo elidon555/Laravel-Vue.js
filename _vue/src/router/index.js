@@ -40,7 +40,7 @@ const routes = [
         component: Dashboard
       },
       {
-        path: 'contents/:id?',
+        path: 'contents/:id',
         name: 'app.contents',
         component: Contents,
         meta: {

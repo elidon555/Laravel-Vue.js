@@ -9,9 +9,16 @@ use App\Http\Requests\SetSubscriptionPlanRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Resources\SubscriptionPlanResource;
 use App\Models\SubscriptionPlan;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionPlanController extends Controller
 {
+
+    public function __construct()
+    {
+//        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +29,6 @@ class SubscriptionPlanController extends Controller
         $perPage = request('per_page', 10);
         $search = request('search', '');
         $sortField = request('sort_field', 'updated_at');
-        $sortDirection = request('sort_direction', 'asc');
         $sortDirection = request('sort_direction', 'asc');
         $userId = request('id', '');
 
@@ -44,7 +50,7 @@ class SubscriptionPlanController extends Controller
     public function store(SetSubscriptionPlanRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        @$data['user_id'] = $request->user()->id;
 
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
 
@@ -57,7 +63,6 @@ class SubscriptionPlanController extends Controller
         $data['price_id']=$response->id;
 
         $subscriptionPlan = SubscriptionPlan::create($data);
-
 
         return new SubscriptionPlanResource($subscriptionPlan);
     }

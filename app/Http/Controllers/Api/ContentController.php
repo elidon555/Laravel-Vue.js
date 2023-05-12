@@ -33,7 +33,7 @@ class ContentController extends Controller
     {
         $perPage = request('per_page', 10);
         $search = request('search', '');
-        $userId = request('id',auth()->user());
+        $userId = request('id');
 
         $user = User::findOrFail($userId);
         $query = $user->media()

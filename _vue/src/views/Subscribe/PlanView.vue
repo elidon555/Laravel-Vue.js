@@ -1,62 +1,62 @@
 <template>
-  <div class="mx-auto">
-    <h2 class="text-center text-lg font-bold my-7
+    <div class="mx-auto">
+        <h2 class="text-center text-lg font-bold my-7
       tablet:font-bold tablet:text-2xl">
-      <br>
-      Choose your Subscription!
-    </h2>
-    <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
+            <br>
+            Choose your Subscription!
+        </h2>
+        <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
 
-      <v-tabs
-          v-model="tab"
-          color="deep-purple-accent-4"
-          align-tabs="center"
-      >
-        <v-tab @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
-        <v-tab  @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
-      </v-tabs>
-      <v-divider class="m-6"></v-divider>
-      <v-window v-model="tab" class="w-full" >
-          <v-window-item value="monthly" class="w-full">
-            <Transition>
-              <div v-if="showMonthly" class="flex">
-                <div v-for="plan in store.state.subscriptionPlans.monthly">
-                  <PlanCard
-                      :title="plan.name"
-                      :amount="parseInt(plan.price)"
-                      :icon-1="plan.features.split(' | ')[0]"
-                      :icon-2="plan.features.split(' | ')[1]"
-                      :duration="plan.interval"
-                      @click="createPaymentIntent(plan)"
-                  />
-                </div>
-              </div>
-            </Transition>
-          </v-window-item>
-          <v-window-item value="yearly">
-            <Transition>
-              <div v-if="showYearly" class="flex">
-                <div v-for="plan in store.state.subscriptionPlans.yearly">
-                  <PlanCard
-                      :title="plan.name"
-                      :amount="parseInt(plan.price)"
-                      :icon-1="plan.features.split(' | ')[0]"
-                      :icon-2="plan.features.split(' | ')[1]"
-                      :duration="plan.interval"
-                      @click="createPaymentIntent(plan)"
-                  />
-                </div>
-              </div>
-            </Transition>
-          </v-window-item>
-      </v-window>
+            <v-tabs
+                v-model="tab"
+                color="deep-purple-accent-4"
+                align-tabs="center"
+            >
+                <v-tab @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
+                <v-tab  @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
+            </v-tabs>
+            <v-divider class="m-6"></v-divider>
+            <v-window v-model="tab" class="w-full" >
+                <v-window-item value="monthly" class="w-full">
+                    <Transition>
+                        <div v-if="showMonthly" class="flex">
+                            <div v-for="plan in store.state.subscriptionPlans.monthly">
+                                <PlanCard
+                                    :title="plan.name"
+                                    :amount="parseInt(plan.price)"
+                                    :icon-1="plan.features.split(' | ')[0]"
+                                    :icon-2="plan.features.split(' | ')[1]"
+                                    :duration="plan.interval"
+                                    @click="createPaymentIntent(plan)"
+                                />
+                            </div>
+                        </div>
+                    </Transition>
+                </v-window-item>
+                <v-window-item value="yearly">
+                    <Transition>
+                        <div v-if="showYearly" class="flex">
+                            <div v-for="plan in store.state.subscriptionPlans.yearly">
+                                <PlanCard
+                                    :title="plan.name"
+                                    :amount="parseInt(plan.price)"
+                                    :icon-1="plan.features.split(' | ')[0]"
+                                    :icon-2="plan.features.split(' | ')[1]"
+                                    :duration="plan.interval"
+                                    @click="createPaymentIntent(plan)"
+                                />
+                            </div>
+                        </div>
+                    </Transition>
+                </v-window-item>
+            </v-window>
 
 
 
-      <!-- Build your card component -->
+            <!-- Build your card component -->
 
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -77,19 +77,19 @@ const route = useRoute()
 const userId = computed(() => route.params.id)
 
 async function createPaymentIntent(plan) {
-  if (store.state.user.data.id === undefined) {
-    await router.push({name: 'login',params:{user_id:userId.value}})
-    return;
-  }
+    if (store.state.user.data.id === undefined) {
+        await router.push({name: 'login',params:{user_id:userId.value}})
+        return;
+    }
 
-  store.dispatch('createPaymentIntent')
-      .then(response => {
-        store.commit('setPlan', [plan.name,plan.price,plan.price_id])
-        store.commit('setStripeClientSecret',[response.data])
-      })
-      .catch(err => {
-        // debugger;
-      })
+    store.dispatch('createPaymentIntent')
+        .then(response => {
+            store.commit('setPlan', [plan.name,plan.price,plan.price_id])
+            store.commit('setStripeClientSecret',[response.data])
+        })
+        .catch(err => {
+            // debugger;
+        })
 }
 
 function getSubscriptionPlansData(url = null) {
@@ -112,11 +112,11 @@ onMounted(()=>{
 <style scoped>
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 1s ease;
+    transition: opacity 1s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 </style>

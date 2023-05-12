@@ -96,7 +96,6 @@ function closeModal() {
 }
 
 function onSubmit() {
-  console.log(subscriptionPlan)
   show.value = true
   // subscriptionPlan.value.roles.value = roles
   // subscriptionPlan.value.permissions.value = permissions

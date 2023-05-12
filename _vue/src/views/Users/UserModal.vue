@@ -110,7 +110,6 @@ function closeModal() {
 }
 
 function onSubmit() {
-    console.log(user)
     show.value = true
     // user.value.roles.value = roles
     // user.value.permissions.value = permissions

@@ -1,7 +1,7 @@
 import axiosClient from "../axios";
 
 export function getCurrentUser({commit}, data) {
-  return axiosClient.get('/user', data)
+  return axiosClient.post('/user', data)
     .then(({data}) => {
       commit('setUser', data);
       return data;
@@ -29,9 +29,12 @@ export function logout({commit}) {
     .then((response) => {
       commit('setToken', null)
       commit('setUser', null)
+
+      // commit('RESET_STATE')
       return response;
     })
 }
+
 
 export function getUsers({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
   commit('setUsers', [true])
@@ -54,16 +57,12 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
 }
 
 export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction, id} = {}) {
-    console.log(id)
     commit('setSubscriptionPlans', [true])
     url = url || '/subscription-plans'
     const params = {
         per_page: state.users.limit,
     }
-    console.log({params: {
-    ...params,
-            search, per_page, sort_field, sort_direction, id
-    }})
+
     return axiosClient.get(url, {
         params: {
             ...params,
@@ -71,12 +70,10 @@ export function getSubscriptionPlans({commit, state}, {url = null, search = '', 
         }
     })
         .then((response) => {
-            console.log(response)
 
             commit('setSubscriptionPlans', [false, response.data,id])
         })
         .catch((response) => {
-            console.log(response)
             commit('setSubscriptionPlans', [false])
         })
 }
@@ -135,12 +132,9 @@ export function getContents({commit, state}, {url = null, search = '', per_page,
         }
     })
         .then((response) => {
-            console.log(response)
             commit('setContents', [false, response.data])
         })
         .catch((response) => {
-            console.log(response)
-
             commit('setContents', [false])
         })
 
@@ -151,7 +145,6 @@ export function createUser({commit}, user) {
 }
 
 export function updateUser({commit}, user) {
-    console.log(user)
   return axiosClient.put(`/users/${user.id}`, user)
 }
 
@@ -194,10 +187,8 @@ export function createStripeCustomer({commit}, stripeCustomer) {
 }
 
 export function createStripeSubscription({commit}, stripeSubscription) {
-    console.log(stripeSubscription)
     return axiosClient.post('/stripe/create-subscription', stripeSubscription)
         .then((response) => {
-            console.log(stripeSubscription)
             commit('setStripeSubscriptionData', [false, {...stripeSubscription,...response.data}])
         })
         .catch(() => {

@@ -1,4 +1,8 @@
 import {pl} from "vuetify/locale";
+import defaultState from './state'
+export function RESET_STATE (state) {
+    Object.assign(state, defaultState)
+}
 
 export function setUser(state, user) {
   state.user.data = user;
@@ -59,7 +63,6 @@ export function setUsers(state, [loading, data = null]) {
 }
 export function setSubscriptionPlans(state, [loading, data = null,userId= null]) {
 
-    console.log(data,userId)
 
     if (data && userId===null) {
         state.subscriptionPlans = {
@@ -76,7 +79,6 @@ export function setSubscriptionPlans(state, [loading, data = null,userId= null])
         let monthlyPlans = [];
         let yearlyPlans = [];
         for (const plan of data.data) {
-            console.log(plan)
             if (plan['interval']==='Monthly') {
                 monthlyPlans.push(plan)
             } else {
@@ -140,7 +142,6 @@ export function setContents(state, [loading, data = null]) {
     state.products.loading = loading;
 }
 export function setPlan(state, [name,price,price_id]) {
-console.log(name,price,price_id)
     if (name && price) {
         state.plan = {
             name: name,
@@ -148,7 +149,6 @@ console.log(name,price,price_id)
             price_id:price_id
         }
     }
-    console.log(state.plan)
 }
 
 export function setBillingInfo(state, data = null) {
@@ -177,12 +177,10 @@ export function setStripeClientSecret(state, [loading,data = null]) {
     if (data) {
         state.stripe.clientSecret = data.clientSecret;
     }
-    console.log(state.stripe.clientSecret,data)
 }
 export function setStripeSubscriptionData(state, [loading,data = null]) {
 
     if (data) {
-        console.log(data)
         state.stripe.subscriptionId = data.id;
         state.stripe.planName = data.planName;
         state.stripe.planPrice = data.plan.amount.toFixed(2)
