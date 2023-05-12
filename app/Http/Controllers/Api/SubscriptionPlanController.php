@@ -16,7 +16,7 @@ class SubscriptionPlanController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum')->except('index');
     }
 
     /**
@@ -50,7 +50,7 @@ class SubscriptionPlanController extends Controller
     public function store(SetSubscriptionPlanRequest $request)
     {
         $data = $request->validated();
-        @$data['user_id'] = $request->user()->id;
+        @$data['user_id'] = auth()->user()->id;
 
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
 
