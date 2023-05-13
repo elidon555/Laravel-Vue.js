@@ -58,7 +58,11 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
 
 export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction, id} = {}) {
     commit('setSubscriptionPlans', [true])
+
     url = url || '/subscription-plans'
+    if (!state.user.token){
+        url = '/preview'+url;
+    }
     const params = {
         per_page: state.users.limit,
     }
@@ -121,6 +125,11 @@ export function getPermissions({commit, state}, {url = null, search = '', per_pa
 export function getContents({commit, state}, {url = null, search = '', per_page, id} = {}) {
     commit('setContents', [true])
     url = url || '/contents'
+
+    url = url || '/subscription-plans'
+    if (!state.user.token){
+        url = '/preview'+url;
+    }
     const params = {
         per_page: state.contents.limit,
     }

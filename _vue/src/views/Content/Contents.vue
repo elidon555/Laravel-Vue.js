@@ -2,26 +2,26 @@
     <div v-if="!user.token">
         <PlanView v-if="store.state.stripe.clientSecret ===''"></PlanView>
     </div>
-    <div v-else-if="getPlanName()" class="d-flex justify-content-center">
+    <div v-else>
+      <div v-if="getPlanName()" class="d-flex justify-content-center">
         <v-btn class="m-auto" color="blue">Plan: {{getPlanName()}}</v-btn>
-    </div>
-    <div v-else-if="user.token && user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length && (contents.subscriptionPlans.monthly.length ||contents.subscriptionPlans.yearly.length) ">
-        <div v-if="subscriptionPlans.map((item)=>item.price_id)"></div>
+      </div>
+      <div v-else-if=" user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length ">
         <PlanView v-if="store.state.stripe.clientSecret ===''"></PlanView>
         <CheckoutForm v-if="store.state.stripe.clientSecret !==''" />
+      </div>
     </div>
-
-  <div class="flex items-center justify-between mb-3">
-
-
-    <h1 class="text-3xl font-semibold">Contents</h1>
-    <button v-if="user.data != null && user.data.id === parseInt(userId)" type="button"
+  <div class="flex items-center justify-between ">
+    <span></span>
+    <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
             @click="showAddNewModal"
             class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
     >
       Add new Content
     </button>
   </div>
+  <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts</h1>
+
 
   <ContentsTable/>
   <ContentModal v-model="showContentModal" :content="contentModel" @close="onModalClose"></ContentModal>
@@ -65,20 +65,11 @@ function editContent(u) {
 
 function getPlanName(){
 
+  const userSubscription = user.value.data.subscriptions.find(subscription =>
+      contents.value.subscriptionPlans.some(plan => plan.price_id === subscription.stripe_price)
+  );
 
-    let userPlanName = '';
-
-    if (user.value.data !== undefined && user.value.data.subscriptions !== null && contents.value.subscriptionPlans.length){
-        for (const subscription of user.value.data.subscriptions) {
-
-            const plan = contents.value.subscriptionPlans.find(plan => plan.price_id === subscription.stripe_price);
-            if (plan) {
-                return userPlanName = plan.name;
-            }
-        }
-    }
-
-    return '';
+  return userSubscription ? contents.value.subscriptionPlans.find(plan => plan.price_id === userSubscription.stripe_price).name : '';
 }
 
 function onModalClose() {

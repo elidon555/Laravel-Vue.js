@@ -9,12 +9,11 @@
                 <v-card-text>
                     <v-container>
                         <v-row>
-
                             <v-col cols="12" sm="6" md="12">
                                 <v-text-field v-model="content.title"  label="Title" variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
-                                <v-text-field v-model="content.description"  label="Description" variant="outlined"></v-text-field>
+                                <v-textarea v-model="content.description"  label="Description" variant="outlined"></v-textarea>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
                                 <v-file-input @change="onFileSelected"></v-file-input>

@@ -67,6 +67,40 @@
       </div>
     </Dialog>
   </TransitionRoot>
+
+
+  <v-dialog v-model="show" width="576">
+    <v-card>
+      <form @submit.prevent="onSubmit">
+        <v-card-title>
+          <span class="text-h5">
+            {{ permission.id ? `Update permission: "${props.permission.name}"` : 'Create new Permission' }}
+          </span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field density="compact" v-model="permission.name"  label="Name" variant="outlined"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field density="compact" v-model="permission.guard_name"  label="Email" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-darken-1" variant="text" @click="show = false"  >
+            Close
+          </v-btn>
+          <v-btn type="submit" color="blue-darken-1" variant="text" :loading="loading"  >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </form>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>

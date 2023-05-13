@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\ContentPreviewResource;
 use App\Http\Resources\ContentResource;
 use App\Http\Resources\UserResource;
 use App\Models\Content;
@@ -31,18 +32,26 @@ class ContentController extends Controller
      */
     public function index()
     {
+        $authUser = auth()->user();
+
         $perPage = request('per_page', 10);
         $search = request('search', '');
-        $userId = request('id');
+        $userId = request('id',$authUser->id ?? '');
 
         $user = User::findOrFail($userId);
+
+
         $query = $user->media()
 //            ->where('title', 'like', "%$search%")
-            ->where('media.collection_name','=','images')
+//            ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
         $subscriptionPlans['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
-        return ContentResource::collection($query)->additional($subscriptionPlans);
+
+        if ($authUser && ( $authUser->subscribed($user->id ?? '') || $authUser->id===$user->id)) {
+            return ContentResource::collection($query)->additional($subscriptionPlans);
+        }
+        return ContentPreviewResource::collection($query)->additional($subscriptionPlans);
     }
 
     /**
