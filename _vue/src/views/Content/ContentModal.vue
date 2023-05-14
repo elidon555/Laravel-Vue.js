@@ -51,6 +51,16 @@ import store from "../../store/index.js";
 import Spinner from "../../components/core/Spinner.vue";
 import {useNotification} from "@kyvg/vue3-notification";
 
+const props = defineProps({
+  modelValue: Boolean,
+  content: {
+    required: true,
+    type: Object,
+  }
+})
+
+const emit = defineEmits(['update:modelValue', 'close'])
+
 const notification = useNotification()
 
 const roles = ref([]);
@@ -64,15 +74,8 @@ const content = ref({
   description: props.content.description,
 })
 
-const props = defineProps({
-  modelValue: Boolean,
-  content: {
-    required: true,
-    type: Object,
-  }
-})
 
-const emit = defineEmits(['update:modelValue', 'close'])
+
 
 const show = computed({
   get: () => props.modelValue,
@@ -95,7 +98,7 @@ function closeModal() {
   emit('close')
 }
 
-function onSubmit() {
+async function onSubmit() {
 
   loading.value = true
   const formData = new FormData();
@@ -119,3 +122,4 @@ function onSubmit() {
       })
 }
 </script>
+

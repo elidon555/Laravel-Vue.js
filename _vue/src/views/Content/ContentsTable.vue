@@ -81,7 +81,7 @@
           class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
           aria-label="Pagination"
       >
-        <a
+        <button
             v-for="(link, i) of contents.links"
             :key="i"
             :disabled="!link.url"
@@ -97,8 +97,9 @@
               i === contents.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
+            v-html="link.label"
         >
-        </a>
+        </button>
       </nav>
     </div>
   </div>
@@ -108,16 +109,12 @@
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
-import Img1 from "../../assets/thumbnail-video.png"
-import {right} from "vue-multiselect/dist/vue3-multiselect.common";
 import {useRoute} from "vue-router";
 
-const perPage = ref(USERS_PER_PAGE);
-const fileType = ref('photo');
+const perPage = ref(USERS_PER_PAGE/2);
 const search = ref('');
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
-const thumbnail = Img1
 
 const dialog = ref({
   show:false,
@@ -152,6 +149,7 @@ function getForPage(ev, link) {
 }
 
 function getContents(url = null) {
+
   store.dispatch("getContents", {
     url,
     search: search.value,
@@ -160,11 +158,6 @@ function getContents(url = null) {
   });
 }
 
-function isImagePath(path) {
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
-    const extension = path.substring(path.lastIndexOf('.')).toLowerCase();
-    return imageExtensions.includes(extension);
-}
 </script>
 
 <style scoped>

@@ -11,21 +11,25 @@
         <CheckoutForm v-if="store.state.stripe.clientSecret !==''" />
       </div>
     </div>
-  <div class="flex items-center justify-between ">
-    <span></span>
-    <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
-            @click="showAddNewModal"
-            class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-    >
-      Add new Content
-    </button>
-  </div>
-  <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts</h1>
+  <Transition>
+    <div v-show="!contents.loading">
+      <div v-if="!contents.loading">
+        <div class="flex items-center justify-between ">
+          <span></span>
+          <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
+                  @click="showAddNewModal"
+                  class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Add new Content
+          </button>
+        </div>
+        <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts</h1>
+      </div>
+    </div>
+  </Transition>
 
-
-  <ContentsTable/>
+  <ContentsTable v-show="!contents.loading" />
   <ContentModal v-model="showContentModal" :content="contentModel" @close="onModalClose"></ContentModal>
-
 
 </template>
 
@@ -49,7 +53,7 @@ const userId = computed(() => route.params.id ? route.params.id : user.value.dat
 const DEFAULT_CONTENT = {
   id: '',
   title: '',
-  description:''
+  description:'',
 }
 
 const contentModel = ref({...DEFAULT_CONTENT})
@@ -79,5 +83,13 @@ function onModalClose() {
 </script>
 
 <style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
