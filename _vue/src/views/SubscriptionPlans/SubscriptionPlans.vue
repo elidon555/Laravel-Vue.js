@@ -26,8 +26,6 @@ const DEFAULT_SUBSCRIPTION_PLAN = {
   features:''
 }
 
-const subscriptionPlans = computed(() => store.state.subscriptionPlans);
-
 const subscriptionPlanModel = ref({...DEFAULT_SUBSCRIPTION_PLAN})
 const showUserModal = ref(false);
 
@@ -41,6 +39,7 @@ function editSubscriptionPlan(u) {
 }
 
 function onModalClose() {
+    console.log('ok')
   subscriptionPlanModel.value = {...DEFAULT_SUBSCRIPTION_PLAN}
 }
 

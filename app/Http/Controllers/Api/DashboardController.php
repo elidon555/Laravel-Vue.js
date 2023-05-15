@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\AddressType;
-use App\Enums\CustomerStatus;
-use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Dashboard\OrderResource;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Traits\ReportTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Laravel\Cashier\Subscription;
 
 class DashboardController extends Controller
 {
@@ -21,35 +20,23 @@ class DashboardController extends Controller
 
     public function activeCustomers()
     {
-        return Customer::where('status', CustomerStatus::Active->value)->count();
+        return Subscription::where('stripe_status','active')->distinct()->count();
     }
 
     public function activeProducts()
     {
-        return Product::where('published', '=', 1)->count();
-    }
-
-    public function paidOrders()
-    {
-        $fromDate = $this->getFromDate();
-        $query = Order::query()->where('status', OrderStatus::Paid->value);
-
-        if ($fromDate) {
-            $query->where('created_at', '>', $fromDate);
-        }
-
-        return $query->count();
+        return Subscription::where('stripe_status','active')->count();
     }
 
     public function totalIncome()
     {
         $fromDate = $this->getFromDate();
-        $query = Order::query()->where('status', OrderStatus::Paid->value);
+        $query = Payment::query();
 
         if ($fromDate) {
             $query->where('created_at', '>', $fromDate);
         }
-        return round($query->sum('total_price'));
+        return round($query->sum('amount'));
     }
 
     public function ordersByCountry()

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\SetSubscriptionPlanRequest;
 use App\Http\Requests\UpdatePermissionRequest;
+use App\Http\Requests\UpdateSubscriptionPlanRequest;
 use App\Http\Resources\SubscriptionPlanResource;
 use App\Models\SubscriptionPlan;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,7 @@ class SubscriptionPlanController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SetSubscriptionPlanRequest $request)
+    public function store(CreateContentRequest $request)
     {
         $data = $request->validated();
         @$data['user_id'] = auth()->user()->id;
@@ -67,22 +68,9 @@ class SubscriptionPlanController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(SetSubscriptionPlanRequest $request, SubscriptionPlan $subscriptionPlan)
+    public function update(UpdateSubscriptionPlanRequest $request, SubscriptionPlan $subscriptionPlan)
     {
         $data = $request->validated();
-
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
-
-        $stripe->prices->update(
-            $subscriptionPlan->price_id,
-            [
-                'currency_options' => [
-                    'usd' => [
-                        'unit_amount' => $data['price']*100
-                    ]
-                ]
-            ]
-        );
 
         $subscriptionPlan->update($data);
 

@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref} from 'vue'
+import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -93,10 +93,9 @@ function onFileSelected(event) {
   file.value = event.target.files[0];
 }
 
-function closeModal() {
-  show.value = false
-  emit('close')
-}
+watch(show, (first, second) => {
+    if (first===false) emit('close')
+});
 
 async function onSubmit() {
 

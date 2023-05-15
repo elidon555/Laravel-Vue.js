@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ContentController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\StripeController;
@@ -36,6 +37,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('contents', ContentController::class);
     Route::apiResource('subscription-plans', SubscriptionPlanController::class);
+
+    Route::controller(DashboardController::class)->prefix('dashboard')->group(function(){
+        Route::get('/customers-count','activeCustomers');
+        Route::get('/products-count','activeProducts');
+        Route::get('/income-amount','totalIncome');
+        Route::get('/orders-by-country','ordersByCountry');
+        Route::get('/latest-customers','latestCustomers');
+        Route::get('/latest-orders','latestOrders');
+    });
 
     Route::prefix('stripe')->group(function(){
         Route::post('create-costumer', [StripeController::class, 'createCustomer']);

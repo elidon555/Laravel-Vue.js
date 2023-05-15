@@ -9,7 +9,7 @@
   <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
     <!--    Active Customers-->
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
-      <label class="text-lg font-semibold block mb-2">Active Customers</label>
+      <label class="text-lg font-semibold block mb-2">Active Users</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl font-semibold">{{ customersCount }}</span>
       </template>
@@ -19,23 +19,14 @@
     <!--    Active Products -->
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
          style="animation-delay: 0.1s">
-      <label class="text-lg font-semibold block mb-2">Active Products</label>
+      <label class="text-lg font-semibold block mb-2">Active Subscriptions</label>
       <template v-if="!loading.productsCount">
         <span class="text-3xl font-semibold">{{ productsCount }}</span>
       </template>
       <Spinner v-else text="" class=""/>
     </div>
     <!--/    Active Products -->
-    <!--    Paid Orders -->
-    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
-         style="animation-delay: 0.2s">
-      <label class="text-lg font-semibold block mb-2">Paid Orders</label>
-      <template v-if="!loading.paidOrders">
-        <span class="text-3xl font-semibold">{{ paidOrders }}</span>
-      </template>
-      <Spinner v-else text="" class=""/>
-    </div>
-    <!--/    Paid Orders -->
+
     <!--    Total Income -->
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center"
          style="animation-delay: 0.3s">
@@ -110,7 +101,6 @@ const chosenDate = ref('all')
 const loading = ref({
   customersCount: true,
   productsCount: true,
-  paidOrders: true,
   totalIncome: true,
   ordersByCountry: true,
   latestCustomers: true,
@@ -118,7 +108,6 @@ const loading = ref({
 })
 const customersCount = ref(0);
 const productsCount = ref(0);
-const paidOrders = ref(0);
 const totalIncome = ref(0);
 const ordersByCountry = ref([]);
 const latestCustomers = ref([]);
@@ -129,7 +118,6 @@ function updateDashboard() {
   loading.value = {
     customersCount: true,
     productsCount: true,
-    paidOrders: true,
     totalIncome: true,
     ordersByCountry: true,
     latestCustomers: true,
@@ -142,10 +130,6 @@ function updateDashboard() {
   axiosClient.get(`/dashboard/products-count`, {params: {d}}).then(({data}) => {
     productsCount.value = data;
     loading.value.productsCount = false;
-  })
-  axiosClient.get(`/dashboard/orders-count`, {params: {d}}).then(({data}) => {
-    paidOrders.value = data;
-    loading.value.paidOrders = false;
   })
   axiosClient.get(`/dashboard/income-amount`, {params: {d}}).then(({data}) => {
     totalIncome.value = new Intl.NumberFormat('en-US', {

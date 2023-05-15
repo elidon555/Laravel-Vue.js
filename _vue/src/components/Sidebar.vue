@@ -1,14 +1,5 @@
 <template>
 <!--  <div class="min-w-[160px] w-[160px]  transition-all bg-indigo-700 text-white py-4 px-2">-->
-<!--    <router-link :to="{name: 'app.dashboard'}"-->
-<!--                 class="flex items-center p-2 rounded transition-colors hover:bg-black/30">-->
-<!--      <span class="mr-2 text-gray-300">-->
-<!--        <HomeIcon class="w-5"/>-->
-<!--      </span>-->
-<!--      <span class="text-xs">-->
-<!--        Dashboard-->
-<!--      </span>-->
-<!--    </router-link>-->
 <!--    <router-link :to="{name: 'app.products'}"-->
 <!--                 class="flex items-center p-2 rounded transition-colors hover:bg-black/30">-->
 <!--      <span class="mr-2 text-gray-300">-->
@@ -114,6 +105,11 @@
         <v-list-item prepend-icon="mdi-account-group-outline" title="Contents" value="contents"></v-list-item>
       </router-link>
       <v-divider class="m-2"></v-divider>
+
+        <router-link v-show="checkRole(['admin'])" :to="{name: 'app.dashboard'}">
+            <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" value="dashboard"></v-list-item>
+        </router-link>
+
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
       </router-link>

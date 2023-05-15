@@ -48,6 +48,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Payment::class);
     }
 
+    public function details()
+    {
+        return $this->hasMany(UserDetail::class);
+    }
+
 
     /**
      * The attributes that should be cast.

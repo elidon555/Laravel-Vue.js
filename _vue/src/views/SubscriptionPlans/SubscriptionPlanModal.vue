@@ -4,7 +4,7 @@
         <v-card>
             <form @submit.prevent="onSubmit">
                 <v-card-title>
-                    <span class="text-h5"> {{ subscriptionPlan.id ? `Update Subscription Plan: "${props.subscriptionPlan.title}"` : 'Create new Subscription Plan' }}</span>
+                    <span class="text-h5"> {{ subscriptionPlan.id ? `Update Subscription Plan: "${props.subscriptionPlan.name}"` : 'Create new Subscription Plan' }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -13,10 +13,12 @@
                                 <v-text-field v-model="subscriptionPlan.name"  label="Name" variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
-                                <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined"></v-text-field>
+                                <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined" :disabled="!subscriptionPlan.id"
+                                ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
                               <v-select
+                                  :disabled="!subscriptionPlan.id"
                                   v-model="subscriptionPlan.interval"
                                   variant="outlined"
                                   label="Price interval"
@@ -46,7 +48,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref} from 'vue'
+import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 import {useNotification} from "@kyvg/vue3-notification";
 
@@ -90,10 +92,9 @@ onUpdated(() => {
   }
 })
 
-function closeModal() {
-  show.value = false
-  emit('close')
-}
+watch(show, (first, second) => {
+    if (first===false) emit('close')
+});
 
 function onSubmit() {
   show.value = true

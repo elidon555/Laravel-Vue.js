@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class SetSubscriptionPlanRequest extends FormRequest
+class UpdateSubscriptionPlanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,6 @@ class SetSubscriptionPlanRequest extends FormRequest
     {
         return [
             'name' => ['required','max:55'],
-            'price' => ['required', 'max:55'],
-            'interval' => 'required',
             'features' => 'required'
         ];
     }

@@ -84,6 +84,7 @@ function login() {
 
 function redirect(){
   const userRoles = store.state.user.data.roles.map(role=>role['name'])
+    console.log(userRoles)
   let route = 'app.dashboard';
 
   if (userRoles.includes('user')) route = 'app.contents'

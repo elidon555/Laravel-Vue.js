@@ -1,4 +1,3 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
   <v-dialog v-model="show" width="576">
     <v-card>
@@ -56,7 +55,7 @@
 </template>
 
 <script setup>
-import {computed, onUpdated, ref} from 'vue'
+import {computed, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 import {useNotification} from "@kyvg/vue3-notification";
 
@@ -92,6 +91,7 @@ const show = computed({
     set: (value) => emit('update:modelValue', value)
 })
 
+
 onUpdated(() => {
     user.value = {
         id: props.user.id,
@@ -104,10 +104,9 @@ onUpdated(() => {
     permissions.value = props.user.permissions.map(item => item.name);
 })
 
-function closeModal() {
-    show.value = false
-    emit('close')
-}
+watch(show, (first, second) => {
+    if (first===false) emit('close')
+});
 
 function onSubmit() {
     show.value = true
