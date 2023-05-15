@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateUserDetailRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ContentPreviewResource;
 use App\Http\Resources\ContentResource;
+use App\Http\Resources\UserDetailResource;
 use App\Http\Resources\UserResource;
 use App\Models\Content;
 use App\Models\SubscriptionPlan;
@@ -28,17 +29,14 @@ use Spatie\Permission\Models\Role;
 class UserDetailController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      *
-     * @param CreateContentRequest $request
-     * @return JsonResponse
+     * @param UserDetail $userDetail
+     * @return Response
      */
-    public function update(UpdateUserDetailRequest $request,UserDetail $userDetail)
+    public function getCurrentUserDetail()
     {
-        $inputs = $request->validated();
-
-
-        return response()->json();
+        return new UserDetailResource(auth()->user()->details);
     }
 
 }

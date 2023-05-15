@@ -17,30 +17,13 @@ class StripeController extends Controller
     public function createCustomer(CreateStripeCustomerRequest $request)
     {
         $inputs = $request->validated();
-
-        $response = auth()->user()->createOrGetStripeCustomer($inputs);
-
-        $data = [
-            'name'=>$inputs['name'],
-            'email'=>$inputs['email'],
-            'address'=>$inputs['line1'],
-            'city'=>$inputs['city'],
-            'country'=>$inputs['country'],
-            'state'=>$inputs['state'],
-            'postal_code'=>$inputs['postal_code'],
-        ];
-
-        UserDetail::create($data);
-
-        return response()->json($response);
-    }
-
-    public function updateCustomer(CreateStripeCustomerRequest $request,UserDetail $userDetail)
-    {
-        $inputs = $request->validated();
         $user = auth()->user();
 
-        $response = $user->updateStripeCustomer($inputs);
+        if (!$user->stripe_id) {
+            $response = $user->createOrGetStripeCustomer($inputs);
+        } else {
+            $response = $user->updateStripeCustomer($inputs);
+        }
 
         $data = [
             'name'=>$inputs['name'],
@@ -52,7 +35,7 @@ class StripeController extends Controller
             'postal_code'=>$inputs['shipping']['address']['postal_code'],
         ];
 
-        UserDetail::where('user_id',$user->id)->update($data);
+        UserDetail::updateOrCreate(['user_id'=>$user->id],$data);
 
         return response()->json($response);
     }

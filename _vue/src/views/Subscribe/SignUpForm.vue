@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="" class="m-2 rounded-lg">
+  <form @submit.prevent="" class="m-2 max-w-screen-sm m-auto border-lg rounded-lg">
     <!-- Add a country input field if you live outside of the USA -->
     <v-text-field v-model="billingInfo.name" val="billingInfo.name" label="Name" type="text" />
     <v-text-field v-model="billingInfo.email" label="E-mail" type="email" />
@@ -24,18 +24,12 @@
 </template>
 
 <script setup>
-import {onUpdated, ref} from 'vue'
+import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 
 const loading = ref(false)
-const billingInfo = ref({
-  email: '',
-  name: '',
-  address: '',
-  city: '',
-  state: '',
-  postal_code: '',
-})
+
+const billingInfo = ref(computed(() => store.state.billingInfo));
 
 let postBillingInfo = {}
 
@@ -77,5 +71,13 @@ function submit(){
             // debugger;
         })
 }
+
+function getBillingInfo(){
+  store.dispatch('getBillingInfo')
+}
+
+onMounted(()=>{
+  getBillingInfo()
+})
 
 </script>

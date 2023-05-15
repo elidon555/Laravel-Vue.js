@@ -16,11 +16,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class,'user_id');
             $table->string('name');
-            $table->string('email');
-            $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('country');
+            $table->string('email')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postal_code')->nullable();
             $table->timestamps();
         });
     }

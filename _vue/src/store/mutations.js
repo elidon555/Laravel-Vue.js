@@ -141,6 +141,7 @@ export function setContents(state, [loading, data = null]) {
     }
     state.contents.loading = loading;
 }
+
 export function setPlan(state, [name,price,price_id]) {
     if (name && price) {
         state.plan = {
@@ -161,8 +162,10 @@ export function setBillingInfo(state, data = null) {
             city: data.city,
             state: data.state,
             postal_code: data.postal_code,
+            country: data.country,
         }
     }
+    console.log(data);
 }
 
 export function setStripeCustomerData(state, [loading,data = null]) {

@@ -50,7 +50,7 @@ class User extends Authenticatable implements HasMedia
 
     public function details()
     {
-        return $this->hasMany(UserDetail::class);
+        return $this->hasOne(UserDetail::class);
     }
 
 

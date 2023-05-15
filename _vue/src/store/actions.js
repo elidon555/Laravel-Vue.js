@@ -165,6 +165,16 @@ export function updateRole({commit}, role) {
   return axiosClient.put(`/roles/${role.id}`, role)
 }
 
+export function getBillingInfo({commit}) {
+  return axiosClient.get(`/user-details/current`)
+      .then((response) => {
+      commit('setBillingInfo', response.data)
+      })
+      .catch(() => {
+          commit('setBillingInfo', [false])
+      })
+}
+
 export function createSubscriptionPlan({commit}, subscriptionPlan) {
     return axiosClient.post('/subscription-plans', subscriptionPlan)
 }

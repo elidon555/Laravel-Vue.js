@@ -8,7 +8,8 @@
       </div>
       <div v-else-if=" user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length ">
         <PlanView v-if="store.state.stripe.clientSecret ===''"></PlanView>
-        <CheckoutForm v-if="store.state.stripe.clientSecret !==''" />
+        <SignUpForm v-else-if="store.state.stripe.clientSecret !=='' && store.state.stripe.clientId===''"></SignUpForm>
+        <CheckoutForm v-else-if="store.state.stripe.clientId !==''" />
       </div>
     </div>
   <Transition>
@@ -41,6 +42,7 @@ import ContentModal from "./ContentModal.vue";
 import PlanView from "../Subscribe/PlanView.vue";
 import CheckoutForm from "../Subscribe/CheckoutForm.vue";
 import {useRoute} from "vue-router";
+import SignUpForm from "../Subscribe/SignUpForm.vue";
 
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);
