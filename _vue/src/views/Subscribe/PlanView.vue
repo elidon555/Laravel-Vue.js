@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto">
+    <div v-if="subscriptionPlans.yearly.length || subscriptionPlans.monthly.length" class="mx-auto">
         <h2 class="text-center text-lg font-bold my-7
       tablet:font-bold tablet:text-2xl">
             <br>
@@ -12,15 +12,15 @@
                 color="deep-purple-accent-4"
                 align-tabs="center"
             >
-                <v-tab @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
-                <v-tab  @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
+                <v-tab v-if="subscriptionPlans.monthly.length" @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
+                <v-tab  v-if="subscriptionPlans.yearly.length" @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
             </v-tabs>
             <v-divider class="m-6"></v-divider>
             <v-window v-model="tab" class="w-full" >
                 <v-window-item value="monthly" class="w-full">
                     <Transition>
                         <div v-if="showMonthly" class="flex">
-                            <div v-for="plan in store.state.subscriptionPlans.monthly">
+                            <div v-for="plan in subscriptionPlans.monthly">
                                 <PlanCard
                                     :title="plan.name"
                                     :amount="parseInt(plan.price)"
@@ -36,7 +36,7 @@
                 <v-window-item value="yearly">
                     <Transition>
                         <div v-if="showYearly" class="flex">
-                            <div v-for="plan in store.state.subscriptionPlans.yearly">
+                            <div v-for="plan in subscriptionPlans.yearly">
                                 <PlanCard
                                     :title="plan.name"
                                     :amount="parseInt(plan.price)"
@@ -50,13 +50,10 @@
                     </Transition>
                 </v-window-item>
             </v-window>
-
-
-
-            <!-- Build your card component -->
-
         </div>
     </div>
+  <br><br>
+  <v-divider class="border-opacity-25"></v-divider>
 </template>
 
 <script setup>
@@ -75,6 +72,7 @@ const showYearly = ref(false)
 
 const route = useRoute()
 const userId = computed(() => route.params.id)
+const subscriptionPlans = computed(()=>store.state.subscriptionPlans)
 
 async function createPaymentIntent(plan) {
     if (store.state.user.data.id === undefined) {

@@ -139,7 +139,7 @@ export function setContents(state, [loading, data = null]) {
             subscriptionPlans: data.subscriptionPlans,
         }
     }
-    state.products.loading = loading;
+    state.contents.loading = loading;
 }
 export function setPlan(state, [name,price,price_id]) {
     if (name && price) {

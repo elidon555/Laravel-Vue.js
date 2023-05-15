@@ -4,10 +4,8 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
-use Nette\Utils\DateTime;
 
-class ContentResource extends JsonResource
+class ContentPreviewResource extends JsonResource
 {
     public static $wrap = false;
 
@@ -23,8 +21,8 @@ class ContentResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->getCustomProperty('title'),
-            'description' => $this->getCustomProperty('description'),
-            'url' => $this->getFullUrl(),
+            'description' => substr($this->getCustomProperty('description'),0,100),
+            'url' => false,
             'type' => str_contains($this->mime_type,'image') ? 'photo' : 'video',
             'created_at' => Carbon::parse($this->created_at)->format('M d, Y \a\t h:i A'),
         ];

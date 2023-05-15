@@ -70,11 +70,6 @@ const Submit = async () => {
     }
     store.dispatch('createStripeSubscription', data)
         .then(response => {
-          router.push({name: 'app.profile'})
-            // notification.notify({
-            //     title: "Success!",
-            //     type: "success",
-            // });
             store.dispatch("getCurrentUser")
         })
         .catch(err => {
