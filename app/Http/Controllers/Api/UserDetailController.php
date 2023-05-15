@@ -41,19 +41,4 @@ class UserDetailController extends Controller
         return response()->json();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $content = Content::findOrFail($id);
-        Storage::disk('public')->delete(str_replace('/storage', '', $content->file_path));
-        $content->delete();
-    }
-
-
-
 }

@@ -35,6 +35,28 @@ class StripeController extends Controller
         return response()->json($response);
     }
 
+    public function updateCustomer(CreateStripeCustomerRequest $request,UserDetail $userDetail)
+    {
+        $inputs = $request->validated();
+        $user = auth()->user();
+
+        $response = $user->updateStripeCustomer($inputs);
+
+        $data = [
+            'name'=>$inputs['name'],
+            'email'=>$inputs['email'],
+            'address'=>$inputs['shipping']['address']['line1'],
+            'city'=>$inputs['shipping']['address']['city'],
+            'country'=>$inputs['shipping']['address']['country'],
+            'state'=>$inputs['shipping']['address']['state'],
+            'postal_code'=>$inputs['shipping']['address']['postal_code'],
+        ];
+
+        UserDetail::where('user_id',$user->id)->update($data);
+
+        return response()->json($response);
+    }
+
     public function createPaymentIntent()
     {
         $payment =  auth()->user()->createSetupIntent();
