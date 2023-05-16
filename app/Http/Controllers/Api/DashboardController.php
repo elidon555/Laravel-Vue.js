@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\UserDetail;
 use App\Traits\ReportTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -41,50 +42,33 @@ class DashboardController extends Controller
 
     public function ordersByCountry()
     {
-        $fromDate = $this->getFromDate();
 
-        $query = Order::query()
-            ->select(['c.name', DB::raw('count(orders.id) as count')])
-            ->join('users', 'created_by', '=', 'users.id')
-            ->join('customer_addresses AS a', 'users.id', '=', 'a.customer_id')
-            ->join('countries AS c', 'a.country_code', '=', 'c.code')
-            ->where('status', OrderStatus::Paid->value)
-            ->where('a.type', AddressType::Billing->value)
-            ->groupBy('c.name')
-            ;
-
-        if ($fromDate) {
-            $query->where('orders.created_at', '>', $fromDate);
+        $result = UserDetail::query()->select('country')->withCount(['payments'=>function($query){
+            $fromDate = $this->getFromDate();
+            if ($fromDate) {
+                $query->where('created_at', '>=', $fromDate);
+            }
+        }])->get();
+        $data = [];
+        foreach ($result as $userDetail){
+            @$data[$userDetail['country']] = [
+                'name'=> $userDetail['country'],
+                'count' => @$data[$userDetail['country']]['count']+=$userDetail['payments_count']
+            ];
         }
-
-        return $query->get();
+        return response(array_values($data));
     }
 
     public function latestCustomers()
     {
-        return Customer::query()
-            ->select(['id', 'first_name', 'last_name', 'u.email', 'phone', 'u.created_at'])
-            ->join('users AS u', 'u.id', '=', 'customers.user_id')
-            ->where('status', CustomerStatus::Active->value)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+        $result = Payment::select('user_id')->with(['user'])->groupBy('user_id')->orderBy('created_at','desc')->limit(5)->get();
+        return response($result);
+
     }
 
     public function latestOrders()
     {
-        return OrderResource::collection(
-            Order::query()
-                ->select(['o.id', 'o.total_price', 'o.created_at', DB::raw('COUNT(oi.id) AS items'),
-                    'c.user_id', 'c.first_name', 'c.last_name'])
-                ->from('orders AS o')
-                ->join('order_items AS oi', 'oi.order_id', '=', 'o.id')
-                ->join('customers AS c', 'c.user_id', '=', 'o.created_by')
-                ->where('o.status', OrderStatus::Paid->value)
-                ->limit(10)
-                ->orderBy('o.created_at', 'desc')
-                ->groupBy('o.id', 'o.total_price', 'o.created_at', 'c.user_id', 'c.first_name', 'c.last_name')
-                ->get()
-        );
+        $query = Payment::with(['user','subscriptionPlan'])->orderBy('created_at')->limit(10)->get();
+        return response($query);
     }
 }

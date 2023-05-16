@@ -41,18 +41,18 @@
 
   <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
     <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-dark py-6 px-5 rounded-lg shadow">
-      <label class="text-lg font-semibold block mb-2">Latest Orders</label>
+      <label class="text-lg font-semibold block mb-2">Latest Subscriptions</label>
       <template v-if="!loading.latestOrders">
         <div v-for="o of latestOrders" :key="o.id" class="py-2 px-3 hover:bg-gray-50">
           <p>
-            <router-link :to="{name: 'app.orders.view', params: {id: o.id}}" class="text-indigo-700 font-semibold">
-              Order #{{ o.id }}
-            </router-link>
-            created {{ o.created_at }}. {{ o.items }} items
+            <span class="text-light font-semibold">
+              Payment #{{ o.id }}
+            </span>
+            created {{ new Date(o.created_at).toLocaleString("en-US", options) }}. items
           </p>
           <p class="flex justify-between">
-            <span>{{ o.first_name }} {{ o.last_name }}</span>
-            <span>{{ $filters.currencyUSD(o.total_price) }}</span>
+            <span>Plan: {{ o.subscription_plan.name }} | User: {{o.user.name}}</span>
+            <span>{{ $filters.currencyUSD(o.amount) }}</span>
           </p>
         </div>
       </template>
@@ -66,16 +66,17 @@
       <Spinner v-else text="" class=""/>
     </div>
     <div class="bg-dark py-6 px-5 rounded-lg shadow">
+
       <label class="text-lg font-semibold block mb-2">Latest Customers</label>
       <template v-if="!loading.latestCustomers">
-        <router-link :to="{name: 'app.customers.view', params: {id: c.id}}" v-for="c of latestCustomers" :key="c.id"
+        <router-link :to="{name: 'app.contents', params: {id: c.user.id}}" v-for="c of latestCustomers" :key="c.id"
                      class="mb-3 flex">
           <div class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-full mr-2">
             <UserIcon class="w-5"/>
           </div>
           <div>
-            <h3>{{ c.first_name }} {{ c.last_name }}</h3>
-            <p>{{ c.email }}</p>
+            <h3>{{ c.user.name }}</h3>
+            <p>{{ c.user.email }}</p>
           </div>
         </router-link>
       </template>
@@ -106,6 +107,16 @@ const loading = ref({
   latestCustomers: true,
   latestOrders: true
 })
+
+const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "UTC"
+};
 const customersCount = ref(0);
 const productsCount = ref(0);
 const totalIncome = ref(0);
@@ -161,8 +172,8 @@ function updateDashboard() {
     loading.value.latestCustomers = false;
   })
   axiosClient.get(`/dashboard/latest-orders`, {params: {d}}).then(({data: orders}) => {
-    latestOrders.value = orders.data;
-    loading.value.latestOrders = false;
+    latestOrders.value = orders;
+      loading.value.latestOrders = false;
   })
 }
 

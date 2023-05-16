@@ -11,4 +11,9 @@ class UserDetail extends Model
 
     protected $fillable = ['user_id', 'name', 'email','address','city','state','postal_code', 'created_at','updated_at'];
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class,'user_id','user_id');
+    }
+
 }

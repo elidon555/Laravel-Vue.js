@@ -62,7 +62,7 @@ class StripeController extends Controller
 
         $paymentData = [
             'user_id' => $user->id,
-            'price_id' => $inputs['paymentMethodId'],
+            'price_id' => $inputs['priceId'],
             'amount' => $subscriptionPlan->price
         ];
         Payment::create($paymentData);

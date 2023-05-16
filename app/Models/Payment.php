@@ -20,4 +20,14 @@ class Payment extends Model
     {
         return $this->belongsTo(Content::class);
     }
+
+    public function billing()
+    {
+        return $this->belongsTo(UserDetail::class,'user_id','user_id');
+    }
+
+    public function subscriptionPlan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class,'price_id','price_id');
+    }
 }

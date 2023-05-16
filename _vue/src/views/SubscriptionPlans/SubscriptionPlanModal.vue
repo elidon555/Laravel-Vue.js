@@ -111,7 +111,7 @@ function onSubmit() {
             });
             // TODO show notification
             store.dispatch('getSubscriptionPlans')
-            closeModal()
+            show.value = false
           }
         })
         .catch(response=>{
@@ -128,7 +128,7 @@ function onSubmit() {
               title: "Success!",
               type: "success",
             });
-            closeModal()
+              show.value = false
           }
         })
         .catch(err => {
