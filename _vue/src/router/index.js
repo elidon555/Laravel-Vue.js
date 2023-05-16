@@ -16,7 +16,6 @@ import Permissions from "../views/Permissions/Permissions.vue";
 import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
 import Profile from "../views/Profile/Profile.vue";
-import CheckoutView from "../views/Subscribe/CheckoutView.vue";
 import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
 
 
@@ -83,11 +82,6 @@ const routes = [
         path: 'profile',
         name: 'app.profile',
         component: Profile,
-      },
-      {
-        path: 'subscribe',
-        name: 'app.subscribe',
-        component: CheckoutView,
       },
       {
         path: '/report',

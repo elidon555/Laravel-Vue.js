@@ -71,6 +71,7 @@ const Submit = async () => {
     store.dispatch('createStripeSubscription', data)
         .then(response => {
             store.dispatch("getCurrentUser")
+            router.go()
         })
         .catch(err => {
           // debugger;
