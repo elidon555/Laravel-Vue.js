@@ -1,11 +1,4 @@
 <template>
-<!--  <header class="flex justify-between items-center p-3 h-14 shadow bg-white">-->
-<!--    <button @click="emit('toggle-sidebar')"-->
-<!--            class="flex items-center justify-center rounded transition-colors w-8 h-8 text-gray-700 hover:bg-black/10">-->
-<!--      <MenuIcon class="w-6"/>-->
-<!--    </button>-->
-
-<!--  </header>-->
   <v-app-bar density="comfortable"
   >
 
@@ -48,16 +41,6 @@
                                   <span>Profile</span>
                               </div>
                           </v-list-item-title>
-                  </v-list-item>
-              </router-link>
-
-              <router-link :to="{name: 'app.subscribe'}" >
-                  <v-list-item>
-                      <v-list-item-title >
-                          <div class="d-flex">
-                              <span>Subscribe</span>
-                          </div>
-                      </v-list-item-title>
                   </v-list-item>
               </router-link>
 

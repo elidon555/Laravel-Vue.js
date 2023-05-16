@@ -12,10 +12,10 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="12">
+              <v-col cols="12" sm="12" md="12" class="m-0 p-0" >
                 <v-text-field density="compact" v-model="permission.name"  label="Name" variant="outlined"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="12">
+              <v-col cols="12" sm="12" md="12" class="m-0 p-0">
                 <v-text-field density="compact" v-model="permission.guard_name"  label="Guard name" variant="outlined"></v-text-field>
               </v-col>
             </v-row>
@@ -36,22 +36,8 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref, watch} from 'vue'
-import {
-    Dialog,
-    DialogPanel,
-    DialogTitle, Listbox, ListboxButton, ListboxOption, ListboxOptions,
-    Switch,
-    SwitchGroup,
-    SwitchLabel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
-// import {ExclamationIcon} from '@heroicons/vue/outline'
-import CustomInput from "../../components/core/CustomInput.vue";
+import {computed, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
-import Spinner from "../../components/core/Spinner.vue";
-import { CheckIcon, ChevronDoubleUpIcon } from '@heroicons/vue/solid'
 
 
 const permission = ref({
