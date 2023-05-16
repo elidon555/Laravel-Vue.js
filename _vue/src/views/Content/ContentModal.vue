@@ -113,7 +113,8 @@ async function onSubmit() {
           title: "Success!",
           type: "success",
         });
-        closeModal()
+        show.value= false;
+
       })
       .catch(err => {
         loading.value = false;
