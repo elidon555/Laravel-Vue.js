@@ -88,7 +88,7 @@ function redirect(){
   let route = 'app.dashboard';
 
   if (userRoles.includes('user')) route = 'app.contents'
-  router.push({name:route,params:{id:userId.value ?? store.state.user.data.id ?? ''}})
+  router.push({name:route,params:{id:userId.value ?? ''}})
 }
 
 onMounted(()=>{
