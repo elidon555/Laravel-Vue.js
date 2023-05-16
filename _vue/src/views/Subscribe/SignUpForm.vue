@@ -5,6 +5,7 @@
     <v-text-field v-model="billingInfo.email" label="E-mail" type="email" />
     <v-text-field v-model="billingInfo.address" label="Address" type="text" />
     <v-text-field v-model="billingInfo.city" label="City" type="text"  />
+    <v-text-field v-model="billingInfo.country" label="Country" type="text"  />
     <div class="grid grid-cols-2 gap-2">
       <v-text-field v-model="billingInfo.state" label="State" type="text" />
       <v-text-field v-model="billingInfo.postal_code" label="Postal Code" type="text"  />
@@ -40,7 +41,7 @@ onUpdated(() => {
     shipping: {
       address: {
         city: billingInfo.value.city,
-        country: 'US',
+        country: billingInfo.value.country,
         line1: billingInfo.value.address,
         postal_code: billingInfo.value.postal_code,
         state: billingInfo.value.state,
@@ -49,7 +50,7 @@ onUpdated(() => {
     },
     address: {
       city: billingInfo.value.city,
-      country: 'US',
+      country: billingInfo.value.country,
       line1: billingInfo.value.address,
       postal_code: billingInfo.value.postal_code,
       state: billingInfo.value.state,

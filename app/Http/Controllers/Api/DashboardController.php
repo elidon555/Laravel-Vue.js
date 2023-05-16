@@ -19,7 +19,7 @@ class DashboardController extends Controller
 {
     use ReportTrait;
 
-    public function activeCustomers()
+    public function activeSubscribers()
     {
         return Subscription::where('stripe_status','active')->distinct()->count();
     }
@@ -40,7 +40,7 @@ class DashboardController extends Controller
         return round($query->sum('amount'));
     }
 
-    public function ordersByCountry()
+    public function subscriptionsByCountry()
     {
 
         $result = UserDetail::query()->select('country')->withCount(['payments'=>function($query){
@@ -59,7 +59,7 @@ class DashboardController extends Controller
         return response(array_values($data));
     }
 
-    public function latestCustomers()
+    public function latestSubscribers()
     {
         $result = Payment::select('user_id')->with(['user'])->groupBy('user_id')->orderBy('created_at','desc')->limit(5)->get();
         return response($result);

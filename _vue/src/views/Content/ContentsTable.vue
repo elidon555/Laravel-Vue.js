@@ -1,6 +1,8 @@
 <template>
+
   <div class="p-4 rounded-lg shadow animate-fade-in-down">
     <br>
+
     <div class="d-flex flex-column justify-content-center">
       <v-col
           v-for="content in contents.data"
@@ -102,7 +104,11 @@
         </button>
       </nav>
     </div>
+
+
+
   </div>
+
 </template>
 
 <script setup>
@@ -110,11 +116,18 @@ import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
 import {useRoute} from "vue-router";
+import {useLoading} from 'vue-loading-overlay';
 
 const perPage = ref(USERS_PER_PAGE/2);
 const search = ref('');
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
+
+const $loading = useLoading({
+  container: null,
+  canCancel: false,
+});
+
 
 const dialog = ref({
   show:false,
@@ -149,12 +162,15 @@ function getForPage(ev, link) {
 }
 
 function getContents(url = null) {
+  const loader = $loading.show({});
 
   store.dispatch("getContents", {
     url,
     search: search.value,
     per_page: perPage.value,
     id:userId.value
+  }).then(response=>{
+    loader.hide()
   });
 }
 

@@ -86,6 +86,7 @@ export default {
         city: '',
         state: '',
         postalCode: '',
+        country: '',
     },
     stripe:{
         clientId:"",
@@ -115,12 +116,12 @@ export default {
     },
     guestImage : '',
     dateOptions: [
-        {key: '1d', text: 'Last Day'},
-        {key: '1k', text: 'Last Week'},
-        {key: '2k', text: 'Last 2 Weeks'},
-        {key: '1m', text: 'Last Month'},
-        {key: '3m', text: 'Last 3 Months'},
-        {key: '6m', text: 'Last 6 Months'},
-        {key: 'all', text: 'All Time'},
+        {value: '1d', title: 'Last Day'},
+        {value: '1k', title: 'Last Week'},
+        {value: '2k', title: 'Last 2 Weeks'},
+        {value: '1m', title: 'Last Month'},
+        {value: '3m', title: 'Last 3 Months'},
+        {value: '6m', title: 'Last 6 Months'},
+        {value: 'all', title: 'All Time'},
     ]
 }
