@@ -13,12 +13,12 @@
                                 <v-text-field v-model="subscriptionPlan.name"  label="Name" variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
-                                <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined" :disabled="!subscriptionPlan.id"
+                                <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined" :disabled="subscriptionPlan.id"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
                               <v-select
-                                  :disabled="!subscriptionPlan.id"
+                                  :disabled="subscriptionPlan.id"
                                   v-model="subscriptionPlan.interval"
                                   variant="outlined"
                                   label="Price interval"
