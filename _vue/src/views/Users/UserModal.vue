@@ -123,7 +123,7 @@ function onSubmit() {
                     });
                     // TODO show notification
                     store.dispatch('getUsers')
-                    closeModal()
+                    show.value=false
                 }
             })
             .catch(response=>{
@@ -140,7 +140,7 @@ function onSubmit() {
                         title: "Success!",
                         type: "success",
                     });
-                    closeModal()
+                    show.value=false
                 }
             })
             .catch(err => {

@@ -87,7 +87,7 @@ function onSubmit() {
         if (response.status === 200) {
           // TODO show notification
           store.dispatch('getPermissions')
-          closeModal()
+          show.value=false
         }
       })
   } else {
@@ -97,7 +97,7 @@ function onSubmit() {
         if (response.status === 201) {
           // TODO show notification
           store.dispatch('getPermissions')
-          closeModal()
+          show.value=false
         }
       })
       .catch(err => {

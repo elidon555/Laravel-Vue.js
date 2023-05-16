@@ -40,11 +40,11 @@
       </form>
     </v-card>
   </v-dialog>
-  
+
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref} from 'vue'
+import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import {
     Dialog,
     DialogPanel,
@@ -98,10 +98,10 @@ onUpdated(() => {
   permissions.value = props.role.permissions.map(item => item.name);
 
 })
-function closeModal() {
-  show.value = false
-  emit('close')
-}
+
+watch(show, (first, second) => {
+    if (first===false) emit('close')
+});
 
 function onSubmit() {
   loading.value = true
@@ -113,7 +113,7 @@ function onSubmit() {
         if (response.status === 200) {
           // TODO show notification
           store.dispatch('getRoles')
-          closeModal()
+            show.value=false
         }
       })
   } else {
@@ -123,7 +123,7 @@ function onSubmit() {
         if (response.status === 201) {
           // TODO show notification
           store.dispatch('getRoles')
-          closeModal()
+            show.value=false
         }
       })
       .catch(err => {
