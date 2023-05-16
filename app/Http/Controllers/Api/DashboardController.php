@@ -42,6 +42,7 @@ class DashboardController extends Controller
     public function ordersByCountry()
     {
         $fromDate = $this->getFromDate();
+
         $query = Order::query()
             ->select(['c.name', DB::raw('count(orders.id) as count')])
             ->join('users', 'created_by', '=', 'users.id')

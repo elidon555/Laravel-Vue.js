@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateContentRequest;
+use App\Http\Requests\CreateSubscriptionPlanRequest;
 use App\Http\Requests\SetSubscriptionPlanRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Requests\UpdateSubscriptionPlanRequest;
@@ -42,7 +43,7 @@ class SubscriptionPlanController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateContentRequest $request)
+    public function store(CreateSubscriptionPlanRequest $request)
     {
         $data = $request->validated();
         @$data['user_id'] = auth()->user()->id;

@@ -8,7 +8,7 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
     <!--    Active Customers-->
-    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
       <label class="text-lg font-semibold block mb-2">Active Users</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl font-semibold">{{ customersCount }}</span>
@@ -17,7 +17,7 @@
     </div>
     <!--/    Active Customers-->
     <!--    Active Products -->
-    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
+    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
          style="animation-delay: 0.1s">
       <label class="text-lg font-semibold block mb-2">Active Subscriptions</label>
       <template v-if="!loading.productsCount">
@@ -28,7 +28,7 @@
     <!--/    Active Products -->
 
     <!--    Total Income -->
-    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center"
+    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center"
          style="animation-delay: 0.3s">
       <label class="text-lg font-semibold block mb-2">Total Income</label>
       <template v-if="!loading.totalIncome">
@@ -40,7 +40,7 @@
   </div>
 
   <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
-    <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-white py-6 px-5 rounded-lg shadow">
+    <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-dark py-6 px-5 rounded-lg shadow">
       <label class="text-lg font-semibold block mb-2">Latest Orders</label>
       <template v-if="!loading.latestOrders">
         <div v-for="o of latestOrders" :key="o.id" class="py-2 px-3 hover:bg-gray-50">
@@ -58,14 +58,14 @@
       </template>
       <Spinner v-else text="" class=""/>
     </div>
-    <div class="bg-white py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+    <div class="bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
       <label class="text-lg font-semibold block mb-2">Orders by Country</label>
       <template v-if="!loading.ordersByCountry">
         <DoughnutChart :width="140" :height="200" :data="ordersByCountry"/>
       </template>
       <Spinner v-else text="" class=""/>
     </div>
-    <div class="bg-white py-6 px-5 rounded-lg shadow">
+    <div class="bg-dark py-6 px-5 rounded-lg shadow">
       <label class="text-lg font-semibold block mb-2">Latest Customers</label>
       <template v-if="!loading.latestCustomers">
         <router-link :to="{name: 'app.customers.view', params: {id: c.id}}" v-for="c of latestCustomers" :key="c.id"
