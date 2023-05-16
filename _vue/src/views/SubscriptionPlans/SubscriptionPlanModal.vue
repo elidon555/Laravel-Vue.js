@@ -43,8 +43,6 @@
             </form>
         </v-card>
     </v-dialog>
-
-
 </template>
 
 <script setup>
@@ -96,45 +94,24 @@ watch(show, (first, second) => {
     if (first===false) emit('close')
 });
 
-function onSubmit() {
-  show.value = true
-  // subscriptionPlan.value.roles.value = roles
-  // subscriptionPlan.value.permissions.value = permissions
-  if (subscriptionPlan.value.id) {
-    store.dispatch('updateSubscriptionPlan', subscriptionPlan.value)
-        .then(response => {
-          loading.value = false;
-          if (response.status === 200) {
-            notification.notify({
-              title: "Success!",
-              type: "success",
-            });
-            // TODO show notification
-            store.dispatch('getSubscriptionPlans')
-            show.value = false
-          }
-        })
-        .catch(response=>{
-          show.value = true;
-        })
-  } else {
-    store.dispatch('createSubscriptionPlan', subscriptionPlan.value)
-        .then(response => {
-          show.value = false;
-          if (response.status === 201) {
-            // TODO show notification
-            store.dispatch('getSubscriptionPlans')
-            notification.notify({
-              title: "Success!",
-              type: "success",
-            });
-              show.value = false
-          }
-        })
-        .catch(err => {
-          show.value = true;
-          debugger;
-        })
+async function onSubmit() {
+  show.value = true;
+  loading.value = true;
+
+  const action = subscriptionPlan.value.id ? 'updateSubscriptionPlan' : 'createSubscriptionPlan';
+
+  try {
+    const response = await store.dispatch(action, subscriptionPlan.value);
+
+    if ([200, 201].includes(response.status)) {
+      notification.notify({ title: "Success!", type: "success" });
+      await store.dispatch('getSubscriptionPlans');
+    }
+    show.value = false;
+  } catch (error) {
+    notification.notify({ title: "Error!", type: "error" });
+  } finally {
+    loading.value = false;
   }
 }
 </script>
