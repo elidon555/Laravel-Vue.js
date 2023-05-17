@@ -6,8 +6,6 @@
       <v-app-bar-nav-icon @click="emit('toggle-sidebar')"></v-app-bar-nav-icon>
     </template>
 
-    <v-app-bar-title>Title</v-app-bar-title>
-
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
@@ -18,7 +16,7 @@
 
 
     <router-link :to="{name: 'login'}">
-      <v-btn v-if="currentUser.id === undefined" class="mr-5" icon>
+      <v-btn v-if="currentUser.id === undefined" class="mr-5 pr-5" icon>
         Login
         <v-icon>mdi-login</v-icon>
       </v-btn>

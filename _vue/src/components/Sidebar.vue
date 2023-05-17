@@ -111,8 +111,10 @@
         </router-link>
 
       <router-link v-show="checkRole(['admin'])" :to="{name: 'reports.subscriptions'}">
-            <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" value="dashboard"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Reports" value="dashboard"></v-list-item>
         </router-link>
+
+      <v-divider class="m-2"></v-divider>
 
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>

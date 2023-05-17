@@ -27,6 +27,7 @@
                     :amount="parseInt(plan.price)"
                     :description="plan.features"
                     :duration="plan.interval"
+                    @click="createPaymentIntent(plan)"
                 />
               </div>
             </div>
@@ -34,13 +35,14 @@
         </v-window-item>
         <v-window-item value="yearly">
           <Transition>
-            <div v-if="showYearly" class="flex">
-              <div v-for="plan in subscriptionPlans.yearly">
+            <div v-if="showYearly" class="m-2">
+              <div class="mx-4 flex flex-row flex-wrap">
                 <PlanCard
+                    v-for="plan in subscriptionPlans.yearly"
+                    class="basis-full md:basis-1/3"
                     :title="plan.name"
                     :amount="parseInt(plan.price)"
-                    :icon-1="plan.features.split(' | ')[0]"
-                    :icon-2="plan.features.split(' | ')[1]"
+                    :description="plan.features"
                     :duration="plan.interval"
                     @click="createPaymentIntent(plan)"
                 />
