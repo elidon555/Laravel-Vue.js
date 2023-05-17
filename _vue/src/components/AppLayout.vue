@@ -4,10 +4,9 @@
       <Sidebar v-if="currentUser.id" :rail=sidebarOpened :user="currentUser" ref="childComponent"/>
       <Navbar @toggle-sidebar="toggleSidebar"/>
       <v-main class="bg-black">
-        <v-container>
+
           <router-view></router-view>
 
-        </v-container>
       </v-main>
     </v-layout>
   </div>

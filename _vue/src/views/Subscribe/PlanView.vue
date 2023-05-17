@@ -1,11 +1,10 @@
 <template>
     <div v-if="subscriptionPlans.yearly.length || subscriptionPlans.monthly.length" class="mx-auto">
-        <h2 class="text-center text-lg font-bold my-7
-      tablet:font-bold tablet:text-2xl">
+        <h1 class="text-center text-2xl font-bold my-4 tracking-wider">
             <br>
-            Choose your Subscription!
-        </h2>
-        <div class="grid tablet:grid-cols-2 tablet:gap-2 justify-center">
+            Select a membership level
+        </h1>
+        <div class="justify-center max-w-6xl m-auto">
 
             <v-tabs
                 v-model="tab"
@@ -15,21 +14,24 @@
                 <v-tab v-if="subscriptionPlans.monthly.length" @click="showYearly=false;showMonthly=true" value="monthly">Monthly</v-tab>
                 <v-tab  v-if="subscriptionPlans.yearly.length" @click="showMonthly=false;showYearly=true"  value="yearly">Yearly</v-tab>
             </v-tabs>
-            <v-divider class="m-6"></v-divider>
+            <v-divider class="m-3"></v-divider>
             <v-window v-model="tab" class="w-full" >
-                <v-window-item value="monthly" class="w-full">
+                <v-window-item value="monthly">
                     <Transition>
-                        <div v-if="showMonthly" class="flex">
-                            <div v-for="plan in subscriptionPlans.monthly">
-                                <PlanCard
-                                    :title="plan.name"
-                                    :amount="parseInt(plan.price)"
-                                    :icon-1="plan.features.split(' | ')[0]"
-                                    :icon-2="plan.features.split(' | ')[1]"
-                                    :duration="plan.interval"
-                                    @click="createPaymentIntent(plan)"
-                                />
-                            </div>
+                        <div v-if="showMonthly" class="m-2">
+                            <v-row class="mx-4">
+                                <v-col cols="12" sm="12" md="4" lg="4" v-for="plan in subscriptionPlans.monthly">
+
+                                    <PlanCard
+                                        :title="plan.name"
+                                        :amount="parseInt(plan.price)"
+                                        :icon-1="plan.features.split(' | ')[0]"
+                                        :icon-2="plan.features.split(' | ')[1]"
+                                        :duration="plan.interval"
+                                    />
+                                </v-col>
+
+                            </v-row>
                         </div>
                     </Transition>
                 </v-window-item>

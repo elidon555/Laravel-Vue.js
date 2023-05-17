@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+        padding: {
+            '1/4': '25%',
+        },
       keyframes: {
         'fade-in-down': {
           "from": {
