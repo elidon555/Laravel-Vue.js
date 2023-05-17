@@ -11,7 +11,7 @@
                      active-class="text-light"><v-btn class="w-100 mt-2">Subscriber Report</v-btn>
         </router-link>
       </div>
-      <div >
+      <div>
         <v-select  :items="dateOptions"  v-model="chosenDate" label="Date" @update:modelValue="onDatePickerChange"></v-select>
       </div>
     </div>
