@@ -26,7 +26,7 @@ class SubscriptionPlanController extends Controller
         $search = request('search', '');
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'asc');
-        $userId = request('id', '');
+        $userId = request('id', auth()->user()->id);
 
         $query = SubscriptionPlan::query()
             ->where('name', 'like', "%$search%")

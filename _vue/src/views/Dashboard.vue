@@ -2,16 +2,24 @@
   <div class="mb-2 flex items-center justify-between">
     <h1 class="text-3xl font-semibold">Dashboard</h1>
     <div class="flex items-center">
-      <label class="mr-2">Change Date Period</label>
-      <CustomInput type="select" v-model="chosenDate" @change="onDatePickerChange" :select-options="dateOptions"/>
+
+      <v-select
+          :items="dateOptions"
+          v-model="chosenDate"
+          density="compact"
+          @update:modelValue="onDatePickerChange()"
+      >
+        <template  v-slot:prepend>Change Date Period</template>
+      </v-select>
+
     </div>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
     <!--    Active Customers-->
     <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
       <label class="text-lg font-semibold block mb-2">Active Users</label>
-      <template v-if="!loading.customersCount">
-        <span class="text-3xl font-semibold">{{ customersCount }}</span>
+      <template v-if="!loading.subscribersCount">
+        <span class="text-3xl font-semibold">{{ subscribersCount }}</span>
       </template>
       <Spinner v-else text="" class=""/>
     </div>
@@ -42,8 +50,8 @@
   <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
     <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-dark py-6 px-5 rounded-lg shadow">
       <label class="text-lg font-semibold block mb-2">Latest Subscriptions</label>
-      <template v-if="!loading.latestOrders">
-        <div v-for="o of latestOrders" :key="o.id" class="py-2 px-3 hover:bg-gray-50">
+      <template v-if="!loading.latestSubscriptions">
+        <div v-for="o of latestSubscriptions" :key="o.id" class="py-2 px-3 hover:bg-black rounded-lg">
           <p>
             <span class="text-light font-semibold">
               Payment #{{ o.id }}
@@ -59,9 +67,9 @@
       <Spinner v-else text="" class=""/>
     </div>
     <div class="bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
-      <label class="text-lg font-semibold block mb-2">Orders by Country</label>
-      <template v-if="!loading.ordersByCountry">
-        <DoughnutChart :width="140" :height="200" :data="ordersByCountry"/>
+      <label class="text-lg font-semibold block mb-2">Subscriptions by Country</label>
+      <template v-if="!loading.subscriptionsByCountry">
+        <DoughnutChart :width="140" :height="200" :data="subscriptionsByCountry"/>
       </template>
       <Spinner v-else text="" class=""/>
     </div>
@@ -100,12 +108,12 @@ const dateOptions = computed(() => store.state.dateOptions);
 const chosenDate = ref('all')
 
 const loading = ref({
-  customersCount: true,
+  subscribersCount: true,
   productsCount: true,
   totalIncome: true,
-  ordersByCountry: true,
+  subscriptionsByCountry: true,
   latestCustomers: true,
-  latestOrders: true
+  latestSubscriptions: true
 })
 
 const options = {
@@ -117,26 +125,26 @@ const options = {
     second: "numeric",
     timeZone: "UTC"
 };
-const customersCount = ref(0);
+const subscribersCount = ref(0);
 const productsCount = ref(0);
 const totalIncome = ref(0);
-const ordersByCountry = ref([]);
+const subscriptionsByCountry = ref([]);
 const latestCustomers = ref([]);
-const latestOrders = ref([]);
+const latestSubscriptions = ref([]);
 
 function updateDashboard() {
   const d = chosenDate.value
   loading.value = {
-    customersCount: true,
+    subscribersCount: true,
     productsCount: true,
     totalIncome: true,
-    ordersByCountry: true,
+    subscriptionsByCountry: true,
     latestCustomers: true,
-    latestOrders: true
+    latestSubscriptions: true
   }
-  axiosClient.get(`/dashboard/customers-count`, {params: {d}}).then(({data}) => {
-    customersCount.value = data
-    loading.value.customersCount = false;
+  axiosClient.get(`/dashboard/subscribers-count`, {params: {d}}).then(({data}) => {
+    subscribersCount.value = data
+    loading.value.subscribersCount = false;
   })
   axiosClient.get(`/dashboard/products-count`, {params: {d}}).then(({data}) => {
     productsCount.value = data;
@@ -151,8 +159,8 @@ function updateDashboard() {
       .format(data);
     loading.value.totalIncome = false;
   })
-  axiosClient.get(`/dashboard/orders-by-country`, {params: {d}}).then(({data: countries}) => {
-    loading.value.ordersByCountry = false;
+  axiosClient.get(`/dashboard/subscriptions-by-country`, {params: {d}}).then(({data: countries}) => {
+    loading.value.subscriptionsByCountry = false;
     const chartData = {
       labels: [],
       datasets: [{
@@ -164,16 +172,16 @@ function updateDashboard() {
       chartData.labels.push(c.name);
       chartData.datasets[0].data.push(c.count);
     })
-    ordersByCountry.value = chartData
+    subscriptionsByCountry.value = chartData
   })
 
-  axiosClient.get(`/dashboard/latest-customers`, {params: {d}}).then(({data: customers}) => {
-    latestCustomers.value = customers;
+  axiosClient.get(`/dashboard/latest-subscribers`, {params: {d}}).then(({data: subscribers}) => {
+    latestCustomers.value = subscribers;
     loading.value.latestCustomers = false;
   })
-  axiosClient.get(`/dashboard/latest-orders`, {params: {d}}).then(({data: orders}) => {
-    latestOrders.value = orders;
-      loading.value.latestOrders = false;
+  axiosClient.get(`/dashboard/latest-subscriptions`, {params: {d}}).then(({data: subscriptions}) => {
+    latestSubscriptions.value = subscriptions;
+      loading.value.latestSubscriptions = false;
   })
 }
 

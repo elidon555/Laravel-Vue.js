@@ -43,12 +43,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user-details/current', [UserDetailController::class, 'getCurrentUserDetail']);
 
     Route::controller(DashboardController::class)->prefix('dashboard')->group(function(){
-        Route::get('/customers-count','activeCustomers');
+        Route::get('/subscribers-count','activeSubscribers');
         Route::get('/products-count','activeProducts');
         Route::get('/income-amount','totalIncome');
-        Route::get('/orders-by-country','ordersByCountry');
-        Route::get('/latest-customers','latestCustomers');
-        Route::get('/latest-orders','latestOrders');
+        Route::get('/subscriptions-by-country','subscriptionsByCountry');
+        Route::get('/latest-subscribers','latestSubscribers');
+        Route::get('/latest-subscriptions','latestOrders');
     });
 
     Route::prefix('stripe')->group(function(){
