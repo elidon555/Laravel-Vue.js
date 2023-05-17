@@ -4,12 +4,13 @@
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
             <div class="aspect-w-1 aspect-h-1 text-center" >
                 <img
-                    :src="'https://picsum.photos/500/300?image='+Math.floor(Math.random() * 100)" alt="Bottom Image"
-                    class="object-cover w-[80px] h-[80px] rounded-full"/>
+                    :src="'https://loremflickr.com/320/240/profile'"
+                    alt="Bottom Image"
+                    class="object-cover w-[100px] h-[100px] rounded-full"/>
             </div>
         </div>
     </div>
-    <br><br>
+    <br><br><br>
 
     <div class="text-center mt-3">
         <h1 class="font-semibold leading-tight text-xl">GRIMS TOY SHOW</h1>
