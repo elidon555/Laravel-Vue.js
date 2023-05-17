@@ -112,7 +112,7 @@
       <td>{{ subscriptionPlan.name }}</td>
       <td>{{ subscriptionPlan.price }}</td>
       <td>{{ subscriptionPlan.interval }}</td>
-      <td>{{ subscriptionPlan.features }}</td>
+      <td v-html="subscriptionPlan.features"/>
       <td>{{ subscriptionPlan.created_at }}</td>
       <td>
         <v-menu location="start">
