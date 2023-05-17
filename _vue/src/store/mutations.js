@@ -137,6 +137,7 @@ export function setContents(state, [loading, data = null]) {
             to: data.meta.to,
             total: data.meta.total,
             subscriptionPlans: data.subscriptionPlans,
+            user: data.user,
         }
     }
     state.contents.loading = loading;

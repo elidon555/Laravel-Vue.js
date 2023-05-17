@@ -1,21 +1,21 @@
 <template>
-  <div>
+  <div class="mx-8 mt-4">
     <div class="grid gap-3 grid-cols-3">
       <div class="col-span-2 grid grid-cols-2 gap-3">
-        <router-link :to="{name: 'reports.orders', params: route.params}"
-                     class="bg-white py-2 px-3 text-gray-700 rounded-md text-center"
-                     active-class="text-indigo-600 bg-indigo-50">Orders Report
+        <router-link :to="{name: 'reports.subscriptions', params: route.params}"
+                     class=" text-light rounded-md text-center"
+                     active-class="text-light"><v-btn class="w-100 mt-2">Subscriptions Report</v-btn>
         </router-link>
-        <router-link :to="{name: 'reports.customers', params: route.params}"
-                     class="bg-white py-2 px-3 text-gray-700 rounded-md text-center"
-                     active-class="text-indigo-600 bg-indigo-50">Customers Report
+        <router-link :to="{name: 'reports.subscribers', params: route.params}"
+                     class="text-light rounded-md text-center"
+                     active-class="text-light"><v-btn class="w-100 mt-2">Subscriber Report</v-btn>
         </router-link>
       </div>
-      <div>
-        <CustomInput type="select" v-model="chosenDate" @change="onDatePickerChange" :select-options="dateOptions"/>
+      <div >
+        <v-select  :items="dateOptions"  v-model="chosenDate" label="Date" @update:modelValue="onDatePickerChange"></v-select>
       </div>
     </div>
-    <div class="bg-white p-3 rounded-md mt-3 shadow-md">
+    <div class="bg-dark p-3 rounded-md mt-3 shadow-md">
       <router-view />
     </div>
   </div>

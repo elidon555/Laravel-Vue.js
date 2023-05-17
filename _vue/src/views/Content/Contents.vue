@@ -41,7 +41,7 @@
             Add new Content
           </button>
         </div>
-        <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts</h1>
+        <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts by {{contents.user.name}}</h1>
       </div>
     </div>
   </Transition>

@@ -1,5 +1,5 @@
 <template>
-  <BarChart :data="chartData" :height="240"/>
+  <BarChart :data="chartData" :height="240" />
 </template>
 
 <script setup>
@@ -17,7 +17,7 @@ watch(route, (rt) => {
 }, {immediate: true})
 
 function getData() {
-  axiosClient.get('report/orders', {params: {d: route.params.date}})
+  axiosClient.get('report/subscriptions', {params: {d: route.params.date}})
     .then(({data}) => {
       chartData.value = data;
     })

@@ -8,8 +8,8 @@ import ResetPassword from "../views/ResetPassword.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store";
 import Report from "../views/Reports/Report.vue";
-import OrdersReport from "../views/Reports/OrdersReport.vue";
-import CustomersReport from "../views/Reports/CustomersReport.vue";
+import SubscriptionsReport from "../views/Reports/SubscriptionsReport.vue";
+import SubscribersReport from "../views/Reports/SubscribersReport.vue";
 import Signup from "../views/Signup.vue";
 import Roles from "../views/Roles/Roles.vue";
 import Permissions from "../views/Permissions/Permissions.vue";
@@ -89,14 +89,14 @@ const routes = [
         component: Report,
         children: [
           {
-            path: 'orders/:date?',
-            name: 'reports.orders',
-            component: OrdersReport
+            path: 'subscriptions/:date?',
+            name: 'reports.subscriptions',
+            component: SubscriptionsReport
           },
           {
-            path: 'customers/:date?',
-            name: 'reports.customers',
-            component: CustomersReport
+            path: 'subscribers/:date?',
+            name: 'reports.subscribers',
+            component: SubscribersReport
           }
         ]
       },

@@ -46,12 +46,13 @@ class ContentController extends Controller
 //            ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
-        $subscriptionPlans['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
+        $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
+        $additional['user'] = $user->toArray();
 
         if ($authUser && ( $authUser->subscribed($user->id ?? '') || $authUser->id===$user->id)) {
-            return ContentResource::collection($query)->additional($subscriptionPlans);
+            return ContentResource::collection($query)->additional($additional);
         }
-        return ContentPreviewResource::collection($query)->additional($subscriptionPlans);
+        return ContentPreviewResource::collection($query)->additional($additional);
     }
 
     /**

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\SubscriptionPlanController;
@@ -41,6 +42,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subscription-plans', SubscriptionPlanController::class)->only('show');
 
     Route::get('user-details/current', [UserDetailController::class, 'getCurrentUserDetail']);
+
+    Route::get('/report/subscriptions', [ReportController::class, 'subscriptions']);
+    Route::get('/report/subscribers', [ReportController::class, 'subscribers']);
 
     Route::controller(DashboardController::class)->prefix('dashboard')->group(function(){
         Route::get('/subscribers-count','activeSubscribers');
