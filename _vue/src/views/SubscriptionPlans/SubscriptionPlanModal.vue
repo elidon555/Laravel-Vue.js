@@ -25,9 +25,11 @@
                                   :items="['Monthly', 'Yearly']"
                               ></v-select>
                             </v-col>
-                            <v-col cols="12" sm="6" md="12">
-                              <v-text-field v-model="subscriptionPlan.features"  label="Features" variant="outlined"></v-text-field>
+                            <v-col cols="12" sm="12" md="12">
+                              <QuillEditor contentType="html"  v-model:content="subscriptionPlan.features" theme="snow" />
                             </v-col>
+                          <v-col cols="12" sm="6" md="12">
+                          </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -49,6 +51,9 @@
 import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 import {useNotification} from "@kyvg/vue3-notification";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 
 const notification = useNotification()
 

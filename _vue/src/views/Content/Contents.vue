@@ -1,10 +1,10 @@
 <template>
     <div class="relative">
-        <v-img src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/889613/7a2c854a60d2479d972045b9fd979dab/eyJ3IjoxMjAwLCJ3ZSI6MX0%3D/3.JPG?token-time=1685836800&token-hash=87--xl3sslym5AAuw9aLL_gDOfUNGyOQa4qdnEC6CRg%3D" :aspect-ratio="4/1" cover/>
+        <v-img :src="'https://picsum.photos/1920/1080?image='+Math.floor(Math.random() * 100)" :aspect-ratio="4/1" cover/>
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
             <div class="aspect-w-1 aspect-h-1 text-center" >
                 <img
-                    src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/889613/b48db80f815b45da90cfc7ff7a009d27/eyJ3IjoyMDB9/2.jpg?token-time=2145916800&token-hash=wB-FD2r-R0Ib8w-CuVPPsK-s1aC1PSmy2asRrVekJBI%3D" alt="Bottom Image"
+                    :src="'https://picsum.photos/500/300?image='+Math.floor(Math.random() * 100)" alt="Bottom Image"
                     class="object-cover w-[80px] h-[80px] rounded-full"/>
             </div>
         </div>

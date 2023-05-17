@@ -25,8 +25,7 @@
                                     <PlanCard
                                         :title="plan.name"
                                         :amount="parseInt(plan.price)"
-                                        :icon-1="plan.features.split(' | ')[0]"
-                                        :icon-2="plan.features.split(' | ')[1]"
+                                        :description="plan.features"
                                         :duration="plan.interval"
                                     />
                                 </v-col>

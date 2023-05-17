@@ -8,8 +8,7 @@ const show = ref(false)
 const props = defineProps({
   title:String,
   amount: Number,
-  icon1: String,
-  icon2: String,
+  description: String,
   duration:String
 })
 </script>
@@ -82,17 +81,17 @@ const props = defineProps({
     >
         <div class="m-3">
             <div class="text-center text-lg font-bold">
-                Top western road trips
+              {{ title }}
             </div>
             <br>
             <v-img
                 class="mx-8"
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                :src="'https://picsum.photos/500/300?image='+Math.floor(Math.random() * 100)"
                 cover
             ></v-img>
 
             <div class="text-center text-2xl font-semibold my-4">
-                $1 / month
+                $1{{amount}} / {{duration}}
             </div>
             <v-card-actions>
                 <v-btn
@@ -103,25 +102,10 @@ const props = defineProps({
                     Join
                 </v-btn>
 
-<!--                <v-btn-->
-<!--                    :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'"-->
-<!--                    @click="show = !show"-->
-<!--                ></v-btn>-->
             </v-card-actions>
 
-            <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-            </v-card-text>
+          <v-card-text v-html="description"/>
 
-            <v-expand-transition>
-                <div v-show="show">
-                    <v-divider></v-divider>
-
-                    <v-card-text>
-                        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                    </v-card-text>
-                </div>
-            </v-expand-transition>
         </div>
 
     </v-card>
