@@ -31,12 +31,14 @@ class UserDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param UserDetail $userDetail
      * @return Response
      */
     public function getCurrentUserDetail()
     {
-        return new UserDetailResource(auth()->user()->details);
+        $userDetails = auth()->user()->details;
+        if ($userDetails) {
+            return new UserDetailResource(auth()->user()->details);
+        }
+        return response()->noContent();
     }
-
 }
