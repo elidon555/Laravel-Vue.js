@@ -53,11 +53,9 @@
 
 <script setup>
 import {computed, onMounted, ref} from 'vue'
-import {LockClosedIcon} from '@heroicons/vue/solid'
 import GuestLayout from "../components/GuestLayout.vue";
 import store from "../store";
 import router from "../router";
-import {setStripeClientSecret} from "../store/mutations";
 import image from '../assets/login.png'
 import {useRoute} from "vue-router";
 

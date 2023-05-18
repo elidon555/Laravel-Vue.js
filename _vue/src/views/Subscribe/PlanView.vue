@@ -63,7 +63,6 @@ import PlanCard from "./PlanCard.vue";
 import store from "../../store";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
-import {getSubscriptionPlans} from "../../store/actions";
 import router from "../../router";
 
 const tab = ref('monthly')
