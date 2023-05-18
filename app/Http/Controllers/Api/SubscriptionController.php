@@ -8,6 +8,7 @@ use App\Http\Resources\PaymentResource;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Payment;
 use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 
 class SubscriptionController extends Controller
 {
@@ -35,9 +36,9 @@ class SubscriptionController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payment $payment)
+    public function destroy(Subscription $subscription)
     {
-        $payment->delete();
+        $subscription->delete();
 
         return response()->noContent();
     }

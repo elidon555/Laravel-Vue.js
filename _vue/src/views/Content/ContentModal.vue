@@ -39,16 +39,8 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref, watch} from 'vue'
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
+import {computed, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
-import Spinner from "../../components/core/Spinner.vue";
 import {useNotification} from "@kyvg/vue3-notification";
 
 const props = defineProps({

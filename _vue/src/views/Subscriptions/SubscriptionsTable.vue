@@ -246,7 +246,7 @@ function deleteSubscription(subscription) {
   if (!confirm(`Are you sure you want to delete the subscription?`)) {
     return
   }
-  store.dispatch('deleteSubscription', subscription.id)
+  store.dispatch('deleteSubscription', subscription)
     .then(res => {
       store.dispatch('getSubscriptions')
         notification.notify({
