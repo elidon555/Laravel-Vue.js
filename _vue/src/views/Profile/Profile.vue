@@ -1,4 +1,5 @@
 <template>
+  <br><br>
     <SignUpForm class="w-25 m-auto"></SignUpForm>
 </template>
 <script>

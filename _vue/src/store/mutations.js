@@ -26,22 +26,6 @@ export function setToken(state, token) {
   }
 }
 
-export function setProducts(state, [loading, data = null]) {
-
-  if (data) {
-    state.products = {
-      ...state.products,
-      data: data.data,
-      links: data.meta?.links,
-      page: data.meta.current_page,
-      limit: data.meta.per_page,
-      from: data.meta.from,
-      to: data.meta.to,
-      total: data.meta.total,
-    }
-  }
-  state.products.loading = loading;
-}
 
 export function setUsers(state, [loading, data = null]) {
 
@@ -59,7 +43,41 @@ export function setUsers(state, [loading, data = null]) {
       permissions: data.permissions
     }
   }
-  state.products.loading = loading;
+  state.users.loading = loading;
+}
+
+export function setPayments(state, [loading, data = null]) {
+
+    if (data) {
+        state.payments = {
+            ...state.payments,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+        }
+    }
+    state.payments.loading = loading;
+}
+
+export function setSubscriptions(state, [loading, data = null]) {
+
+    if (data) {
+        state.subscriptions = {
+            ...state.subscriptions,
+            data: data.data,
+            links: data.meta?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
+        }
+    }
+    state.subscriptions.loading = loading;
 }
 export function setSubscriptionPlans(state, [loading, data = null,userId= null]) {
 

@@ -56,6 +56,46 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
     })
 }
 
+export function getPayments({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+    commit('setPayments', [true])
+    url = url || '/payments'
+    const params = {
+        per_page: state.users.limit,
+    }
+    return axiosClient.get(url, {
+        params: {
+            ...params,
+            search, per_page, sort_field, sort_direction
+        }
+    })
+        .then((response) => {
+            commit('setPayments', [false, response.data])
+        })
+        .catch(() => {
+            commit('setPayments', [false])
+        })
+}
+
+export function getSubscriptions({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+    commit('setSubscriptions', [true])
+    url = url || '/subscriptions'
+    const params = {
+        per_page: state.users.limit,
+    }
+    return axiosClient.get(url, {
+        params: {
+            ...params,
+            search, per_page, sort_field, sort_direction
+        }
+    })
+        .then((response) => {
+            commit('setSubscriptions', [false, response.data])
+        })
+        .catch(() => {
+            commit('setSubscriptions', [false])
+        })
+}
+
 export function getSubscriptionPlans({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction, id} = {}) {
     commit('setSubscriptionPlans', [true])
 
@@ -229,6 +269,14 @@ export function deleteRole({commit}, role) {
 }
 export function deletePermission({commit}, permission) {
     return axiosClient.delete(`/permissions/${permission.id}`)
+}
+
+export function deletePayment({commit}, payment) {
+    return axiosClient.delete(`/payments/${payment.id}`)
+}
+
+export function deleteSubscription({commit}, subscription) {
+    return axiosClient.delete(`/subscriptions/${subscription.id}`)
 }
 
 export function guestImage({commit},image) {

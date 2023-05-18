@@ -17,6 +17,8 @@ import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
 import Profile from "../views/Profile/Profile.vue";
 import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
+import Payments from "../views/Payments/Payments.vue";
+import Subscriptions from "../views/Subscriptions/Subscriptions.vue";
 
 
 const routes = [
@@ -76,6 +78,22 @@ const routes = [
         component: SubscriptionPlans,
         meta: {
           roles: ["admin","user"],
+        },
+      },
+      {
+        path: 'payments',
+        name: 'app.payments',
+        component: Payments,
+        meta: {
+          roles: ["admin","finance"],
+        },
+      },
+      {
+        path: 'subscriptions',
+        name: 'app.subscriptions',
+        component: Subscriptions,
+        meta: {
+          roles: ["admin","finance"],
         },
       },
       {

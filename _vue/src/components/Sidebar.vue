@@ -98,8 +98,9 @@
 
     <v-list density="compact" nav>
 
-      <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-      <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+      <router-link v-show="checkRole(['user'])" :to="{name: 'app.profile'}">
+        <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+      </router-link>
 
       <router-link v-show="checkRole(['user'])" :to="{name: 'app.contents',params:{id:user.id}}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Contents" value="contents"></v-list-item>
@@ -111,7 +112,7 @@
         </router-link>
 
       <router-link v-show="checkRole(['admin'])" :to="{name: 'reports.subscriptions'}">
-            <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Reports" value="dashboard"></v-list-item>
+            <v-list-item prepend-icon="mdi-chart-bar" title="Reports" value="dashboard"></v-list-item>
         </router-link>
 
       <v-divider class="m-2"></v-divider>
@@ -119,14 +120,20 @@
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
       </router-link>
+      <router-link v-show="checkRole(['admin','finance'])" :to="{name: 'app.payments'}">
+        <v-list-item prepend-icon="mdi-finance" title="Payments" value="payments"></v-list-item>
+      </router-link>
       <router-link v-show="checkRole(['user'])" :to="{name: 'app.subscriptionPlans'}">
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Subscription plans" value="Subscription plans"></v-list-item>
+        <v-list-item prepend-icon="mdi-credit-card-outline" title="Subscription plans" value="Subscription plans"></v-list-item>
+      </router-link>
+      <router-link v-show="checkRole(['user'])" :to="{name: 'app.subscriptions'}">
+        <v-list-item prepend-icon="mdi-credit-card-outline" title="Subscriptions" value="Subscriptions"></v-list-item>
       </router-link>
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.roles'}">
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Roles" value="roles"></v-list-item>
+        <v-list-item prepend-icon="mdi-security" title="Roles" value="roles"></v-list-item>
       </router-link>
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.permissions'}">
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Permissions" value="permissions"></v-list-item>
+        <v-list-item prepend-icon="mdi-lock" title="Permissions" value="permissions"></v-list-item>
       </router-link>
     </v-list>
   </v-navigation-drawer>

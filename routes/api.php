@@ -2,13 +2,16 @@
 
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\StripeController;
+use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\SubscriptionPlanController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserDetailController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +42,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('contents', ContentController::class);
     Route::apiResource('subscription-plans', SubscriptionPlanController::class);
-    Route::apiResource('subscription-plans', SubscriptionPlanController::class)->only('show');
+    Route::apiResource('payments', PaymentController::class);
+    Route::apiResource('subscriptions', SubscriptionController::class);
 
     Route::get('user-details/current', [UserDetailController::class, 'getCurrentUserDetail']);
 
@@ -68,6 +72,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
-Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
-Route::post('/signup', [\App\Http\Controllers\Auth\AuthController::class, 'signup']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/signup', [AuthController::class, 'signup']);

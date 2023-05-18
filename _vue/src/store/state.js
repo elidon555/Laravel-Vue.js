@@ -23,6 +23,26 @@ export default {
         limit: null,
         total: null
     },
+    payments: {
+        loading: false,
+        data: [],
+        links: [],
+        from: null,
+        to: null,
+        page: 1,
+        limit: null,
+        total: null
+    },
+    subscriptions: {
+        loading: false,
+        data: [],
+        links: [],
+        from: null,
+        to: null,
+        page: 1,
+        limit: null,
+        total: null
+    },
     roles: {
         loading: false,
         data: [],

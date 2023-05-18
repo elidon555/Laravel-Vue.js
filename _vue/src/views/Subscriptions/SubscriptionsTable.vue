@@ -8,16 +8,16 @@
                      :items="[5,10,20,50]"
                      v-model="perPage"
                      density="compact"
-                     @update:modelValue="getUsers()"
+                     @update:modelValue="getSubscriptions()"
           >
            <template  v-slot:prepend>Per page</template>
-           <template  v-slot:append>Found {{users.total}} users</template>
+           <template  v-slot:append>Found {{subscriptions.total}} subscriptions</template>
           </v-select>
         </div>
         <div>
           <v-text-field
               class="w-48 px-3 py-2"
-              @change="getUsers(null)"
+              @change="getSubscriptions(null)"
               v-model="search"
               density="compact"
               variant="underlined"
@@ -31,19 +31,19 @@
 
     </template>
     <template v-slot:bottom>
-      <div v-if="!users.loading" class="flex justify-between items-center mt-5">
-        <div v-if="users.data.length" class=" m-2 pb-3">
-          Showing from {{ users.from }} to {{ users.to }}
+      <div v-if="!subscriptions.loading" class="flex justify-between items-center mt-5">
+        <div v-if="subscriptions.data.length" class=" m-2 pb-3">
+          Showing from {{ subscriptions.from }} to {{ subscriptions.to }}
         </div>
         <nav
-            v-if="users.total > users.limit"
+            v-if="subscriptions.total > subscriptions.limit"
             class="relative z-0 m-2 inline-flex justify-center rounded-md shadow-sm -space-x-px"
             aria-label="Pagination"
         >
           <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
 
             <button
-              v-for="(link, i) of users.links"
+              v-for="(link, i) of subscriptions.links"
               :key="i"
               :disabled="!link.url"
               href="#"
@@ -55,7 +55,7 @@
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-dark border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
-              i === users.links.length - 1 ? 'rounded-r-md' : '',
+              i === subscriptions.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
               v-html="link.label"
@@ -68,20 +68,36 @@
     <thead>
     <tr>
       <TableHeaderCell field="id" :sort-field="sortField" :sort-direction="sortDirection"
-                       @click="sortUsers('id')">
+                       @click="sortSubscriptions('id')">
         ID
       </TableHeaderCell>
       <TableHeaderCell field="name" :sort-field="sortField" :sort-direction="sortDirection"
-                       @click="sortUsers('name')">
+                       @click="sortSubscriptions('name')">
         Name
       </TableHeaderCell>
-      <TableHeaderCell field="email" :sort-field="sortField" :sort-direction="sortDirection"
-                       @click="sortUsers('email')">
-        Email
+      <TableHeaderCell field="stripe_id" :sort-field="sortField" :sort-direction="sortDirection"
+                       >
+        Subbed User
+      </TableHeaderCell>
+      <TableHeaderCell field="stripe_id" :sort-field="sortField" :sort-direction="sortDirection"
+                       @click="sortSubscriptions('stripe_id')">
+        Plan name
+      </TableHeaderCell>
+      <TableHeaderCell field="stripe_id" :sort-field="sortField" :sort-direction="sortDirection"
+                      >
+        Plan price
+      </TableHeaderCell>
+      <TableHeaderCell field="stripe_id" :sort-field="sortField" :sort-direction="sortDirection"
+                       >
+        Stripe Id
+      </TableHeaderCell>
+      <TableHeaderCell field="price_id" :sort-field="sortField" :sort-direction="sortDirection"
+                       @click="sortSubscriptions('price_id')">
+        Price Id
       </TableHeaderCell>
       <TableHeaderCell field="created_at" :sort-field="sortField" :sort-direction="sortDirection"
-                       @click="sortUsers('created_at')">
-        Create Date
+                       @click="sortSubscriptions('created_at')">
+        Created at
       </TableHeaderCell>
       <TableHeaderCell field="actions">
         Actions
@@ -90,13 +106,17 @@
     </thead>
     <tbody>
     <tr
-        v-for="user in users.data"
-        :key="user.id"
+        v-for="subscription in subscriptions.data"
+        :key="subscription.id"
     >
-      <td>{{ user.id }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.created_at }}</td>
+      <td>{{ subscription.id }}</td>
+      <td>{{ subscription.user.name }}</td>
+      <td>{{ subscription.subscribed_user.name }}</td>
+      <td>{{ subscription.plan.name }}</td>
+      <td>${{ subscription.plan.amount }}</td>
+      <td>{{ subscription.stripe_id }}</td>
+      <td>{{ subscription.price_id }}</td>
+      <td>{{ subscription.created_at }}</td>
       <td>
         <v-menu location="start">
           <template v-slot:activator="{ props }">
@@ -112,7 +132,7 @@
           </template>
 
           <v-list>
-            <v-list-item @click="editUser(user)">
+            <v-list-item @click="editSubscription(subscription)">
               <v-list-item-title>
                 <div class="d-flex">
                   <PencilIcon
@@ -124,7 +144,7 @@
 
                 </v-list-item-title>
             </v-list-item>
-            <v-list-item @click="deleteUser(user)">
+            <v-list-item @click="deleteSubscription(subscription)">
               <v-list-item-title>
                 <div class="d-flex">
                   <TrashIcon
@@ -163,22 +183,22 @@ const isLoading = ref(false);
 const fullPage = ref(true);
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');
-const users = computed(() => store.state.users);
+const subscriptions = computed(() => store.state.subscriptions);
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
 
-const user = ref({})
-const showUserModal = ref(false);
+const subscription = ref({})
+const showSubscriptionModal = ref(false);
 
 const emit = defineEmits(['clickEdit'])
 
 
 onMounted(() => {
-  getUsers();
+  getSubscriptions();
 })
 
 function onCancel() {
-    console.log('User cancelled the loader.')
+    console.log('Subscription cancelled the loader.')
 }
 
 function getForPage(ev, link) {
@@ -187,12 +207,12 @@ function getForPage(ev, link) {
     return;
   }
 
-  getUsers(link.url)
+  getSubscriptions(link.url)
 }
 
-function getUsers(url = null) {
+function getSubscriptions(url = null) {
   isLoading.value = true;
-  store.dispatch("getUsers", {
+  store.dispatch("getSubscriptions", {
     url,
     search: search.value,
     per_page: perPage.value,
@@ -203,7 +223,7 @@ function getUsers(url = null) {
   });
 }
 
-function sortUsers(field) {
+function sortSubscriptions(field) {
   if (field === sortField.value) {
     if (sortDirection.value === 'desc') {
       sortDirection.value = 'asc'
@@ -215,20 +235,20 @@ function sortUsers(field) {
     sortDirection.value = 'asc'
   }
 
-  getUsers()
+  getSubscriptions()
 }
 
 function showAddNewModal() {
-  showUserModal.value = true
+  showSubscriptionModal.value = true
 }
 
-function deleteUser(user) {
-  if (!confirm(`Are you sure you want to delete the user?`)) {
+function deleteSubscription(subscription) {
+  if (!confirm(`Are you sure you want to delete the subscription?`)) {
     return
   }
-  store.dispatch('deleteUser', user.id)
+  store.dispatch('deleteSubscription', subscription.id)
     .then(res => {
-      store.dispatch('getUsers')
+      store.dispatch('getSubscriptions')
         notification.notify({
             title: "Success!",
             type: "success",
@@ -236,7 +256,7 @@ function deleteUser(user) {
     })
 }
 
-function editUser(p) {
+function editSubscription(p) {
   emit('clickEdit', p)
 }
 </script>

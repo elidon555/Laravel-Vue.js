@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateSubscriptionPlanRequest;
 use App\Http\Resources\SubscriptionPlanResource;
 use App\Models\SubscriptionPlan;
 use Illuminate\Support\Facades\Auth;
+use Stripe\StripeClient;
 
 class SubscriptionPlanController extends Controller
 {
@@ -50,7 +51,7 @@ class SubscriptionPlanController extends Controller
         $data = $request->validated();
         @$data['user_id'] = auth()->user()->id;
 
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET') );
+        $stripe = new StripeClient(env('STRIPE_SECRET') );
 
         $response = $stripe->prices->create([
             'unit_amount' => $data['price']*100,

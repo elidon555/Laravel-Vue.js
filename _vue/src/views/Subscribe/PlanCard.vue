@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="p-3 ">
+  <div class="p-3 m-auto">
     <v-card class="max-w-md m-auto lg:m-0 ">
       <div class="m-1 bg-gradient-to-tl from-gray-700 via-gray-900 to-black">
         <div class="text-center text-lg font-bold pt-3">

@@ -6,15 +6,15 @@
                 <img
                     :src="'https://loremflickr.com/320/240/profile'"
                     alt="Bottom Image"
-                    class="object-cover w-[100px] h-[100px] rounded-full"/>
+                    class="object-cover w-[120px] h-[120px] rounded-full"/>
             </div>
         </div>
     </div>
     <br><br><br>
 
     <div class="text-center mt-3">
-        <h1 class="font-semibold leading-tight text-xl">GRIMS TOY SHOW</h1>
-        <h6 class="font-thin text-gray-300 mt-3">creating Uncensored HARDCORE GTS Wrestling on Youtube</h6>
+        <h1 class="font-semibold leading-tight text-xl">Lorem ipsum dolor</h1>
+        <h6 class="font-thin text-gray-300 mt-3">Nulla facilisi. Nam egestas rutrum ex, eget consequat lacus laoreet in.</h6>
     </div>
 
     <div v-if="!user.token">
