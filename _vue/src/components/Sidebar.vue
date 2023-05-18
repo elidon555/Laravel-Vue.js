@@ -127,7 +127,7 @@
         <v-list-item prepend-icon="mdi-credit-card-outline" title="Subscription plans" value="Subscription plans"></v-list-item>
       </router-link>
       <router-link v-show="checkRole(['user'])" :to="{name: 'app.subscriptions'}">
-        <v-list-item prepend-icon="mdi-credit-card-outline" title="Subscriptions" value="Subscriptions"></v-list-item>
+        <v-list-item prepend-icon="mdi-credit-card-multiple-outline" title="Subscriptions" value="Subscriptions"></v-list-item>
       </router-link>
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.roles'}">
         <v-list-item prepend-icon="mdi-security" title="Roles" value="roles"></v-list-item>
