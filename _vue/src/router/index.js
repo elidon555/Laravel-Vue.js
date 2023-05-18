@@ -19,6 +19,7 @@ import Profile from "../views/Profile/Profile.vue";
 import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
 import Payments from "../views/Payments/Payments.vue";
 import Subscriptions from "../views/Subscriptions/Subscriptions.vue";
+import PlanView from "../views/Subscribe/PlanView.vue";
 
 
 const routes = [
@@ -56,6 +57,11 @@ const routes = [
           roles: ["admin"],
         },
       },
+        {
+            path: 'test',
+            name: 'app.test',
+            component: PlanView,
+        },
       {
         path: 'roles',
         name: 'app.roles',
