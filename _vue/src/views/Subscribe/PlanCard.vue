@@ -35,7 +35,7 @@ async function createPaymentIntent() {
     <v-card class="max-w-md m-auto lg:m-0 ">
       <div class="m-1 bg-gradient-to-tl from-gray-700 via-gray-900 to-black">
         <div class="text-center text-lg font-bold pt-3">
-          {{ plan.title }}
+          {{ plan.name }}
         </div>
         <br>
         <v-img
@@ -45,7 +45,7 @@ async function createPaymentIntent() {
         ></v-img>
 
         <div class="text-center text-2xl font-semibold my-4">
-          $1{{parseInt(plan.price)}} / {{plan.duration}}
+          ${{parseInt(plan.price)}} / {{plan.interval.slice(0, -2).toLowerCase()}}
         </div>
         <v-card-actions>
           <v-btn
@@ -60,7 +60,7 @@ async function createPaymentIntent() {
 
         </v-card-actions>
 
-        <v-card-text v-html="plan.description"/>
+        <v-card-text v-html="plan.features"/>
 
       </div>
 
