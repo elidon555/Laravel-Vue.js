@@ -16,8 +16,7 @@ export const Roles = {
     mutations: {
         setRoles(state, [loading, data = null]) {
             if (data) {
-                state = {
-                    ...state,
+                Object.assign(state, {
                     data: data.data,
                     links: data.meta?.links,
                     page: data.meta.current_page,
@@ -26,7 +25,7 @@ export const Roles = {
                     to: data.meta.to,
                     total: data.meta.total,
                     permissions: data.permissions
-                }
+                })
             }
             state.loading = loading;
         }

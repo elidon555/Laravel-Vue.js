@@ -1,5 +1,7 @@
 <template>
-  <form @submit.prevent="" class="m-2 max-w-screen-sm m-auto rounded-lg">
+  <form @submit.prevent="" class="m-2 max-w-screen-sm m-auto rounded-lg bg-dark shadow-md rounded px-8 pt-6 pb-4 mb-4">
+    <h5 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Billing details</h5>
+
     <!-- Add a country input field if you live outside of the USA -->
     <v-text-field v-model="billingInfo.name" val="billingInfo.name" label="Name" type="text" />
     <v-text-field v-model="billingInfo.email" label="E-mail" type="email" />

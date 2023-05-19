@@ -1,4 +1,5 @@
 import axiosClient from "../../axios";
+import store from "../index";
 
 export const Stripe = {
     state: () => (
@@ -10,6 +11,7 @@ export const Stripe = {
             planId:"",
             planName:"",
             planPrice:"",
+            loading:false,
         }
     ),
     mutations: {
@@ -25,6 +27,7 @@ export const Stripe = {
             if (data) {
                 state.clientSecret = data.clientSecret;
             }
+            state.loading = loading
         },
         setStripeSubscriptionData(state, [loading,data = null]) {
 
@@ -54,12 +57,17 @@ export const Stripe = {
                     commit('setStripeSubscriptionData', [false])
                 })
         },
-        createPaymentIntent({commit}) {
+        createPaymentIntent({commit},plan) {
+
+            commit('setStripeClientSecret', [true])
             return axiosClient.post('/stripe/pay-intent')
                 .then((response) => {
                     commit('setStripeClientSecret', [false, response.data])
+                    commit('setPlan', [plan.name,plan.price,plan.price_id])
                 })
                 .catch(() => {
+                })
+                .finally(()=>{
                     commit('setStripeClientSecret', [false])
                 })
         },

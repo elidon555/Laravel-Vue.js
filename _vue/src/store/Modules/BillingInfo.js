@@ -15,8 +15,7 @@ export const BillingInfo = {
     mutations: {
         setBillingInfo(state, data = null) {
             if (data) {
-                state = {
-                    ...state,
+                Object.assign(state, {
                     email: data.email,
                     name: data.name,
                     address: data.address,
@@ -24,7 +23,7 @@ export const BillingInfo = {
                     state: data.state,
                     postal_code: data.postal_code,
                     country: data.country,
-                }
+                });
             }
         }
     },

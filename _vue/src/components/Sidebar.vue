@@ -7,7 +7,7 @@
   >
     <v-list-item
         prepend-avatar="https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
-        title="John Leider"
+        :title="user.name"
         nav
     >
       <template v-slot:append>
@@ -33,7 +33,7 @@
 
       <v-divider class="m-2"></v-divider>
 
-      <router-link v-show="checkRole(['admin'])" :to="{name: 'app.dashboard'}">
+      <router-link v-show="checkRole(['admin','finance'])" :to="{name: 'app.dashboard'}">
         <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" value="dashboard"></v-list-item>
       </router-link>
 
@@ -55,7 +55,7 @@
         <v-list-item prepend-icon="mdi-credit-card-outline" title="Subscription plans" value="Subscription plans"></v-list-item>
       </router-link>
 
-      <router-link v-show="checkRole(['user'])" :to="{name: 'app.subscriptions'}">
+      <router-link v-show="checkRole(['admin'])" :to="{name: 'app.subscriptions'}">
         <v-list-item prepend-icon="mdi-credit-card-multiple-outline" title="Subscriptions" value="Subscriptions"></v-list-item>
       </router-link>
 
@@ -73,6 +73,7 @@
 
 <script setup>
   import {ref, watch} from "vue";
+  import store from "../store";
 
   const drawer = ref(true);
   const rail = ref(props.rail);

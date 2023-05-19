@@ -40,7 +40,7 @@ export const Contents = {
             try {
                 commit('setContents', [true])
                 url = url || '/contents'
-                if (!state.user.token){
+                if (!rootState.user.token){
                     url = 'preview'+url
                 }
                 const params = {
