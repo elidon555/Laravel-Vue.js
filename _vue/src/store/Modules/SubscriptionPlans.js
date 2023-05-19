@@ -10,7 +10,9 @@ export const SubscriptionPlans = {
             to: null,
             page: 1,
             limit: null,
-            total: null
+            total: null,
+            monthly: [],
+            yearly: []
         }
     ),
     mutations: {

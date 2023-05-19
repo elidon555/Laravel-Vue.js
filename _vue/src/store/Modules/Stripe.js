@@ -3,16 +3,13 @@ import axiosClient from "../../axios";
 export const Stripe = {
     state: () => (
         {
-            loading: false,
-            data: [],
-            subscriptionPlans:[],
-            user:[],
-            links: [],
-            from: null,
-            to: null,
-            page: 1,
-            limit: null,
-            total: null
+            clientId:"",
+            clientSecret:"",
+            clientName:"",
+            subscriptionId:"",
+            planId:"",
+            planName:"",
+            planPrice:"",
         }
     ),
     mutations: {
@@ -38,8 +35,6 @@ export const Stripe = {
                     planPrice: data.plan.amount.toFixed(2),
                     planId: data.plan.id,
                 })
-
-
             }
         },
         setStripeSubscriberData(state, [loading,data = null]) {

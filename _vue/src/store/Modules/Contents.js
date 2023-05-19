@@ -36,15 +36,17 @@ export const Contents = {
 
     },
     actions: {
-        async getContents({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+        async getContents({ commit, state,rootState }, { url = null, search = '', per_page,id } = {}) {
             try {
                 commit('setContents', [true])
                 url = url || '/contents'
+                if (!state.user.token){
+                    url = 'preview'+url
+                }
                 const params = {
                     per_page: per_page || state.limit,
                     search,
-                    sort_field,
-                    sort_direction
+                    id
                 }
                 const response = await axiosClient.get(url, { params })
                 commit('setContents', [false, response.data])

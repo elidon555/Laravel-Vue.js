@@ -13,13 +13,16 @@ import SubscribersReport from "../views/Reports/SubscribersReport.vue";
 import Signup from "../views/Signup.vue";
 import Roles from "../views/Roles/Roles.vue";
 import Permissions from "../views/Permissions/Permissions.vue";
-import {computed} from "vue";
 import Contents from "../views/Content/Contents.vue";
 import Profile from "../views/Profile/Profile.vue";
 import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
 import Payments from "../views/Payments/Payments.vue";
 import Subscriptions from "../views/Subscriptions/Subscriptions.vue";
 import PlanView from "../views/Subscribe/PlanView.vue";
+import guest from "../middleware/guest";
+import auth from "../middleware/auth";
+import middlewarePipeline from "./middlewarePipeline";
+import role from "../middleware/role";
 
 
 const routes = [
@@ -32,9 +35,7 @@ const routes = [
     name: 'app',
     redirect: '/app/dashboard',
     component: AppLayout,
-    meta: {
-      requiresAuth: true
-    },
+    meta: { middleware: [auth] },
     children: [
       {
         path: 'dashboard',
@@ -45,17 +46,12 @@ const routes = [
         path: 'contents/:id?',
         name: 'app.contents',
         component: Contents,
-        meta: {
-          requiresAuth: false
-        },
       },
       {
         path: 'users',
         name: 'app.users',
         component: Users,
-        meta: {
-          roles: ["admin"],
-        },
+        meta: { middleware: [guest, role(['admin']) ] }
       },
         {
             path: 'test',
@@ -66,41 +62,31 @@ const routes = [
         path: 'roles',
         name: 'app.roles',
         component: Roles,
-        meta: {
-          roles: ["admin"],
-        },
+        meta: { middleware: [auth, role(['admin'])] }
       },
       {
         path: 'permissions',
         name: 'app.permissions',
         component: Permissions,
-        meta: {
-          roles: ["admin"],
-        },
+        meta: { middleware: [auth, role(['admin'])] }
       },
       {
         path: 'subscription-plans',
         name: 'app.subscriptionPlans',
         component: SubscriptionPlans,
-        meta: {
-          roles: ["admin","user"],
-        },
+        meta: { middleware: [auth] }
       },
       {
         path: 'payments',
         name: 'app.payments',
         component: Payments,
-        meta: {
-          roles: ["admin","finance"],
-        },
+        meta: { middleware: [auth, role(['admin'])] }
       },
       {
         path: 'subscriptions',
         name: 'app.subscriptions',
         component: Subscriptions,
-        meta: {
-          roles: ["admin","finance"],
-        },
+        meta: { middleware: [auth, role(['admin'])] }
       },
       {
         path: 'profile',
@@ -111,6 +97,7 @@ const routes = [
         path: '/report',
         name: 'reports',
         component: Report,
+        meta: { middleware: [guest, role(['admin','finance'])] },
         children: [
           {
             path: 'subscriptions/:date?',
@@ -130,32 +117,24 @@ const routes = [
     path: '/login/:user_id?',
     name: 'login',
     component: Login,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { middleware: [guest] }
   },  {
     path: '/signup',
     name: 'signup',
     component: Signup,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { middleware: [guest] }
   },
   {
     path: '/request-password',
     name: 'requestPassword',
     component: RequestPassword,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { middleware: [guest] }
   },
   {
     path: '/reset-password/:token',
     name: 'resetPassword',
     component: ResetPassword,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { middleware: [guest] }
   },
   {
     path: '/:pathMatch(.*)',
@@ -171,25 +150,19 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+  const middleware = to.meta.middleware;
+  const context = { to, from, next, store };
 
-  const auth = store.state.user.data
-  const token = store.state.user.token
-
-  if (to.meta.requiresAuth && !token) {
-    next({name: 'login'})
-  } else if (token && auth.roles && to.meta.roles ) {
-
-    const hasRole = auth.roles.some(role => to.meta.roles.includes(role['name']));
-    if (!hasRole) next({ name: 'app.dashboard' });
-
-    next();
-
-} else if (to.meta.requiresGuest && token) {
-    next({name: 'app.dashboard'})
-  } else {
-    next();
+  if (!middleware) {
+    return next();
   }
 
-})
+  middleware[0]({
+    ...context,
+    next: middlewarePipeline(context, middleware, 1),
+  });
+});
+
+
 
 export default router;
