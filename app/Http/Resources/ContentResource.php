@@ -10,6 +10,18 @@ use Nette\Utils\DateTime;
 class ContentResource extends JsonResource
 {
     public static $wrap = false;
+    private bool $isSubbed;
+
+    public function __construct($resource, $userIdContent)
+    {
+        parent::__construct($resource);
+
+        $authUser = auth()->user();
+        if ($authUser && ( $authUser->subscribed($userIdContent ?? '' ) || $authUser->id===$userIdContent)){
+            $isSubbed = true;
+        }
+        $this->isSubbed = $isSubbed ?? false;
+    }
 
     /**
      * Transform the resource into an array.
@@ -23,8 +35,8 @@ class ContentResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->getCustomProperty('title'),
-            'description' => $this->getCustomProperty('description'),
-            'url' => $this->getFullUrl(),
+            'description' => $this->getCustomProperty('isPublic') || $this->isSubbed ? $this->getCustomProperty('description') : substr($this->getCustomProperty('description'),0,100),
+            'url' => $this->getCustomProperty('isPublic') || $this->isSubbed ? $this->getFullUrl() : false,
             'type' => str_contains($this->mime_type,'image') ? 'photo' : 'video',
             'created_at' => Carbon::parse($this->created_at)->format('M d, Y \a\t h:i A'),
         ];

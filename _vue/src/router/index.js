@@ -122,7 +122,7 @@ const routes = [
     component: Login,
     meta: { middleware: [guest] }
   },  {
-    path: '/signup',
+    path: '/signup/:user_id?',
     name: 'signup',
     component: Signup,
     meta: { middleware: [guest] }

@@ -41,7 +41,7 @@
         <hr class="my-6 text-white">
 
         <p class="mt-4">
-          <router-link :to="{name: 'login'}">
+          <router-link :to="{name: 'login',params:{user_id:userId}}">
             <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
               Already have an account? Login
             </a>
@@ -52,12 +52,13 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {LockClosedIcon} from '@heroicons/vue/solid'
 import GuestLayout from "../components/GuestLayout.vue";
 import store from "../store";
 import router from "../router";
 import image from "../assets/signup.png";
+import {useRoute} from "vue-router";
 
 let loading = ref(false);
 let errorMsg = ref("");
@@ -67,6 +68,9 @@ const user = ref({
     name: '',
     password: '',
 })
+
+const route = useRoute()
+const userId = computed(() => route.params.user_id)
 
 function signup() {
     loading.value = true;

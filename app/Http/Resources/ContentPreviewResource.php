@@ -21,8 +21,8 @@ class ContentPreviewResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->getCustomProperty('title'),
-            'description' => substr($this->getCustomProperty('description'),0,100),
-            'url' => false,
+            'description' => $this->getCustomProperty('isPublic') ? $this->getCustomProperty('description') : substr($this->getCustomProperty('description'),0,100),
+            'url' => $this->getCustomProperty('isPublic') ? $this->getFullUrl() : false,
             'type' => str_contains($this->mime_type,'image') ? 'photo' : 'video',
             'created_at' => Carbon::parse($this->created_at)->format('M d, Y \a\t h:i A'),
         ];

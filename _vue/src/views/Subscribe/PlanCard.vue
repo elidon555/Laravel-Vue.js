@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import store from "../../store";
 import router from "../../router";
 
@@ -8,13 +8,14 @@ const loading = ref(false)
 const emit = defineEmits(['paymentIntent'])
 
 const props = defineProps({
-  plan:Object
+  plan:Object,
+  userId:String|Number
 })
 
 async function createPaymentIntent() {
   const plan = props.plan
   if (store.state.user.data.id === undefined) {
-    await router.push({name: 'login',params:{user_id:userId.value}})
+    await router.push({name: 'login',params:{user_id:props.userId}})
     return;
   }
   loading.value = true

@@ -39,7 +39,7 @@
         </router-link>
       </p>
       <p class="mt-1">
-        <router-link to="/signup">
+        <router-link :to="{name: 'signup',params:{user_id:userId}}">
           <a class="text-sm font-medium text-purple-600 text-purple-400 hover:underline">
             Create account
           </a>

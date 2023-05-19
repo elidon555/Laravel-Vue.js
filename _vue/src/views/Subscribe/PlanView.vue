@@ -19,6 +19,7 @@
                     v-for="plan in subscriptionPlans[tab]"
                     class="basis-full md:basis-1/3"
                     :plan="plan"
+                    :userId="userId"
                 />
               </div>
             </div>

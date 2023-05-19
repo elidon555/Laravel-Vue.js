@@ -2,7 +2,7 @@
 <template>
     <v-dialog v-model="show" width="576">
         <v-card>
-            <form @submit.prevent="onSubmit">
+            <v-form fast-fail ref="form" @submit.prevent="onSubmit">
                 <v-card-title>
                     <span class="text-h5"> {{ subscriptionPlan.id ? `Update Subscription Plan: "${props.subscriptionPlan.name}"` : 'Create new Subscription Plan' }}</span>
                 </v-card-title>
@@ -10,7 +10,7 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="6" md="12">
-                                <v-text-field v-model="subscriptionPlan.name"  label="Name" variant="outlined"></v-text-field>
+                                <v-text-field v-model="subscriptionPlan.name" :rules="rules"  label="Name" variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
                                 <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined" :disabled="subscriptionPlan.id!==''"
@@ -42,7 +42,7 @@
                         Save
                     </v-btn>
                 </v-card-actions>
-            </form>
+            </v-form>
         </v-card>
     </v-dialog>
 </template>
@@ -62,6 +62,8 @@ const permissions = ref([]);
 const loading = ref(false)
 const file = ref(false)
 
+const form = ref();
+
 const subscriptionPlan = ref({
   id: props.subscriptionPlan.id,
   name: props.subscriptionPlan.name,
@@ -77,6 +79,14 @@ const props = defineProps({
     type: Object,
   }
 })
+
+const rules = [
+  value => {
+    if (value) return true
+
+    return 'You must enter a first name.'
+  },
+];
 
 const emit = defineEmits(['update:modelValue', 'close'])
 
@@ -100,6 +110,10 @@ watch(show, (first, second) => {
 });
 
 async function onSubmit() {
+  const { valid } = await form.value.validate();
+
+  if (!valid) return
+
   show.value = true;
   loading.value = true;
 

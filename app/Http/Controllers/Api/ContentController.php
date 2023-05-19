@@ -28,7 +28,7 @@ class ContentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -49,10 +49,8 @@ class ContentController extends Controller
         $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
         $additional['user'] = $user->toArray();
 
-        if ($authUser && ( $authUser->subscribed($user->id ?? '') || $authUser->id===$user->id)) {
-            return ContentResource::collection($query)->additional($additional);
-        }
-        return ContentPreviewResource::collection($query)->additional($additional);
+        return (new ContentResource($query,$user))::collection($query)->additional($additional);
+
     }
 
     /**

@@ -28,6 +28,7 @@ class CreateContentRequest extends FormRequest
             'properties' => 'required|array',
             'properties.title' => 'required',
             'properties.description' => 'required',
+            'properties.isPublic' => 'required',
             'file' => 'required|mimes:jpeg,jpg,png,gif,mp4,mov,avi'
         ];
     }

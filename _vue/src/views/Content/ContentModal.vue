@@ -15,10 +15,23 @@
                             <v-col cols="12" sm="12" md="12" class="m-0 p-0">
                                 <v-textarea v-model="content.description"  label="Description" variant="outlined"></v-textarea>
                             </v-col>
+                          <v-radio-group
+                              v-model="content.isPublic"
+                              inline
+                          >
+                            <v-radio
+                                label="Private"
+                                :value="false"
+                            ></v-radio>
+                            <v-radio
+                                label="Public"
+                                :value="true"
+                            ></v-radio>
+
+                          </v-radio-group>
                             <v-col cols="12" sm="12" md="12" class="m-0 p-0">
                                 <v-file-input @change="onFileSelected"></v-file-input>
                             </v-col>
-
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -64,6 +77,7 @@ const content = ref({
   id: props.content.id,
   title: props.content.title,
   description: props.content.description,
+  isPublic: props.content.isPublic,
 })
 
 
@@ -78,6 +92,7 @@ onUpdated(() => {
   content.value = {
     title: props.content.title,
     description: props.content.description,
+    isPublic: props.content.isPublic,
   }
 })
 
@@ -95,6 +110,7 @@ async function onSubmit() {
   const formData = new FormData();
   formData.append('properties[title]', content.value.title);
   formData.append('properties[description]', content.value.description);
+  formData.append('properties[isPublic]', content.value.isPublic);
   formData.append('file', file.value);
 
   store.dispatch('createContent', formData)
