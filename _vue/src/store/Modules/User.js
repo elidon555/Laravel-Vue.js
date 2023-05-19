@@ -4,10 +4,12 @@ export const User = {
     state: () => ({
         token: sessionStorage.getItem("TOKEN"),
         data: JSON.parse(sessionStorage.getItem("AUTH")) || {},
+        guest: true
     }),
     mutations: {
         setUser(state, user) {
             state.data = user;
+            state.guest= false;
             if (user) {
                 sessionStorage.setItem("AUTH", JSON.stringify(user));
             } else {
@@ -16,6 +18,7 @@ export const User = {
         },
         setToken(state, token) {
             state.token = token;
+            state.guest= false;
             if (token) {
                 sessionStorage.setItem("TOKEN", token);
             } else {
@@ -24,7 +27,8 @@ export const User = {
         },
     },
     actions: {
-        async getCurrentUser({ commit }, data) {
+        async getCurrentUser({ commit, state }, data) {
+            if (state.guest===true) return;
             try {
                 const response = await axiosClient.post("/user", data);
                 commit("setUser", response.data);

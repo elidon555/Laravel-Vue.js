@@ -10,6 +10,7 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.9.0",
     "@mdi/font": "^7.2.96",
+    "@syncfusion/ej2-vue-buttons": "^21.2.5",
     "@vue-hero-icons/outline": "^1.7.2",
     "@vueform/multiselect": "^2.6.2",
     "@vueup/vue-quill": "^1.2.0",

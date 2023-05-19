@@ -168,7 +168,7 @@ function getContents(url = null) {
     url,
     search: search.value,
     per_page: perPage.value,
-    id:userId.value
+    id:userId.value || user.value.data.id
   }).then(response=>{
     loader.hide()
   });

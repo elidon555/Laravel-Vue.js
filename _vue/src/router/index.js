@@ -40,7 +40,8 @@ const routes = [
       {
         path: 'dashboard',
         name: 'app.dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: { middleware: [auth,role(['role',''])] },
       },
       {
         path: 'contents/:id?',
@@ -92,6 +93,8 @@ const routes = [
         path: 'profile',
         name: 'app.profile',
         component: Profile,
+        meta: { middleware: [auth] }
+
       },
       {
         path: '/report',

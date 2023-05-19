@@ -33,15 +33,6 @@
   <Transition>
     <div v-show="!contents.loading">
       <div v-if="!contents.loading">
-        <div class="flex items-center justify-between ">
-          <span></span>
-          <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
-                  @click="showAddNewModal"
-                  class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Add new Content
-          </button>
-        </div>
         <h1 class="text-3xl font-semibold text-center mt-3"><br>Recent posts by {{contents.user.name}}</h1>
       </div>
     </div>
@@ -49,6 +40,11 @@
 
   <ContentsTable v-show="!contents.loading" />
   <ContentModal v-model="showContentModal" :content="contentModel" @close="onModalClose"></ContentModal>
+  <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
+          @click="showAddNewModal"
+          class="animate-pulse fixed bottom-10 right-8 w-15 h-15 font-semibold   p-0 w-16 h-16 bg-indigo-600 rounded-full hover:bg-indigo-700 active:shadow-lg mouse shadow transition ease-in duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  ><v-icon icon="mdi-plus" size="x-large"></v-icon></button>
 
 </template>
 

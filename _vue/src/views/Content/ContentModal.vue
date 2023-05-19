@@ -1,6 +1,6 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-    <v-dialog v-model="show" width="576">
+    <v-dialog scroll-strategy="none" v-model="show" width="576">
         <v-card>
             <form @submit.prevent="onSubmit">
                 <v-card-title>

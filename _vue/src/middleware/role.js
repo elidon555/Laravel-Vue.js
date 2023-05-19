@@ -1,11 +1,15 @@
 export default function role(requiredRoles) {
   return function ({next, store}) {
-    if (checkRoles(store.state.user.roles,requiredRoles)){
-      next()
-    } else next({name: "notFound"});
+    if (checkRoles(store.state.user.roles, requiredRoles)) {
+      next();
+    } else {
+      next({ name: "app.profile" });
+    }
   };
 }
 
-  function checkRoles(userRoles, requiredRoles) {
+function checkRoles(userRoles, requiredRoles) {
+  if (userRoles && requiredRoles){
     return userRoles.some(role => requiredRoles.includes(role.name));
   }
+}
