@@ -160,10 +160,8 @@ router.beforeEach((to, from, next) => {
     return next();
   }
 
-  middleware[0]({
-    ...context,
-    next: middlewarePipeline(context, middleware, 1),
-  });
+  const pipeline = middlewarePipeline(context, middleware, 0);
+  pipeline();
 });
 
 
