@@ -23,6 +23,7 @@ import guest from "../middleware/guest";
 import auth from "../middleware/auth";
 import middlewarePipeline from "./middlewarePipeline";
 import role from "../middleware/role";
+import Logout from "../views/Logout.vue";
 
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
     component: AppLayout,
     meta: { middleware: [auth] },
     children: [
+      {
+        path: '/logout',
+        name: 'logout',
+        component: Logout,
+      },
       {
         path: 'dashboard',
         name: 'app.dashboard',

@@ -1,6 +1,6 @@
 <template>
     <!--  <div v-if="planStore.planData.clientSecret">-->
-    <div class="max-w-screen-sm m-auto border-lg rounded-lg">
+    <div class="max-w-sm m-auto border-lg rounded-lg">
         <ul class="my-7 mx-3 space-y-2" role="list">
             <li class="flex space-x-3">
                 <!-- Icon -->

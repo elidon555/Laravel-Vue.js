@@ -8,15 +8,15 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6" md="12">
+                        <v-row dense="dense">
+                            <v-col cols="12" sm="12" md="12">
                                 <v-text-field v-model="subscriptionPlan.name" :rules="rules"  label="Name" variant="outlined"></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="12">
+                            <v-col cols="12" sm="12" md="12">
                                 <v-text-field type="number" v-model="subscriptionPlan.price"  label="Price" variant="outlined" :disabled="subscriptionPlan.id!==''"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="12">
+                            <v-col cols="12" sm="12" md="12">
                               <v-select
                                   :disabled="subscriptionPlan.id!==''"
                                   v-model="subscriptionPlan.interval"

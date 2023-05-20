@@ -27,7 +27,8 @@ export const SubscriptionPlans = {
                     to: data.meta.to,
                     total: data.meta.total,
                 });
-            } else if (userId) {
+            }
+            if (userId) {
                 let monthlyPlans = [];
                 let yearlyPlans = [];
                 for (const plan of data.data) {
@@ -40,6 +41,7 @@ export const SubscriptionPlans = {
                 state.monthly = monthlyPlans;
                 state.yearly = yearlyPlans;
             }
+            state.loading = loading;
         }
     },
     actions: {

@@ -1,6 +1,6 @@
 <template>
   <br><br>
-    <SignUpForm class="w-25 m-auto"></SignUpForm>
+    <SignUpForm/>
 </template>
 <script>
 //importing bootstrap 5 Modules

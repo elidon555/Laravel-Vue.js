@@ -87,6 +87,9 @@ function editContent(u) {
 
 function getPlanName(){
 
+  if (user.value.data.subscriptions) {
+    return '';
+  }
   const userSubscription = user.value.data.subscriptions.find(subscription =>
       contents.value.subscriptionPlans.some(plan => plan.price_id === subscription.stripe_price)
   );

@@ -14,15 +14,14 @@
 
     <v-spacer></v-spacer>
 
-
     <router-link :to="{name: 'login'}">
-      <v-btn v-if="currentUser.id === undefined" class="mr-5 pr-5" icon>
+      <v-btn v-if="currentUser.token === null" class="mr-5 pr-5" icon>
         Login
         <v-icon>mdi-login</v-icon>
       </v-btn>
     </router-link>
 
-    <v-menu v-if = "currentUser.id" location="start">
+    <v-menu v-if = "currentUser.token !== null" location="start">
           <template v-slot:activator="{ props }">
               <v-btn
                   v-bind="props"
@@ -42,6 +41,7 @@
                   </v-list-item>
               </router-link>
 
+            <router-link :to="{name: 'logout'}" >
               <v-list-item @click="logout">
                   <v-list-item-title>
                       <div class="d-flex">
@@ -49,6 +49,7 @@
                       </div>
                   </v-list-item-title>
               </v-list-item>
+            </router-link>
           </v-list>
       </v-menu>
   </v-app-bar>
@@ -64,13 +65,13 @@ import {computed} from "vue";
 
 const emit = defineEmits(['toggle-sidebar'])
 
-const currentUser = computed(() => store.state.user.data);
+const currentUser = computed(() => store.state.user);
 
 function logout() {
-  store.dispatch('logout')
-    .then(() => {
-      router.push({name: 'login'})
-    })
+  // store.dispatch('logout')
+  //   .then(() => {
+  //     router.push({name: 'logout'})
+  //   })
 }
 
 </script>
