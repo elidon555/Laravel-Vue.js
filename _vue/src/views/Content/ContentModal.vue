@@ -21,11 +21,11 @@
                           >
                             <v-radio
                                 label="Private"
-                                :value="false"
+                                :value="0"
                             ></v-radio>
                             <v-radio
                                 label="Public"
-                                :value="true"
+                                :value="1"
                             ></v-radio>
 
                           </v-radio-group>
@@ -87,9 +87,6 @@ const content = ref({
   isPublic: props.content.isPublic,
 })
 
-
-
-
 const show = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
@@ -118,6 +115,7 @@ async function onSubmit() {
   formData.append('properties[title]', content.value.title);
   formData.append('properties[description]', content.value.description);
   formData.append('properties[isPublic]', content.value.isPublic);
+  console.log(content.value.isPublic)
   formData.append('file', file.value);
 
   store.dispatch('createContent', formData)

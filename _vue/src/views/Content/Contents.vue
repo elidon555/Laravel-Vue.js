@@ -72,7 +72,7 @@ const DEFAULT_CONTENT = {
   id: '',
   title: '',
   description:'',
-  isPublic:false,
+  isPublic : 0,
 }
 
 const contentModel = ref({...DEFAULT_CONTENT})

@@ -40,9 +40,11 @@ export const Contents = {
             try {
                 commit('setContents', [true])
                 url = url || '/contents'
-                if (!rootState.user.token){
+
+                if (!rootState.user.token && url==='/contents'){
                     url = 'preview'+url
                 }
+
                 const params = {
                     per_page: per_page || state.limit,
                     search,
@@ -51,6 +53,7 @@ export const Contents = {
                 const response = await axiosClient.get(url, { params })
                 commit('setContents', [false, response.data])
             } catch (error) {
+                // debugger
                 console.error('Error getting contents:', error)
                 commit('setContents', [false])
             }

@@ -35,21 +35,22 @@ class ContentController extends Controller
         $authUser = auth()->user();
 
         $perPage = request('per_page', 10);
-        $search = request('search', '');
-        $userId = request('id',$authUser->id ?? '');
+        $userIdContent = request('id',$authUser->id ?? '');
 
-        $user = User::findOrFail($userId);
-
+        $user = User::findOrFail($userIdContent);
 
         $query = $user->media()
-//            ->where('title', 'like', "%$search%")
-//            ->where('media.collection_name','=','images')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
-        $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userId)->get()->toArray();
+        $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userIdContent)->get()->toArray();
         $additional['user'] = $user->toArray();
 
-        return (new ContentResource($query,$user))::collection($query)->additional($additional);
+        //check if owner of content or is subscribed
+        if ($authUser && ($authUser->subscribed($userIdContent) || $authUser->id==$userIdContent)){
+            $isSubbed = true;
+        }
+
+        return ContentResource::customCollection($query,$isSubbed ?? false)->additional($additional);
 
     }
 
