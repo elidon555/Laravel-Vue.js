@@ -3,14 +3,14 @@
     <h5 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Billing details</h5>
 
     <!-- Add a country input field if you live outside of the USA -->
-    <v-text-field v-model="billingInfo.name" val="billingInfo.name" label="Name" type="text" />
-    <v-text-field v-model="billingInfo.email" label="E-mail" type="email" />
-    <v-text-field v-model="billingInfo.address" label="Address" type="text" />
-    <v-text-field v-model="billingInfo.city" label="City" type="text"  />
-    <v-text-field v-model="billingInfo.country" label="Country" type="text"  />
+    <v-text-field v-model="billingInfo.name" :rules="rules" val="billingInfo.name" label="Name" type="text" />
+    <v-text-field v-model="billingInfo.email" :rules="rules" label="E-mail" type="email" />
+    <v-text-field v-model="billingInfo.address" :rules="rules" label="Address" type="text" />
+    <v-text-field v-model="billingInfo.city" :rules="rules" label="City" type="text"  />
+    <v-text-field v-model="billingInfo.country" :rules="rules" label="Country" type="text"  />
     <div class="grid grid-cols-2 gap-2">
-      <v-text-field v-model="billingInfo.state" label="State" type="text" />
-      <v-text-field v-model="billingInfo.postal_code" label="Postal Code" type="text"  />
+      <v-text-field v-model="billingInfo.state" :rules="rules" label="State" type="text" />
+      <v-text-field v-model="billingInfo.postal_code" :rules="rules" label="Postal Code" type="text"  />
     </div>
     <div class="justify-center m-2">
       <v-btn
@@ -31,6 +31,14 @@ import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 
 const loading = ref(false)
+
+const rules = [
+  value => {
+    if (value) return true
+
+    return 'Field is empty.'
+  },
+];
 
 const billingInfo = ref(computed(() => store.state.billingInfo));
 

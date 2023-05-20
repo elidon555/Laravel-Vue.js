@@ -44,23 +44,9 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref, watch} from 'vue'
-import {
-    Dialog,
-    DialogPanel,
-    DialogTitle, Listbox, ListboxButton, ListboxOption, ListboxOptions,
-    Switch,
-    SwitchGroup,
-    SwitchLabel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
-// import {ExclamationIcon} from '@heroicons/vue/outline'
-import CustomInput from "../../components/core/CustomInput.vue";
-import store from "../../store/index.js";
-import Spinner from "../../components/core/Spinner.vue";
-import { CheckIcon, ChevronDoubleUpIcon } from '@heroicons/vue/solid'
+import {computed, onUpdated, ref, watch} from 'vue'
 
+import store from "../../store/index.js";
 
 const role = ref({
   id: props.role.id,

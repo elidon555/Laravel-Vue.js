@@ -1,94 +1,96 @@
 <template>
-  <div class="mb-2 flex items-center justify-between">
-    <h1 class="text-3xl font-semibold">Dashboard</h1>
-    <div class="flex items-center">
+  <div class="m-4">
+    <div class="mb-2 flex items-center justify-between">
+      <h1 class="text-3xl font-semibold">Dashboard</h1>
+      <div class="flex items-center">
 
-      <v-select
-          :items="dateOptions"
-          v-model="chosenDate"
-          density="compact"
-          @update:modelValue="onDatePickerChange()"
-      >
-        <template  v-slot:prepend>Change Date Period</template>
-      </v-select>
+        <v-select
+            :items="dateOptions"
+            v-model="chosenDate"
+            density="compact"
+            @update:modelValue="onDatePickerChange()"
+        >
+          <template  v-slot:prepend>Change Date Period</template>
+        </v-select>
 
+      </div>
     </div>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-    <!--    Active Customers-->
-    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
-      <label class="text-lg font-semibold block mb-2">Active Users</label>
-      <template v-if="!loading.subscribersCount">
-        <span class="text-3xl font-semibold">{{ subscribersCount }}</span>
-      </template>
-      <Spinner v-else text="" class=""/>
-    </div>
-    <!--/    Active Customers-->
-    <!--    Active Products -->
-    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
-         style="animation-delay: 0.1s">
-      <label class="text-lg font-semibold block mb-2">Active Subscriptions</label>
-      <template v-if="!loading.productsCount">
-        <span class="text-3xl font-semibold">{{ productsCount }}</span>
-      </template>
-      <Spinner v-else text="" class=""/>
-    </div>
-    <!--/    Active Products -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+      <!--    Active Customers-->
+      <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+        <label class="text-lg font-semibold block mb-2">Active Users</label>
+        <template v-if="!loading.subscribersCount">
+          <span class="text-3xl font-semibold">{{ subscribersCount }}</span>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
+      <!--/    Active Customers-->
+      <!--    Active Products -->
+      <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
+           style="animation-delay: 0.1s">
+        <label class="text-lg font-semibold block mb-2">Active Subscriptions</label>
+        <template v-if="!loading.productsCount">
+          <span class="text-3xl font-semibold">{{ productsCount }}</span>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
+      <!--/    Active Products -->
 
-    <!--    Total Income -->
-    <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center"
-         style="animation-delay: 0.3s">
-      <label class="text-lg font-semibold block mb-2">Total Income</label>
-      <template v-if="!loading.totalIncome">
-        <span class="text-3xl font-semibold">{{ totalIncome }}</span>
-      </template>
-      <Spinner v-else text="" class=""/>
+      <!--    Total Income -->
+      <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center"
+           style="animation-delay: 0.3s">
+        <label class="text-lg font-semibold block mb-2">Total Income</label>
+        <template v-if="!loading.totalIncome">
+          <span class="text-3xl font-semibold">{{ totalIncome }}</span>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
+      <!--/    Total Income -->
     </div>
-    <!--/    Total Income -->
-  </div>
 
-  <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
-    <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-dark py-6 px-5 rounded-lg shadow">
-      <label class="text-lg font-semibold block mb-2">Latest Subscriptions</label>
-      <template v-if="!loading.latestSubscriptions">
-        <div v-for="o of latestSubscriptions" :key="o.id" class="py-2 px-3 hover:bg-black rounded-lg">
-          <p>
+    <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-dark py-6 px-5 rounded-lg shadow">
+        <label class="text-lg font-semibold block mb-2">Latest Subscriptions</label>
+        <template v-if="!loading.latestSubscriptions">
+          <div v-for="o of latestSubscriptions" :key="o.id" class="py-2 px-3 hover:bg-black rounded-lg">
+            <p>
             <span class="text-light font-semibold">
               Payment #{{ o.id }}
             </span>
-            created {{ new Date(o.created_at).toLocaleString("en-US", options) }}. items
-          </p>
-          <p class="flex justify-between">
-            <span>Plan: {{ o.subscription_plan.name }} | User: {{o.user.name}}</span>
-            <span>{{ $filters.currencyUSD(o.amount) }}</span>
-          </p>
-        </div>
-      </template>
-      <Spinner v-else text="" class=""/>
-    </div>
-    <div class="bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
-      <label class="text-lg font-semibold block mb-2">Subscriptions by Country</label>
-      <template v-if="!loading.subscriptionsByCountry">
-        <DoughnutChart :width="140" :height="200" :data="subscriptionsByCountry"/>
-      </template>
-      <Spinner v-else text="" class=""/>
-    </div>
-    <div class="bg-dark py-6 px-5 rounded-lg shadow">
+              created {{ new Date(o.created_at).toLocaleString("en-US", options) }}. items
+            </p>
+            <p class="flex justify-between">
+              <span>Plan: {{ o.subscription_plan.name }} | User: {{o.user.name}}</span>
+              <span>{{ $filters.currencyUSD(o.amount) }}</span>
+            </p>
+          </div>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
+      <div class="bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+        <label class="text-lg font-semibold block mb-2">Subscriptions by Country</label>
+        <template v-if="!loading.subscriptionsByCountry">
+          <DoughnutChart :width="140" :height="200" :data="subscriptionsByCountry"/>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
+      <div class="bg-dark py-6 px-5 rounded-lg shadow">
 
-      <label class="text-lg font-semibold block mb-2">Latest Customers</label>
-      <template v-if="!loading.latestCustomers">
-        <router-link :to="{name: 'app.contents', params: {id: c.user.id}}" v-for="c of latestCustomers" :key="c.id"
-                     class="mb-3 flex">
-          <div class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-full mr-2">
-            <UserIcon class="w-5"/>
-          </div>
-          <div>
-            <h3>{{ c.user.name }}</h3>
-            <p>{{ c.user.email }}</p>
-          </div>
-        </router-link>
-      </template>
-      <Spinner v-else text="" class=""/>
+        <label class="text-lg font-semibold block mb-2">Latest Customers</label>
+        <template v-if="!loading.latestCustomers">
+          <router-link :to="{name: 'app.contents', params: {id: c.user.id}}" v-for="c of latestCustomers" :key="c.id"
+                       class="mb-3 flex">
+            <div class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-full mr-2">
+              <UserIcon class="w-5"/>
+            </div>
+            <div>
+              <h3>{{ c.user.name }}</h3>
+              <p>{{ c.user.email }}</p>
+            </div>
+          </router-link>
+        </template>
+        <Spinner v-else text="" class=""/>
+      </div>
     </div>
   </div>
 

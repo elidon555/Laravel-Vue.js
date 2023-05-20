@@ -65,7 +65,7 @@ const stripe = computed(() => store.state.stripe);
 const showContentModal = ref(false);
 
 const route = useRoute()
-const userId = computed(() => route.params.id ? route.params.id : user.value.data.id)
+const userId = computed(() => route.params.id || user.value.data.id)
 
 const DEFAULT_CONTENT = {
   id: '',
@@ -80,6 +80,9 @@ function showAddNewModal() {
     showContentModal.value = true
 }
 
+onMounted(()=>{
+})
+
 function editContent(u) {
   contentModel.value = u;
   showAddNewModal();
@@ -87,7 +90,7 @@ function editContent(u) {
 
 function getPlanName(){
 
-  if (user.value.data.subscriptions) {
+  if (!user.value.data.subscriptions.length) {
     return '';
   }
   const userSubscription = user.value.data.subscriptions.find(subscription =>

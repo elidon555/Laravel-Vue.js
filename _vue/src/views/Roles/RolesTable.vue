@@ -146,12 +146,9 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
-import Spinner from "../../components/core/Spinner.vue";
 import {USERS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
-import RoleModal from "./RoleModal.vue";
 
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');

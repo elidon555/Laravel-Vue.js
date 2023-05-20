@@ -64,6 +64,7 @@ let errorMsg = ref("");
 
 const route = useRoute()
 const userId = computed(() => route.params.user_id)
+const authUser = computed(() => store.state.user.data);
 
 const user = ref({
   email: '',
@@ -82,11 +83,10 @@ function login() {
 
 function redirect(){
   const userRoles = store.state.user.data.roles.map(role=>role['name'])
-    console.log(userRoles)
   let route = 'app.dashboard';
 
   if (userRoles.includes('user')) route = 'app.contents'
-  router.push({name:route,params:{id:userId.value ?? ''}})
+  router.push({name:route,params:{id:userId.value || authUser.value.id || ''}})
 }
 
 onMounted(()=>{

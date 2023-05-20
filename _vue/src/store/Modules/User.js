@@ -11,9 +11,11 @@ export const User = {
             state.data = user;
             state.guest= false;
             if (user) {
+                console.log('ok')
                 sessionStorage.setItem("AUTH", JSON.stringify(user));
             } else {
                 sessionStorage.removeItem("AUTH");
+                console.log('no ok')
             }
         },
         setToken(state, token) {
@@ -28,7 +30,8 @@ export const User = {
     },
     actions: {
         async getCurrentUser({ commit, state }, data) {
-            if (state.guest===true) return;
+            console.log(state.guest)
+            if (state.guest===true && state.token===null) return;
             try {
                 const response = await axiosClient.post("/user", data);
                 commit("setUser", response.data);

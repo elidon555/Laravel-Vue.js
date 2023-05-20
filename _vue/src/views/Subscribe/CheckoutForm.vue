@@ -28,6 +28,9 @@
                 >
             </li>
         </ul>
+<!--        <div class="mt-5">-->
+<!--          <StripeElements></StripeElements>-->
+<!--        </div>-->
         <div class="mt-5">
 <!--            <StripeElements></StripeElements>-->
             <!-- stripe -->
@@ -67,21 +70,22 @@ const disabled = ref(false)
 const card = ref(null)
 
 const stripe = window.Stripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+const key = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 const elements = stripe.elements()
 const style = {
   base: {
-    color: '#32325d',
-    colorPrimary: '#6366f1',
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: 'antialiased',
-    fontSize: '16px',
-    '::placeholder': {
-      color: '#aab7c4'
+    color: "#CFD7DF",
+    fontWeight: 500,
+    fontFamily: "Inter, Open Sans, Segoe UI, sans-serif",
+    fontSize: "18px",
+    fontSmoothing: "antialiased",
+
+    "::placeholder": {
+      color: "#CFD7DF"
     }
   },
   invalid: {
-    color: '#fa755a',
-    iconColor: '#fa755a'
+    color: "#E25950"
   }
 }
 
@@ -130,7 +134,6 @@ const Submit = async () => {
     store.dispatch('createStripeSubscription', data)
         .then(response => {
             store.dispatch("getCurrentUser")
-            router.go()
         })
         .catch(err => {
           // debugger;

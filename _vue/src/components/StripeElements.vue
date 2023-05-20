@@ -1,20 +1,31 @@
 <template>
     <StripeElements
-        class="w-50 text-light"
+        class="w-100 text-light"
         v-slot="{ elements, instance }"
         ref="elms"
         :stripe-key="stripeKey"
         :instance-options="instanceOptions"
         :elements-options="elementsOptions"
     >
+      <div class="bg-dark p-2 m-2 rounded-lg">
         <StripeElement
             class="text-light"
             ref="card"
             :elements="elements"
             :options="cardOptions"
         />
+      </div>
+
     </StripeElements>
-    <button type="button" @click="pay">Pay</button>
+  <div class="justify-center mx-3">
+    <v-btn
+        color="blue"
+        @click="pay"
+        class="w-full h-8 mb-3 text-white shadow-md bg-indigo-500 border mt-5 rounded-md hover:bg-indigo-400 pb-1"
+    >
+      Pay with Stripe
+    </v-btn>
+  </div>
 </template>
 
 <script >
@@ -28,6 +39,23 @@ export default defineComponent({
         StripeElement,
     },
     setup() {
+      const style = {
+        base: {
+          color: "#CFD7DF",
+          fontWeight: 500,
+          fontFamily: "Inter, Open Sans, Segoe UI, sans-serif",
+          fontSize: "18px",
+          fontSmoothing: "antialiased",
+
+          "::placeholder": {
+            color: "#CFD7DF"
+          }
+        },
+        invalid: {
+          color: "#E25950"
+        }
+      }
+
         const stripeKey = ref(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // test key
         const instanceOptions = ref({
             // https://stripe.com/docs/js/initializing#init_stripe_js-options
@@ -37,9 +65,7 @@ export default defineComponent({
         });
         const cardOptions = ref({
             // https://stripe.com/docs/stripe.js#element-options
-            value: {
-                postalCode: '12345',
-            },
+          style:style
         });
         const stripeLoaded = ref(false);
         const card = ref();
@@ -64,6 +90,7 @@ export default defineComponent({
             cardOptions,
             card,
             elms,
+          style,
             pay,
         };
     },

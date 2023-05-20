@@ -18,7 +18,6 @@ import Profile from "../views/Profile/Profile.vue";
 import SubscriptionPlans from "../views/SubscriptionPlans/SubscriptionPlans.vue";
 import Payments from "../views/Payments/Payments.vue";
 import Subscriptions from "../views/Subscriptions/Subscriptions.vue";
-import PlanView from "../views/Subscribe/PlanView.vue";
 import guest from "../middleware/guest";
 import auth from "../middleware/auth";
 import middlewarePipeline from "./middlewarePipeline";
@@ -47,10 +46,10 @@ const routes = [
         path: 'dashboard',
         name: 'app.dashboard',
         component: Dashboard,
-        meta: { middleware: [auth,role(['role',''])] },
+        meta: { middleware: [auth,role(['admin'])] },
       },
       {
-        path: 'contents/:id?',
+        path: 'contents/:id',
         name: 'app.contents',
         component: Contents,
       },
@@ -58,13 +57,8 @@ const routes = [
         path: 'users',
         name: 'app.users',
         component: Users,
-        meta: { middleware: [guest, role(['admin']) ] }
+        meta: { middleware: [auth, role(['admin']) ] }
       },
-        {
-            path: 'test',
-            name: 'app.test',
-            component: PlanView,
-        },
       {
         path: 'roles',
         name: 'app.roles',
@@ -106,7 +100,7 @@ const routes = [
         path: '/report',
         name: 'reports',
         component: Report,
-        meta: { middleware: [guest, role(['admin','finance'])] },
+        meta: { middleware: [auth, role(['admin','finance'])] },
         children: [
           {
             path: 'subscriptions/:date?',

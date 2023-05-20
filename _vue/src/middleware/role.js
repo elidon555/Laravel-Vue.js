@@ -1,6 +1,6 @@
 export default function role(requiredRoles) {
   return function ({next, store}) {
-    if (checkRoles(store.state.user.roles, requiredRoles)) {
+    if (checkRoles(store.state.user.data.roles, requiredRoles)) {
       next();
     } else {
       next({ name: "app.profile" });
