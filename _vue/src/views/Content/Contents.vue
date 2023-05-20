@@ -21,10 +21,10 @@
         <PlanView v-if="stripe.clientSecret ===''"></PlanView>
     </div>
     <div v-else>
-      <div v-if="getPlanName()" class="d-flex justify-content-center mt-8">
-        <v-btn class="m-auto" color="blue" variant="tonal">Plan: {{getPlanName()}}</v-btn>
+      <div v-if="planName!==''" class="flex justify-content-center mt-8">
+        <v-btn color="blue" variant="tonal">Plan: {{planName}}</v-btn>
       </div>
-      <div v-else-if=" user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length " class="mt-6">
+      <div v-else-if=" user.data.id !== parseInt(userId) && planName==='' && contents.subscriptionPlans.length " class="mt-6">
         <PlanView v-if="stripe.clientSecret ===''"/>
           <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId===''"/>
           <CheckoutForm v-else-if="stripe.clientId !==''" />
@@ -61,6 +61,7 @@ import SignUpForm from "../Subscribe/SignUpForm.vue";
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);
 const stripe = computed(() => store.state.stripe);
+const planName = computed(() => getPlanName());
 
 const showContentModal = ref(false);
 
