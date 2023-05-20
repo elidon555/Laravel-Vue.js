@@ -2,7 +2,7 @@
 <template>
     <v-dialog scroll-strategy="none" v-model="show" width="576">
         <v-card>
-            <form @submit.prevent="onSubmit">
+            <v-form ref="form" @submit.prevent="onSubmit">
                 <v-card-title>
                     <span class="text-h5"> {{ content.id ? `Update content: "${props.content.title}"` : 'Create new Content' }}</span>
                 </v-card-title>
@@ -10,10 +10,10 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="12" md="12" class="m-0 p-0">
-                                <v-text-field v-model="content.title"  label="Title" variant="outlined"></v-text-field>
+                                <v-text-field v-model="content.title" :rules="rules" label="Title" variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="12" md="12" class="m-0 p-0">
-                                <v-textarea v-model="content.description"  label="Description" variant="outlined"></v-textarea>
+                                <v-textarea v-model="content.description" :rules="rules" label="Description" variant="outlined"></v-textarea>
                             </v-col>
                           <v-radio-group
                               v-model="content.isPublic"
@@ -44,7 +44,7 @@
                         Save
                     </v-btn>
                 </v-card-actions>
-            </form>
+            </v-form>
         </v-card>
     </v-dialog>
 
@@ -72,6 +72,13 @@ const roles = ref([]);
 const permissions = ref([]);
 const loading = ref(false)
 const file = ref(false)
+const form = ref();
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
 
 const content = ref({
   id: props.content.id,

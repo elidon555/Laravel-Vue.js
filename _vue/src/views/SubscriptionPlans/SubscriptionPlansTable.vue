@@ -110,7 +110,7 @@
     >
       <td>{{ subscriptionPlan.id }}</td>
       <td>{{ subscriptionPlan.name }}</td>
-      <td>{{ subscriptionPlan.plan.price }}</td>
+      <td>{{ subscriptionPlan.price }}</td>
       <td>{{ subscriptionPlan.interval }}</td>
       <td v-html="subscriptionPlan.features"/>
       <td>{{ subscriptionPlan.created_at }}</td>

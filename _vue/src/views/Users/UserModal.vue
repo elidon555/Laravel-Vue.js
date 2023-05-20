@@ -1,21 +1,21 @@
 <template>
   <v-dialog v-model="show" width="576">
     <v-card>
-      <form @submit.prevent="onSubmit">
+      <v-form ref="form" @submit.prevent="onSubmit">
         <v-card-title>
           <span class="text-h5"> {{ user.id ? `Update user: "${props.user.name}"` : 'Create new User' }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row dense="dense">
               <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="user.name"  label="Name" variant="outlined"></v-text-field>
+                <v-text-field density="compact" v-model="user.name" :rules="rules"  label="Name" variant="outlined"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="user.email"  label="Email" variant="outlined"></v-text-field>
+                <v-text-field density="compact" v-model="user.email" :rules="rules"  label="Email" variant="outlined"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="user.password"  label="Password" variant="outlined"></v-text-field>
+                <v-text-field density="compact" v-model="user.password" label="Password" variant="outlined"></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="12" >
@@ -49,7 +49,7 @@
             Save
           </v-btn>
         </v-card-actions>
-      </form>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
@@ -74,6 +74,14 @@ const roles = ref([]);
 const permissions = ref([]);
 const loading = ref(false)
 
+const form = ref();
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
+
 const props = defineProps({
     modelValue: Boolean,
     roles: Array,
@@ -83,6 +91,8 @@ const props = defineProps({
         type: Object,
     }
 })
+
+
 
 const emit = defineEmits(['update:modelValue', 'close'])
 
@@ -108,45 +118,29 @@ watch(show, (first, second) => {
     if (first===false) emit('close')
 });
 
-function onSubmit() {
-    show.value = true
-    // user.value.roles.value = roles
-    // user.value.permissions.value = permissions
-    if (user.value.id) {
-        store.dispatch('updateUser', user.value)
-            .then(response => {
-                loading.value = false;
-                if (response.status === 200) {
-                    notification.notify({
-                        title: "Success!",
-                        type: "success",
-                    });
-                    // TODO show notification
-                    store.dispatch('getUsers')
-                    show.value=false
-                }
-            })
-            .catch(response=>{
-              show.value = true;
-            })
-    } else {
-        store.dispatch('createUser', user.value)
-            .then(response => {
-              show.value = false;
-                if (response.status === 201) {
-                    // TODO show notification
-                    store.dispatch('getUsers')
-                    notification.notify({
-                        title: "Success!",
-                        type: "success",
-                    });
-                    show.value=false
-                }
-            })
-            .catch(err => {
-              show.value = true;
-                debugger;
-            })
+async function onSubmit() {
+  show.value = true
+  const {valid} = await form.value.validate();
+
+  if (!valid) return
+
+  show.value = true;
+  loading.value = true;
+
+  const action = user.value.id ? 'updateUser' : 'createUser';
+
+  try {
+    const response = await store.dispatch(action, user.value);
+
+    if ([200, 201].includes(response.status)) {
+      notification.notify({ title: "Success!", type: "success" });
+      await store.dispatch('getUsers');
     }
+    show.value = false;
+  } catch (error) {
+    notification.notify({ title: "Error!", type: "error" });
+  } finally {
+    loading.value = false;
+  }
 }
 </script>

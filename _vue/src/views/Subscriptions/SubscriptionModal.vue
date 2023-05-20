@@ -1,13 +1,13 @@
 <template>
   <v-dialog v-model="show" width="576">
     <v-card>
-      <form @submit.prevent="onSubmit">
+      <v-form @submit.prevent="onSubmit">
         <v-card-title>
           <span class="text-h5"> {{ subscription.id ? `Update subscription: "${props.subscription.name}"` : 'Create new Subscription' }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row dense="dense">
               <v-col cols="12" sm="6" md="12">
                 <v-text-field density="compact" v-model="subscription.name"  label="Name" variant="outlined"></v-text-field>
               </v-col>
@@ -49,7 +49,7 @@
             Save
           </v-btn>
         </v-card-actions>
-      </form>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
@@ -90,6 +90,14 @@ const show = computed({
     get: () => props.modelValue,
     set: (value) => emit('update:modelValue', value)
 })
+
+const form = ref();
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
 
 
 onUpdated(() => {

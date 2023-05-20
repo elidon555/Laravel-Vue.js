@@ -2,18 +2,18 @@
 <template>
   <v-dialog v-model="show" width="576">
     <v-card>
-      <form @submit.prevent="onSubmit">
+      <v-form ref="form" @submit.prevent="onSubmit">
         <v-card-title>
           <span class="text-h5"> {{ role.id ? `Update role: "${props.role.name}"` : 'Create new Role' }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row dense="dense">
               <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="role.name"  label="Name" variant="outlined"></v-text-field>
+                <v-text-field density="compact" :rules="rules" v-model="role.name"  label="Name" variant="outlined"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="role.guard_name"  label="Guard name" variant="outlined"></v-text-field>
+                <v-text-field density="compact" :rules="rules" v-model="role.guard_name"  label="Guard name" variant="outlined"></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="12" >
@@ -37,7 +37,7 @@
             Save
           </v-btn>
         </v-card-actions>
-      </form>
+      </v-form>
     </v-card>
   </v-dialog>
 
@@ -47,6 +47,7 @@
 import {computed, onUpdated, ref, watch} from 'vue'
 
 import store from "../../store/index.js";
+import {useNotification} from "@kyvg/vue3-notification";
 
 const role = ref({
   id: props.role.id,
@@ -58,6 +59,13 @@ const role = ref({
 const roles = computed(() => store.state.roles);
 const permissions = ref([]);
 const loading = ref(false)
+const form = ref();
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
 
 const props = defineProps({
   modelValue: Boolean,
@@ -66,6 +74,9 @@ const props = defineProps({
     type: Object,
   }
 })
+
+const notification = useNotification()
+
 
 const emit = defineEmits(['update:modelValue', 'close'])
 
@@ -89,33 +100,30 @@ watch(show, (first, second) => {
     if (first===false) emit('close')
 });
 
-function onSubmit() {
-  loading.value = true
-    role.value.permissions= permissions;
-  if (role.value.id) {
-    store.dispatch('updateRole', role.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 200) {
-          // TODO show notification
-          store.dispatch('getRoles')
-            show.value=false
-        }
-      })
-  } else {
-    store.dispatch('createRole', role.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 201) {
-          // TODO show notification
-          store.dispatch('getRoles')
-            show.value=false
-        }
-      })
-      .catch(err => {
-        loading.value = false;
-        debugger;
-      })
+async function onSubmit() {
+
+  const {valid} = await form.value.validate();
+
+  if (!valid) return
+
+  show.value = true;
+  loading.value = true;
+  role.value.permissions = permissions;
+
+  const action = role.value.id ? 'updateRole' : 'createRole';
+
+  try {
+    const response = await store.dispatch(action, role.value);
+
+    if ([200, 201].includes(response.status)) {
+      notification.notify({title: "Success!", type: "success"});
+      await store.dispatch('getRoles');
+    }
+    show.value = false;
+  } catch (error) {
+    notification.notify({title: "Error!", type: "error"});
+  } finally {
+    loading.value = false;
   }
 }
 </script>

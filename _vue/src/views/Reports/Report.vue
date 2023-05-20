@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div>
-        <v-select  :items="dateOptions"  v-model="chosenDate" label="Date" @update:modelValue="onDatePickerChange"></v-select>
+        <v-select class="mt-2" density="compact" :items="dateOptions"  v-model="chosenDate" label="Date" @update:modelValue="onDatePickerChange"></v-select>
       </div>
     </div>
     <div class="bg-dark p-3 rounded-md mt-3 shadow-md">

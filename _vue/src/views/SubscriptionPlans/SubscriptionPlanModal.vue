@@ -64,7 +64,12 @@ const loading = ref(false)
 const file = ref(false)
 
 const form = ref();
-
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
 const subscriptionPlan = ref({
   id: props.subscriptionPlan.id,
   name: props.subscriptionPlan.name,
@@ -80,14 +85,6 @@ const props = defineProps({
     type: Object,
   }
 })
-
-const rules = [
-  value => {
-    if (value) return true
-
-    return 'Field is empty.'
-  },
-];
 
 const emit = defineEmits(['update:modelValue', 'close'])
 

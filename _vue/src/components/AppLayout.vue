@@ -5,7 +5,7 @@
       <Navbar @toggle-sidebar="toggleSidebar"/>
       <v-main class="bg-black">
 
-          <router-view></router-view>
+          <router-view :key="$route.path"></router-view>
 
       </v-main>
     </v-layout>

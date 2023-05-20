@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import store from "../../store";
 import {USERS_PER_PAGE} from "../../constants";
 import {useRoute} from "vue-router";

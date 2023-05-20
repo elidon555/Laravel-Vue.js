@@ -26,7 +26,7 @@
       </div>
       <div v-else-if=" user.data.id !== parseInt(userId) && planName==='' && contents.subscriptionPlans.length " class="mt-6">
         <PlanView v-if="stripe.clientSecret ===''"/>
-          <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId===''"/>
+          <SignUpForm v-else-if="stripe.clientSecret !==''"/>
           <CheckoutForm v-else-if="stripe.clientId !==''" />
       </div>
     </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import store from "../../store";
 import ContentsTable from "./ContentsTable.vue";
 import ContentModal from "./ContentModal.vue";
@@ -80,9 +80,6 @@ const contentModel = ref({...DEFAULT_CONTENT})
 function showAddNewModal() {
     showContentModal.value = true
 }
-
-onMounted(()=>{
-})
 
 function editContent(u) {
   contentModel.value = u;

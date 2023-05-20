@@ -6,6 +6,7 @@ import router from "../../router";
 
 const loading = ref(false)
 const emit = defineEmits(['paymentIntent','submits'])
+const user = computed(()=>store.state.user);
 
 const props = defineProps({
   plan:Object,

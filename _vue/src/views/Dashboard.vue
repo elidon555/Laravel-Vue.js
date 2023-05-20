@@ -24,8 +24,7 @@
         </template>
         <Spinner v-else text="" class=""/>
       </div>
-      <!--/    Active Customers-->
-      <!--    Active Products -->
+
       <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center"
            style="animation-delay: 0.1s">
         <label class="text-lg font-semibold block mb-2">Active Subscriptions</label>
@@ -34,9 +33,7 @@
         </template>
         <Spinner v-else text="" class=""/>
       </div>
-      <!--/    Active Products -->
 
-      <!--    Total Income -->
       <div class="animate-fade-in-down bg-dark py-6 px-5 rounded-lg shadow flex flex-col items-center"
            style="animation-delay: 0.3s">
         <label class="text-lg font-semibold block mb-2">Total Income</label>
@@ -45,7 +42,6 @@
         </template>
         <Spinner v-else text="" class=""/>
       </div>
-      <!--/    Total Income -->
     </div>
 
     <div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
