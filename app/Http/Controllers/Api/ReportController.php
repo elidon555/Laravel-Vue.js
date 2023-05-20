@@ -20,22 +20,22 @@ class ReportController extends Controller
     {
         $query = Subscription::query();
 
-        return $this->prepareDataForBarChart($query, 'Orders By Day');
+        return $this->prepareDataForBarChart($query, 'Subscriptions By Day');
     }
 
     public function subscribers()
     {
         $query = User::query();
 
-        return $this->prepareDataForBarChart($query, 'Customers By Day');
+        return $this->prepareDataForBarChart($query, 'Subscribers By Day');
     }
 
     private function prepareDataForBarChart($query, $label)
     {
         $fromDate = $this->getFromDate() ?: Carbon::now()->subDay(30);
         $query
-            ->select([DB::raw('CAST(created_at as DATE) AS day'), DB::raw('COUNT(created_at) AS count')])
-            ->groupBy(DB::raw('CAST(created_at as DATE)'));
+            ->selectRaw('DATE(created_at) AS day, COUNT(created_at) AS count')
+            ->groupBy('day');
         if ($fromDate) {
             $query->where('created_at', '>', $fromDate);
         }
@@ -48,7 +48,7 @@ class ReportController extends Controller
         while ($fromDate < $now) {
             $key = $fromDate->format('Y-m-d');
             $labels[] = $key;
-            $fromDate = $fromDate->addDay(1);
+            $fromDate = $fromDate->addDay();
             $days[] = isset($records[$key]) ? $records[$key]['count'] : 0;
         }
 

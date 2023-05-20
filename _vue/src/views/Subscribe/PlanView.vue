@@ -46,8 +46,6 @@ const route = useRoute()
 const userId = computed(() => route.params.id)
 const subscriptionPlans = computed(()=>store.state.subscriptionPlans)
 
-
-
 function getSubscriptionPlansData(url = null) {
   store.dispatch("getSubscriptionPlans", {
     url,

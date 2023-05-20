@@ -1,13 +1,13 @@
 <template>
     <!--  <div v-if="planStore.planData.clientSecret">-->
-    <div class="max-w-sm m-auto border-lg rounded-lg">
+    <div class="max-w-sm mx-auto border-lg rounded-lg mt-8">
         <ul class="my-7 mx-3 space-y-2" role="list">
             <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24">
                     <path d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" fill="currentColor"/>
                 </svg>
-                <span class="text-2xl font-normal leading-tight text-gray-500"
+                <span class="text-2xl font-normal leading-tight text-gray-300"
                 >Total: <b>${{ store.state.plan.price }}</b></span
                 >
             </li>
@@ -15,7 +15,7 @@
                 <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24">
                     <path d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" fill="currentColor"/>
                 </svg>
-                <span class="text-2xl font-normal leading-tight text-gray-500"
+                <span class="text-2xl font-normal leading-tight text-gray-300"
                 >Plan: <b>{{ store.state.plan.name }}</b></span
                 >
             </li>
@@ -23,7 +23,7 @@
                 <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24">
                     <path d="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" fill="currentColor"/>
                 </svg>
-                <span class="text-2xl font-normal leading-tight text-gray-500"
+                <span class="text-2xl font-normal leading-tight text-gray-300"
                 >Name: <b>{{ store.state.stripe.clientName }}</b></span
                 >
             </li>
@@ -34,7 +34,7 @@
         <div class="mt-5">
 <!--            <StripeElements></StripeElements>-->
             <!-- stripe -->
-            <div ref="card" class="mx-3 p-2.5 rounded-md border-2 border-solid bg-light">
+            <div ref="card" class="mx-3 p-2.5 rounded-md border-2 border-solid border-gray-500 bg-dark">
                 <!-- Elements will create input elements here -->
             </div>
 

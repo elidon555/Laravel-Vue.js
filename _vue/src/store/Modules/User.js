@@ -30,7 +30,6 @@ export const User = {
     },
     actions: {
         async getCurrentUser({ commit, state }, data) {
-            console.log(state.guest)
             if (state.guest===true && state.token===null) return;
             try {
                 const response = await axiosClient.post("/user", data);

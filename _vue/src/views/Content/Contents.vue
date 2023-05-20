@@ -21,13 +21,13 @@
         <PlanView v-if="stripe.clientSecret ===''"></PlanView>
     </div>
     <div v-else>
-      <div v-if="getPlanName()" class="d-flex justify-content-center">
-        <v-btn class="m-auto" color="blue">Plan: {{getPlanName()}}</v-btn>
+      <div v-if="getPlanName()" class="d-flex justify-content-center mt-8">
+        <v-btn class="m-auto" color="blue" variant="tonal">Plan: {{getPlanName()}}</v-btn>
       </div>
-      <div v-else-if=" user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length ">
-        <PlanView v-if="stripe.clientSecret ===''"></PlanView>
-        <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId===''"></SignUpForm>
-        <CheckoutForm v-else-if="stripe.clientId !==''" />
+      <div v-else-if=" user.data.id !== parseInt(userId) && getPlanName()=='' && contents.subscriptionPlans.length " class="mt-6">
+        <PlanView v-if="stripe.clientSecret ===''"/>
+          <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId===''"/>
+          <CheckoutForm v-else-if="stripe.clientId !==''" />
       </div>
     </div>
   <Transition>
