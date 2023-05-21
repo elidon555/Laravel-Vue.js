@@ -10,10 +10,11 @@ export const BillingInfo = {
             state: '',
             postalCode: '',
             country: '',
+            loading: false,
         }
     ),
     mutations: {
-        setBillingInfo(state, data = null) {
+        setBillingInfo(state, [loading ,data = null]) {
             if (data) {
                 Object.assign(state, {
                     email: data.email,
@@ -25,13 +26,15 @@ export const BillingInfo = {
                     country: data.country,
                 });
             }
+            state.loading = loading
         }
     },
     actions: {
         async getBillingInfo({ commit }) {
             try {
+                commit("setBillingInfo", [true]);
                 const response = await axiosClient.get("/user-details/current");
-                commit("setBillingInfo", response.data);
+                commit("setBillingInfo",[false, response.data]);
             } catch (error) {
                 commit("setBillingInfo", [false]);
             }

@@ -7,6 +7,7 @@ import router from "../../router";
 const loading = ref(false)
 const emit = defineEmits(['paymentIntent','submits'])
 const user = computed(()=>store.state.user);
+const billingInfo = computed(()=>store.state.billingInfo.name);
 
 const props = defineProps({
   plan:Object,
@@ -24,8 +25,6 @@ async function createPaymentIntent() {
       .then(response => {
       })
       .catch(err => {
-      })
-      .finally(()=>{
         loading.value = false;
       })
 }

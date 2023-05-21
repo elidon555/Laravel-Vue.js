@@ -45,7 +45,7 @@ class ContentController extends Controller
         $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userIdContent)->get()->toArray();
         $additional['user'] = $user->toArray();
 
-        //check if owner of content or is subscribed
+        //check if it's owner of content or is subscribed
         if ($authUser && ($authUser->subscribed($userIdContent) || $authUser->id==$userIdContent)){
             $isSubbed = true;
         }

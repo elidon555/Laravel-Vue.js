@@ -1,23 +1,25 @@
 <template>
   <GuestLayout>
-    <form  method="POST" @submit.prevent="login">
-      <h1 class="mb-4 text-xl font-semibold text-gray-700 text-gray-200">
+    <v-form ref="form" fast-fail  method="POST" @submit.prevent="login">
+      <h1 class="mb-4 text-xl font-semibold text-gray-200">
         Login
       </h1>
       <v-text-field
           density="compact"
-          class="focus:outline-none text-gray-100"
+          class="focus:outline-none text-gray-100 mb-2"
           label="Email"
           v-model="user.email"
+          :rules="rules"
       ></v-text-field>
 
       <v-text-field
           density="compact"
           :type="'password'"
-          class="focus:outline-none text-gray-100"
+          class="focus:outline-none text-gray-100 mb-2"
           label="Password"
           placeholder="Enter your password"
           v-model="user.password"
+          :rules="rules"
       ></v-text-field>
 
       <v-btn
@@ -46,7 +48,7 @@
         </router-link>
 
       </p>
-    </form>
+    </v-form>
 
   </GuestLayout>
 </template>
@@ -58,6 +60,8 @@ import store from "../store";
 import router from "../router";
 import image from '../assets/login.png'
 import {useRoute} from "vue-router";
+import {useNotification} from "@kyvg/vue3-notification";
+import Swal from 'sweetalert2'
 
 let loading = ref(false);
 let errorMsg = ref("");
@@ -65,6 +69,7 @@ let errorMsg = ref("");
 const route = useRoute()
 const userId = computed(() => route.params.user_id)
 const authUser = computed(() => store.state.user.data);
+const notify = useNotification()
 
 const user = ref({
   email: '',
@@ -72,12 +77,31 @@ const user = ref({
   remember: false
 })
 
-function login() {
+const form = ref();
+const rules = [
+  value => {
+    if (value) return true
+    return 'Field is empty.'
+  },
+];
+
+async function login() {
+  const {valid} = await form.value.validate();
+
+  if (!valid) return
+
   loading.value = true;
   store.dispatch('login', user.value)
       .then(() => {
-        loading.value = false;
         redirect()
+      })
+      .catch(() => {
+        Swal.fire({
+          title: 'Error!',
+          icon: 'error',
+        })
+
+        loading.value = false;
       })
 }
 

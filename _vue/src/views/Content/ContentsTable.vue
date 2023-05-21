@@ -174,6 +174,10 @@ function getContents(url = null) {
   });
 }
 
+defineExpose({
+  getContents
+});
+
 </script>
 
 <style scoped>

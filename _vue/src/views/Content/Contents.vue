@@ -25,9 +25,9 @@
         <v-btn color="blue" variant="tonal">Plan: {{planName}}</v-btn>
       </div>
       <div v-else-if=" user.data.id !== parseInt(userId) && planName==='' && contents.subscriptionPlans.length " class="mt-6">
-        <PlanView v-if="stripe.clientSecret ===''"/>
-          <SignUpForm v-else-if="stripe.clientSecret !==''"/>
-          <CheckoutForm v-else-if="stripe.clientId !==''" />
+          <PlanView v-if="stripe.clientSecret === ''"/>
+          <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId ===''"/>
+          <CheckoutForm @complete = "getContents()" v-else-if="stripe.clientId !==''" />
       </div>
     </div>
   <Transition>
@@ -38,7 +38,7 @@
     </div>
   </Transition>
 
-  <ContentsTable v-show="!contents.loading" />
+  <ContentsTable ref='contentsTable' v-show="!contents.loading" />
   <ContentModal v-model="showContentModal" :content="contentModel" @close="onModalClose"></ContentModal>
   <button v-if="user.token != null && user.data.id === parseInt(userId)" type="button"
           @click="showAddNewModal"
@@ -61,9 +61,11 @@ import SignUpForm from "../Subscribe/SignUpForm.vue";
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);
 const stripe = computed(() => store.state.stripe);
+const billingInfo = computed(() => store.state.billingInfo);
 const planName = computed(() => getPlanName());
 
 const showContentModal = ref(false);
+const contentsTable = ref(null);
 
 const route = useRoute()
 const userId = computed(() => route.params.id || user.value.data.id)
@@ -79,6 +81,10 @@ const contentModel = ref({...DEFAULT_CONTENT})
 
 function showAddNewModal() {
     showContentModal.value = true
+}
+
+function getContents() {
+  contentsTable.value.getContents()
 }
 
 function editContent(u) {
@@ -107,7 +113,7 @@ function onModalClose() {
 <style scoped>
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 1s ease;
 }
 
 .v-enter-from,

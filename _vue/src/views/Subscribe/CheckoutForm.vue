@@ -60,14 +60,19 @@
 
 
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted,computed} from 'vue'
 import store from "../../store";
 import router from "../../router";
 import StripeElements from "../../components/StripeElements.vue";
 import * as notification from "@kyvg/vue3-notification";
+import Swal from "sweetalert2"
+
+const contentUser = computed(() => store.state.contents.user);
 
 const disabled = ref(false)
 const card = ref(null)
+
+const emit = defineEmits(['complete']);
 
 const stripe = window.Stripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 const key = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
@@ -133,7 +138,13 @@ const Submit = async () => {
     }
     store.dispatch('createStripeSubscription', data)
         .then(response => {
+          Swal.fire({
+            title: 'Success!',
+            text:'You are successfully subscribed to '+contentUser.value.name,
+            icon: 'success',
+          })
             store.dispatch("getCurrentUser")
+            emit('complete')
         })
         .catch(err => {
           // debugger;
