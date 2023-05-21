@@ -11,12 +11,6 @@ class SubscriptionResource extends JsonResource
 
     protected $parameter;
 
-    public function __construct($resource, $parameter)
-    {
-        parent::__construct($resource);
-        $this->parameter = $parameter;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -32,6 +26,7 @@ class SubscriptionResource extends JsonResource
             'plan' => $this->plan,
             'stripe_id' => $this->stripe_id,
             'price_id' => $this->stripe_price,
+            'stripe_status' => $this->stripe_status,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
         ];
     }

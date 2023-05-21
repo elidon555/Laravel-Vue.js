@@ -11,4 +11,5 @@ class Subscription extends CashierSubscription
     public function plan() {
         return $this->hasOne(SubscriptionPlan::class,'price_id','stripe_price');
     }
+
 }

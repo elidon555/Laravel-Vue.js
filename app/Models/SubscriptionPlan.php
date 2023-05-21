@@ -11,4 +11,9 @@ class SubscriptionPlan extends Model
 
     protected $fillable = ['name', 'price', 'user_id', 'price_id', 'features','interval', 'created_at','updated_at'];
 
+    public function contentCreator()
+    {
+        return $this->hasOne(User::class);
+    }
+
 }

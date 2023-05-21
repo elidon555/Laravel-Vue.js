@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <v-img :src="'https://picsum.photos/1920/1080?image='+Math.floor(Math.random() * 100)" :aspect-ratio="4/1" cover/>
+        <img :src="'https://picsum.photos/1920/1080?image='+Math.floor(Math.random() * 100)"  class="aspect-[4/1] object-cover" alt="Wallpaper"/>
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
             <div class="aspect-w-1 aspect-h-1 text-center" >
                 <img

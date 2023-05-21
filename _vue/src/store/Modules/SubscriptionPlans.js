@@ -17,7 +17,7 @@ export const SubscriptionPlans = {
     ),
     mutations: {
         setSubscriptionPlans(state, [loading, data = null,userId= null]) {
-            if (data && userId===null) {
+            if (data) {
                 Object.assign(state, {
                     data: data.data,
                     links: data.meta?.links,

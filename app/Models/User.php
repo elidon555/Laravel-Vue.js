@@ -53,6 +53,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(UserDetail::class);
     }
 
+    public function activeSubscriptions()
+    {
+        return $this->hasMany(Subscription::class,'user_id','id')->where('stripe_status', 'active');
+    }
 
     /**
      * The attributes that should be cast.

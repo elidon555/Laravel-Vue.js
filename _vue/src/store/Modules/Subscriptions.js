@@ -53,6 +53,12 @@ export const Subscriptions = {
         },
         deleteSubscription({commit}, subscription) {
             return axiosClient.delete(`/subscriptions/${subscription.id}`)
+        },
+        createSubscription({commit}, subscription) {
+            return axiosClient.post('/subscriptions', subscription)
+        },
+        updateSubscription({commit}, subscription) {
+            return axiosClient.put(`/subscriptions/${subscription.id}`, subscription)
         }
     },
     getters: {}

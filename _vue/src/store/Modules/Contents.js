@@ -17,7 +17,7 @@ export const Contents = {
     ),
     mutations: {
         setContents(state, [loading, data = null]) {
-
+            console.log(data);
             if (data) {
                 Object.assign(state, {
                     data: data.data,

@@ -1,41 +1,42 @@
 <template>
   <v-dialog v-model="show" width="576">
     <v-card>
-      <v-form @submit.prevent="onSubmit">
+      <v-form ref="form" fast-fail @submit.prevent="onSubmit">
         <v-card-title>
-          <span class="text-h5"> {{ subscription.id ? `Update subscription: "${props.subscription.name}"` : 'Create new Subscription' }}</span>
+          <span class="text-h5"> {{ subscription.id ? `Update subscription for: "${props.subscription.contentCreator.title}"` : 'Create new Subscription' }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row dense="dense">
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="subscription.name"  label="Name" variant="outlined"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="subscription.email"  label="Email" variant="outlined"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field density="compact" v-model="subscription.password"  label="Password" variant="outlined"></v-text-field>
-              </v-col>
-
               <v-col cols="12" sm="12" >
-                <v-select
-                    v-model="subscription.roles"
-                    :items="subscriptions.roles.map((item)=>item.name)"
-                    chips
-                    label="Roles"
-                    multiple
-                ></v-select>
+                <v-autocomplete
+                    v-model="subscription.contentCreator"
+                    :items="contentCreators"
+                    :return-object="true"
+                    :rules="autocompleteRules"
+                    hide-no-data
+                    :menu="showMenuContentCreator"
+                    @input="debouncedLoadUsers($event.target.value)"
+                    @update:modelValue="debouncedLoadSubscriptionPlans('')"
+                    :loading="loadingContentCreators"
+                    label="Content creator"
+                    ref="autocomplete"
+                ></v-autocomplete>
               </v-col>
               <v-col cols="12" sm="12" >
-                <v-select
-                    v-model="subscription.permissions"
-                    :items="subscriptions.permissions.map((item)=>item.name)"
-                    chips
-                    label="Permissions"
-                    multiple
-                >
-                </v-select>
+                <v-autocomplete
+                    :auto-select-first="true"
+                    v-model="subscription.subscriptionPlan"
+                    :items="subscriptionPlans"
+                    :return-object="true"
+                    :rules="autocompleteRules"
+                    :menu="showMenuSubscriptionPlans"
+                    hide-no-data
+                    @input="debouncedLoadSubscriptionPlans($event.target.value)"
+                    :loading="loadingSubscriptionPlans"
+                    :disabled="!subscription.contentCreator"
+                    label="Subscription plan"
+                ></v-autocomplete>
               </v-col>
             </v-row>
           </v-container>
@@ -62,11 +63,10 @@ import {useNotification} from "@kyvg/vue3-notification";
 const notification = useNotification()
 
 const subscription = ref({
-    id: props.subscription.id,
-    name: props.subscription.name,
-    email: props.subscription.email,
-    roles: props.subscription.roles.map((item)=>item.name),
-    permissions: props.subscription.permissions.map((item)=>item.name)
+  id: props.subscription.id,
+  userId: props.subscription.userId,
+  contentCreator: props.subscription.contentCreator,
+  subscriptionPlan: props.subscription.subscriptionPlan,
 })
 
 const subscriptions = computed(() => store.state.subscriptions);
@@ -76,8 +76,6 @@ const loading = ref(false)
 
 const props = defineProps({
     modelValue: Boolean,
-    roles: Array,
-    permissions: Array,
     subscription: {
         required: true,
         type: Object,
@@ -90,6 +88,7 @@ const show = computed({
     get: () => props.modelValue,
     set: (value) => emit('update:modelValue', value)
 })
+const test = ref(false)
 
 const form = ref();
 const rules = [
@@ -98,63 +97,140 @@ const rules = [
     return 'Field is empty.'
   },
 ];
+const autocompleteRules = [
+    value => {
+      if (value===null || !value) return 'Enter at least one character'
+      return true
+    }
+]
 
+let debounceTimer;
+
+const loadingContentCreators = ref(false)
+const contentCreators = ref([])
+const showMenuContentCreator = ref(false)
+
+const loadingSubscriptionPlans = ref(false)
+const subscriptionPlans = ref([])
+const showMenuSubscriptionPlans = ref(false)
+
+
+const delayedLoadUsers = async (searchValue) => {
+  let params = {
+    url: null,
+    search: searchValue,
+    per_page: 20,
+    sort_field: 'name',
+    sort_direction: 'asc'
+  };
+
+  await store.dispatch('getUsers', params);
+  loadingContentCreators.value = false;
+  contentCreators.value = store.state.users.data.map((user) => ({
+    value: user.id,
+    title: user.name
+  })).filter((element) => element.value !== subscription.value.userId);
+  showMenuContentCreator.value = true;
+};
+
+// Function to debounce the loadUsers function
+const debouncedLoadUsers = async (searchValue) => {
+  if (show.value === false || subscription.value.contentCreator?.title === searchValue) return;
+
+  loadingContentCreators.value = true;
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(async () => {
+    await delayedLoadUsers(searchValue);
+  }, 1000);
+};
+
+const debouncedLoadSubscriptionPlans = async (searchValue) => {
+  if (show.value === false || !subscription.value.contentCreator) return;
+  loadingSubscriptionPlans.value = true;
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(async () => {
+    await delayedLoadSubscriptionPlans(searchValue);
+  }, 1000);
+};
+
+const delayedLoadSubscriptionPlans = async (searchValue) => {
+  if (!subscription.value.contentCreator) return;
+  let params = {
+    url: null,
+    search: searchValue,
+    per_page: 20,
+    sort_field: 'name',
+    sort_direction: 'asc',
+    id: subscription.value.contentCreator.value
+  };
+
+  try {
+    loadingSubscriptionPlans.value = true;
+    // Make the asynchronous dispatch call
+    await store.dispatch('getSubscriptionPlans', params);
+    loadingSubscriptionPlans.value = false;
+
+    // Update subscriptionPlans with the retrieved data
+    subscriptionPlans.value = store.state.subscriptionPlans.data.map((subscriptionPlan) => ({
+      value: subscriptionPlan.id,
+      title: subscriptionPlan.name
+    }));
+    if (subscriptionPlans.value.length===0) {
+      subscription.value.subscriptionPlan = ''
+    }
+
+    showMenuSubscriptionPlans.value = true;
+    console.log(showMenuSubscriptionPlans.value);
+  } catch (error) {
+    console.error('Error loading subscription plans:', error);
+    loadingSubscriptionPlans.value = false;
+  }
+};
 
 onUpdated(() => {
     subscription.value = {
-        id: props.subscription.id,
-        name: props.subscription.name,
-        email: props.subscription.email,
-        roles: props.subscription.roles.map(item => item.name),
-        permissions: props.subscription.permissions.map(item => item.name)
+      id: props.subscription.id,
+      userId: props.subscription.userId,
+      contentCreator:  props.subscription.contentCreator,
+      subscriptionPlan:  props.subscription.subscriptionPlan,
     }
-    roles.value = props.subscription.roles.map(item => item.name);
-    permissions.value = props.subscription.permissions.map(item => item.name);
 })
 
-watch(show, (first, second) => {
-    if (first===false) emit('close')
+watch(show, (value) => {
+    if (value===false) {
+      emit('close')
+      showMenuSubscriptionPlans.value = false
+      showMenuContentCreator.value = false
+    }
 });
 
-function onSubmit() {
-    show.value = true
-    // subscription.value.roles.value = roles
-    // subscription.value.permissions.value = permissions
-    if (subscription.value.id) {
-        store.dispatch('updateSubscription', subscription.value)
-            .then(response => {
-                loading.value = false;
-                if (response.status === 200) {
-                    notification.notify({
-                        title: "Success!",
-                        type: "success",
-                    });
-                    // TODO show notification
-                    store.dispatch('getSubscriptions')
-                    show.value=false
-                }
-            })
-            .catch(response=>{
-              show.value = true;
-            })
-    } else {
-        store.dispatch('createSubscription', subscription.value)
-            .then(response => {
-              show.value = false;
-                if (response.status === 201) {
-                    // TODO show notification
-                    store.dispatch('getSubscriptions')
-                    notification.notify({
-                        title: "Success!",
-                        type: "success",
-                    });
-                    show.value=false
-                }
-            })
-            .catch(err => {
-              show.value = true;
-                debugger;
-            })
+async function onSubmit() {
+  const {valid} = await form.value.validate();
+
+  if (!valid) return
+
+  show.value = true;
+  loading.value = true;
+
+  const action = subscription.value.id ? 'updateSubscription' : 'createSubscription';
+
+  try {
+    let params = {}
+    params = {
+      ...subscription.value,
+      contentCreator: subscription.value.contentCreator.value,
+      subscriptionPlan: subscription.value.subscriptionPlan.value
+    };
+    const response = await store.dispatch(action, params);
+    if ([200, 201].includes(response.status)) {
+      notification.notify({title: "Success!", type: "success"});
+      await store.dispatch('getSubscriptions');
     }
+    show.value = false;
+  } catch (error) {
+    notification.notify({title: "Error!", type: "error"});
+  } finally {
+    loading.value = false;
+  }
 }
 </script>

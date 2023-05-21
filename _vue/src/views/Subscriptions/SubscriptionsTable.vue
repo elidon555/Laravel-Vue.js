@@ -95,6 +95,10 @@
                        @click="sortSubscriptions('price_id')">
         Price Id
       </TableHeaderCell>
+      <TableHeaderCell field="stripe_status" :sort-field="sortField" :sort-direction="sortDirection"
+                       @click="sortSubscriptions('stripe_status')">
+        Stripe Status
+      </TableHeaderCell>
       <TableHeaderCell field="created_at" :sort-field="sortField" :sort-direction="sortDirection"
                        @click="sortSubscriptions('created_at')">
         Created at
@@ -113,12 +117,13 @@
       <td>{{ subscription.user.name }}</td>
       <td>{{ subscription.subscribed_user.name }}</td>
       <td>{{ subscription.plan.name }}</td>
-      <td>${{ subscription.plan.amount }}</td>
+      <td>${{ subscription.plan.price }}</td>
       <td>{{ subscription.stripe_id }}</td>
       <td>{{ subscription.price_id }}</td>
+      <td>{{ subscription.stripe_status }}</td>
       <td>{{ subscription.created_at }}</td>
       <td>
-        <v-menu location="start">
+        <v-menu v-if="!['incomplete_expired','expired','canceled'].includes(subscription.stripe_status)" location="start">
           <template v-slot:activator="{ props }">
             <v-btn
                 variant="plain"
@@ -131,7 +136,7 @@
             </v-btn>
           </template>
 
-          <v-list>
+          <v-list >
             <v-list-item @click="editSubscription(subscription)">
               <v-list-item-title>
                 <div class="d-flex">
