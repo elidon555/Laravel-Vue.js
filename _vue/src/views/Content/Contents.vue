@@ -61,7 +61,6 @@ import SignUpForm from "../Subscribe/SignUpForm.vue";
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);
 const stripe = computed(() => store.state.stripe);
-const billingInfo = computed(() => store.state.billingInfo);
 const planName = computed(() => getPlanName());
 
 const showContentModal = ref(false);
