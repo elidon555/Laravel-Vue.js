@@ -4,16 +4,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\CreateRoleRequest;
-use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\RoleResource;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 

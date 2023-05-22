@@ -4,14 +4,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateContentRequest;
 use App\Http\Requests\CreateSubscriptionPlanRequest;
-use App\Http\Requests\SetSubscriptionPlanRequest;
-use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Requests\UpdateSubscriptionPlanRequest;
 use App\Http\Resources\SubscriptionPlanResource;
 use App\Models\SubscriptionPlan;
-use Illuminate\Support\Facades\Auth;
 use Stripe\StripeClient;
 
 class SubscriptionPlanController extends Controller
@@ -33,7 +29,7 @@ class SubscriptionPlanController extends Controller
 
         $query = SubscriptionPlan::query()
             ->where('name', 'like', "%$search%")
-            ->where('user_id','like',"%$userId%")
+            ->where('user_id', 'like', "%$userId%")
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
@@ -51,15 +47,15 @@ class SubscriptionPlanController extends Controller
         $data = $request->validated();
         @$data['user_id'] = auth()->user()->id;
 
-        $stripe = new StripeClient(env('STRIPE_SECRET') );
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
 
         $response = $stripe->prices->create([
-            'unit_amount' => $data['price']*100,
+            'unit_amount' => $data['price'] * 100,
             'currency' => 'usd',
-            'recurring' => ['interval' => strtolower(substr($data['interval'],0,-2))],
+            'recurring' => ['interval' => strtolower(substr($data['interval'], 0, -2))],
             'product' => 'prod_NqCbtic5sUZenP',
         ]);
-        $data['price_id']=$response->id;
+        $data['price_id'] = $response->id;
 
         $subscriptionPlan = SubscriptionPlan::create($data);
 

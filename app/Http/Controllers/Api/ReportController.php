@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\ReportTrait;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Subscription;
 
 class ReportController extends Controller
@@ -61,4 +57,5 @@ class ReportController extends Controller
             ]]
         ];
     }
+
 }

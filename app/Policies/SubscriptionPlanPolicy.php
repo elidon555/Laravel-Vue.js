@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
-use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 
-class SubscriptionPolicy
+class SubscriptionPlanPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class SubscriptionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Subscription $subscription): bool
+    public function view(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
         //
     }
@@ -29,28 +29,29 @@ class SubscriptionPolicy
      */
     public function create(User $user): bool
     {
+        return $user->hasRole('user','admin');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Subscription $subscription): bool
+    public function update(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
-        return $user->hasRole('admin','subscrip_manager');
+        return $user->hasRole('user','finance');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Subscription $subscription): bool
+    public function delete(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
-        return $user->hasRole('admin','subscrip_manager');
+        return $user->hasRole('admin','finance');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Subscription $subscription): bool
+    public function restore(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
         //
     }
@@ -58,7 +59,7 @@ class SubscriptionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Subscription $subscription): bool
+    public function forceDelete(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
         //
     }

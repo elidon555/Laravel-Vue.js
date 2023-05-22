@@ -8,12 +8,13 @@ use App\Http\Requests\CreateStripeSubscriptionRequest;
 use App\Models\Payment;
 use App\Models\SubscriptionPlan;
 use App\Models\UserDetail;
-use Stripe\Stripe;
 
 class StripeController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
     }
+
     public function createCustomer(CreateStripeCustomerRequest $request)
     {
         $inputs = $request->validated();
@@ -26,38 +27,39 @@ class StripeController extends Controller
         }
 
         $data = [
-            'name'=>$inputs['name'],
-            'email'=>$inputs['email'],
-            'address'=>$inputs['shipping']['address']['line1'],
-            'city'=>$inputs['shipping']['address']['city'],
-            'country'=>$inputs['shipping']['address']['country'],
-            'state'=>$inputs['shipping']['address']['state'],
-            'postal_code'=>$inputs['shipping']['address']['postal_code'],
+            'name' => $inputs['name'],
+            'email' => $inputs['email'],
+            'address' => $inputs['shipping']['address']['line1'],
+            'city' => $inputs['shipping']['address']['city'],
+            'country' => $inputs['shipping']['address']['country'],
+            'state' => $inputs['shipping']['address']['state'],
+            'postal_code' => $inputs['shipping']['address']['postal_code'],
         ];
 
-        UserDetail::updateOrCreate(['user_id'=>$user->id],$data);
+        UserDetail::updateOrCreate(['user_id' => $user->id], $data);
 
         return response()->json($response);
     }
 
     public function createPaymentIntent()
     {
-        $payment =  auth()->user()->createSetupIntent();
+        $payment = auth()->user()->createSetupIntent();
 
-        return response()->json(['clientSecret'=>$payment->client_secret]);
+        return response()->json(['clientSecret' => $payment->client_secret]);
     }
+
     public function createSubscription(CreateStripeSubscriptionRequest $request)
     {
         $inputs = $request->validated();
         $user = auth()->user();
 
-        if (!$user->hasDefaultPaymentMethod()){
+        if (!$user->hasDefaultPaymentMethod()) {
             $user->updateDefaultPaymentMethod($inputs['paymentMethodId']);
         }
 
-        $subscriptionPlan = SubscriptionPlan::query()->where('price_id',$inputs['priceId'])->first();
+        $subscriptionPlan = SubscriptionPlan::query()->where('price_id', $inputs['priceId'])->first();
         $response = $user->newSubscription(
-            $subscriptionPlan->user_id,$inputs['priceId']
+            $subscriptionPlan->user_id, $inputs['priceId']
         )->create($inputs['paymentMethodId']);
 
         $paymentData = [

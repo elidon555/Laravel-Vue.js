@@ -8,12 +8,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -33,7 +28,7 @@ class UserController extends Controller
 
         $query = User::query()
             ->where('name', 'like', "%$search%")
-            ->with(['roles','permissions'])
+            ->with(['roles', 'permissions'])
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
         $additional['roles'] = Role::query()->get()->toArray();

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Subscription;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Nette\Utils\DateTime;
 

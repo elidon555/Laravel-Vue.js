@@ -3,8 +3,16 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Content;
+use App\Models\Payment;
 use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
+use App\Models\UserDetail;
+use App\Policies\ContentPolicy;
+use App\Policies\PaymentPolicy;
+use App\Policies\SubscriptionPlanPolicy;
 use App\Policies\SubscriptionPolicy;
+use App\Policies\UserDetailPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,7 +23,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Subscription::class => SubscriptionPolicy::class
+        Subscription::class => SubscriptionPolicy::class,
+        Payment::class => PaymentPolicy::class,
+        SubscriptionPlan::class => SubscriptionPlanPolicy::class,
+        UserDetail::class => UserDetailPolicy::class,
+        Content::class => ContentPolicy::class,
     ];
 
     /**

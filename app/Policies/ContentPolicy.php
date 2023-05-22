@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
-use App\Models\Subscription;
+use App\Models\Content;
 use App\Models\User;
 
-class SubscriptionPolicy
+class ContentPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class SubscriptionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Subscription $subscription): bool
+    public function view(User $user, Content $content): bool
     {
         //
     }
@@ -29,28 +29,29 @@ class SubscriptionPolicy
      */
     public function create(User $user): bool
     {
+        return $user->hasRole('user','admin');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Subscription $subscription): bool
+    public function update(User $user, Content $content): bool
     {
-        return $user->hasRole('admin','subscrip_manager');
+        return $user->hasRole('user','admin');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Subscription $subscription): bool
+    public function delete(User $user, Content $content): bool
     {
-        return $user->hasRole('admin','subscrip_manager');
+        return $user->hasRole('user','admin');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Subscription $subscription): bool
+    public function restore(User $user, Content $content): bool
     {
         //
     }
@@ -58,7 +59,7 @@ class SubscriptionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Subscription $subscription): bool
+    public function forceDelete(User $user, Content $content): bool
     {
         //
     }

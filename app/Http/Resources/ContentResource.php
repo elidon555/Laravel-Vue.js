@@ -4,8 +4,6 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
-use Nette\Utils\DateTime;
 
 class ContentResource extends JsonResource
 {

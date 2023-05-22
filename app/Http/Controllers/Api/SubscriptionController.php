@@ -3,17 +3,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\StripeStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdatePermissionRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
-use App\Http\Resources\PaymentResource;
-use App\Http\Resources\PermissionResource;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
 
 class SubscriptionController extends Controller
 {
@@ -28,11 +25,11 @@ class SubscriptionController extends Controller
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'asc');
 
-        $query = Subscription::with(['user','subscribedUser','plan'])
+        $query = Subscription::with(['user', 'subscribedUser', 'plan'])
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
-        return (new SubscriptionResource($query,'test'))->collection($query);
+        return (new SubscriptionResource($query, 'test'))->collection($query);
     }
 
 
@@ -47,23 +44,22 @@ class SubscriptionController extends Controller
         $inputs = $request->validated();
         $user = User::findOrFail($inputs['userId']);
         $subscriptionPlan = SubscriptionPlan::query()
-            ->where('user_id','=',$inputs['contentCreator'])
+            ->where('user_id', '=', $inputs['contentCreator'])
             ->whereId($inputs['subscriptionPlan'])
             ->firstOrFail();
 
         if ($subscription->name == $inputs['contentCreator']) {
             $user->subscription($inputs['contentCreator'])->swap($subscriptionPlan->price_id);
         } else {
-            $subscriptionPlan = SubscriptionPlan::query()->whereId($inputs['subscriptionPlan'])->first();
             if (Subscription::query()
-                ->where('name',$inputs['contentCreator'])
-                ->where('stripe_status','active')
-                ->where('user_id',$inputs['userId'])->count()){
-                return response()->json(['message'=>'User is already subscribed to this content creator'],403);
+                ->where('name', $inputs['contentCreator'])
+                ->where('stripe_status', StripeStatusEnum::Active->value)
+                ->where('user_id', $inputs['userId'])->count()) {
+                return response()->json(['message' => 'User is already subscribed to this content creator'], 403);
             }
             if ($user->hasDefaultPaymentMethod()) {
                 $response = $user->newSubscription(
-                    $subscriptionPlan->user_id,$subscriptionPlan->price_id
+                    $subscriptionPlan->user_id, $subscriptionPlan->price_id
                 )->create($user->defaultPaymentMethod()->id);
 
                 $paymentData = [
