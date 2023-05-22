@@ -46,7 +46,7 @@ const routes = [
         path: 'dashboard',
         name: 'app.dashboard',
         component: Dashboard,
-        meta: { middleware: [auth,role(['admin'])] },
+        meta: { middleware: [auth,role(['admin','finance'])] },
       },
       {
         path: 'contents/:id',
