@@ -129,60 +129,58 @@ const subscriptionsByCountry = ref([]);
 const latestCustomers = ref([]);
 const latestSubscriptions = ref([]);
 
-async function updateDashboard() {
-    const d = chosenDate.value;
-    loading.value = {
-        subscribersCount: true,
-        productsCount: true,
-        totalIncome: true,
-        subscriptionsByCountry: true,
-        latestCustomers: true,
-        latestSubscriptions: true,
-    };
-
-    try {
-        const { data: subscribersCountData } = await axiosClient.get(`/dashboard/subscribers-count`, { params: { d } });
-        subscribersCount.value = subscribersCountData;
-        loading.value.subscribersCount = false;
-
-        const { data: productsCountData } = await axiosClient.get(`/dashboard/products-count`, { params: { d } });
-        productsCount.value = productsCountData;
-        loading.value.productsCount = false;
-
-        const { data: totalIncomeData } = await axiosClient.get(`/dashboard/income-amount`, { params: { d } });
-        totalIncome.value = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0
-        }).format(totalIncomeData);
-        loading.value.totalIncome = false;
-
-        const { data: countries } = await axiosClient.get(`/dashboard/subscriptions-by-country`, { params: { d } });
-        loading.value.subscriptionsByCountry = false;
-        const chartData = {
-            labels: [],
-            datasets: [{
-                backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                data: []
-            }]
-        };
-        countries.forEach(c => {
-            chartData.labels.push(c.name);
-            chartData.datasets[0].data.push(c.count);
-        });
-        subscriptionsByCountry.value = chartData;
-
-        const { data: subscribers } = await axiosClient.get(`/dashboard/latest-subscribers`, { params: { d } });
-        latestCustomers.value = subscribers;
-        loading.value.latestCustomers = false;
-
-        const { data: subscriptions } = await axiosClient.get(`/dashboard/latest-subscriptions`, { params: { d } });
-        latestSubscriptions.value = subscriptions;
-        loading.value.latestSubscriptions = false;
-    } catch (error) {
-        // Handle error
+function updateDashboard() {
+  const d = chosenDate.value
+  loading.value = {
+    subscribersCount: true,
+    productsCount: true,
+    totalIncome: true,
+    subscriptionsByCountry: true,
+    latestCustomers: true,
+    latestSubscriptions: true
+  }
+  axiosClient.get(`/dashboard/subscribers-count`, {params: {d}}).then(({data}) => {
+    subscribersCount.value = data
+    loading.value.subscribersCount = false;
+  })
+  axiosClient.get(`/dashboard/products-count`, {params: {d}}).then(({data}) => {
+    productsCount.value = data;
+    loading.value.productsCount = false;
+  })
+  axiosClient.get(`/dashboard/income-amount`, {params: {d}}).then(({data}) => {
+    totalIncome.value = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0
+    })
+        .format(data);
+    loading.value.totalIncome = false;
+  })
+  axiosClient.get(`/dashboard/subscriptions-by-country`, {params: {d}}).then(({data: countries}) => {
+    loading.value.subscriptionsByCountry = false;
+    const chartData = {
+      labels: [],
+      datasets: [{
+        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+        data: []
+      }]
     }
+    countries.forEach(c => {
+      chartData.labels.push(c.name);
+      chartData.datasets[0].data.push(c.count);
+    })
+    subscriptionsByCountry.value = chartData
+  })
+  axiosClient.get(`/dashboard/latest-subscribers`, {params: {d}}).then(({data: subscribers}) => {
+    latestCustomers.value = subscribers;
+    loading.value.latestCustomers = false;
+  })
+  axiosClient.get(`/dashboard/latest-subscriptions`, {params: {d}}).then(({data: subscriptions}) => {
+    latestSubscriptions.value = subscriptions;
+    loading.value.latestSubscriptions = false;
+  })
 }
+
 
 function onDatePickerChange() {
   updateDashboard()
