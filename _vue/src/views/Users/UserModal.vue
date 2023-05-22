@@ -92,8 +92,6 @@ const props = defineProps({
     }
 })
 
-
-
 const emit = defineEmits(['update:modelValue', 'close'])
 
 const show = computed({

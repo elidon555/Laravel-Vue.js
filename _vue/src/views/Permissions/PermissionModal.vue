@@ -40,7 +40,6 @@ import {computed, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 import {useNotification} from "@kyvg/vue3-notification";
 
-
 const permission = ref({
   id: props.permission.id,
   name: props.permission.name,
@@ -50,6 +49,7 @@ const permission = ref({
 const permissions = computed(() => store.state.permissions);
 const roles = ref([]);
 const loading = ref(false)
+
 const form = ref();
 const rules = [
   value => {

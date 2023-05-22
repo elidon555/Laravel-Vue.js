@@ -180,7 +180,6 @@ const delayedLoadSubscriptionPlans = async (searchValue) => {
     }
 
     showMenuSubscriptionPlans.value = true;
-    console.log(showMenuSubscriptionPlans.value);
   } catch (error) {
     console.error('Error loading subscription plans:', error);
     loadingSubscriptionPlans.value = false;

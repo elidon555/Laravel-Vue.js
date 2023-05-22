@@ -32,24 +32,27 @@ export const Roles = {
 
     },
     actions: {
-        getRoles({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
-            commit('setRoles', [true])
-            url = url || '/roles'
+        async getRoles({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+            commit('setRoles', [true]);
+            url = url || '/roles';
             const params = {
                 per_page: state.limit,
+            };
+
+            try {
+                const response = await axiosClient.get(url, {
+                    params: {
+                        ...params,
+                        search,
+                        per_page,
+                        sort_field,
+                        sort_direction
+                    }
+                });
+                commit('setRoles', [false, response.data]);
+            } catch (error) {
+                commit('setRoles', [false]);
             }
-            return axiosClient.get(url, {
-                params: {
-                    ...params,
-                    search, per_page, sort_field, sort_direction
-                }
-            })
-                .then((response) => {
-                    commit('setRoles', [false, response.data])
-                })
-                .catch(() => {
-                    commit('setRoles', [false])
-                })
         },
         createRole({commit}, role) {
             return axiosClient.post('/roles', role)

@@ -168,8 +168,7 @@
   </v-table>
 
   <loading v-model:active="isLoading"
-           :can-cancel="true"
-           :on-cancel="onCancel"
+           :can-cancel="false"
            :is-full-page="fullPage"/>
 </template>
 
@@ -201,10 +200,6 @@ const emit = defineEmits(['clickEdit'])
 onMounted(() => {
   getSubscriptions();
 })
-
-function onCancel() {
-    console.log('Subscription cancelled the loader.')
-}
 
 function getForPage(ev, link) {
   ev.preventDefault();
@@ -247,18 +242,20 @@ function showAddNewModal() {
   showSubscriptionModal.value = true
 }
 
-function deleteSubscription(subscription) {
-  if (!confirm(`Are you sure you want to delete the subscription?`)) {
-    return
-  }
-  store.dispatch('deleteSubscription', subscription)
-    .then(res => {
-      store.dispatch('getSubscriptions')
+async function deleteSubscription(subscription) {
+    if (!confirm(`Are you sure you want to delete the subscription?`)) {
+        return;
+    }
+    try {
+        await store.dispatch('deleteSubscription', subscription);
+        await store.dispatch('getSubscriptions');
         notification.notify({
             title: "Success!",
             type: "success",
         });
-    })
+    } catch (error) {
+        // Handle error
+    }
 }
 
 function editSubscription(p) {

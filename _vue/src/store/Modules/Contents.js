@@ -17,7 +17,6 @@ export const Contents = {
     ),
     mutations: {
         setContents(state, [loading, data = null]) {
-            console.log(data);
             if (data) {
                 Object.assign(state, {
                     data: data.data,
@@ -33,7 +32,6 @@ export const Contents = {
             }
             state.loading = loading;
         }
-
     },
     actions: {
         async getContents({ commit, state,rootState }, { url = null, search = '', per_page,id } = {}) {

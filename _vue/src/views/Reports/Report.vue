@@ -23,7 +23,6 @@
 
 <script setup>
 import {computed, ref} from "vue";
-import CustomInput from "../../components/core/CustomInput.vue";
 import {useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";
 

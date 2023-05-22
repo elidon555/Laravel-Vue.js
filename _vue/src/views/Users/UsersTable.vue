@@ -178,7 +178,6 @@ onMounted(() => {
 })
 
 function onCancel() {
-    console.log('User cancelled the loader.')
 }
 
 function getForPage(ev, link) {
@@ -222,18 +221,21 @@ function showAddNewModal() {
   showUserModal.value = true
 }
 
-function deleteUser(user) {
-  if (!confirm(`Are you sure you want to delete the user?`)) {
-    return
-  }
-  store.dispatch('deleteUser', user.id)
-    .then(res => {
-      store.dispatch('getUsers')
+async function deleteUser(user) {
+    if (!confirm(`Are you sure you want to delete the user?`)) {
+        return;
+    }
+
+    try {
+        await store.dispatch('deleteUser', user.id);
+        await store.dispatch('getUsers');
         notification.notify({
             title: "Success!",
             type: "success",
         });
-    })
+    } catch (error) {
+        // Handle error
+    }
 }
 
 function editUser(p) {

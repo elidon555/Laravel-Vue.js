@@ -72,17 +72,16 @@ const user = ref({
 const route = useRoute()
 const userId = computed(() => route.params.user_id)
 
-function signup() {
-    loading.value = true;
-    store.dispatch('signup', user.value)
-        .then(() => {
-            loading.value = false;
-            router.push({name: 'app.dashboard'})
-        })
-        .catch(({response}) => {
-            loading.value = false;
-            errorMsg.value = response.data.message;
-        })
+async function signup() {
+    try {
+        loading.value = true;
+        await store.dispatch('signup', user.value);
+        loading.value = false;
+        await router.push({name: 'app.dashboard'});
+    } catch ({ response }) {
+        loading.value = false;
+        errorMsg.value = response.data.message;
+    }
 }
 
 onMounted(()=>{

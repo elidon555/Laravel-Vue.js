@@ -35,25 +35,27 @@ export const Users = {
 
     },
     actions: {
-        getUsers({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
-            commit('setUsers', [true])
-            url = url || '/users'
+        async getUsers({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+            commit('setUsers', [true]);
+            url = url || '/users';
             const params = {
                 per_page: state.limit,
-            }
+            };
 
-            return axiosClient.get(url, {
-                params: {
-                    ...params,
-                    search, per_page, sort_field, sort_direction
-                }
-            })
-                .then((response) => {
-                    commit('setUsers', [false, response.data])
-                })
-                .catch(() => {
-                    commit('setUsers', [false])
-                })
+            try {
+                const response = await axiosClient.get(url, {
+                    params: {
+                        ...params,
+                        search,
+                        per_page,
+                        sort_field,
+                        sort_direction
+                    }
+                });
+                commit('setUsers', [false, response.data]);
+            } catch (error) {
+                commit('setUsers', [false]);
+            }
         },
         createUser({commit}, user) {
             return axiosClient.post('/users', user)

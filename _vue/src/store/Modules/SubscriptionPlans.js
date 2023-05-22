@@ -45,30 +45,32 @@ export const SubscriptionPlans = {
         }
     },
     actions: {
-        getSubscriptionPlans({commit, state, rootState}, {url = null, search = '', per_page, sort_field, sort_direction, id} = {}) {
-            commit('setSubscriptionPlans', [true])
+        async getSubscriptionPlans({ commit, state, rootState }, { url = null, search = '', per_page, sort_field, sort_direction, id } = {}) {
+            commit('setSubscriptionPlans', [true]);
 
-            url = url || '/subscription-plans'
-            if (!rootState.user.token){
-                url = '/preview'+url;
+            url = url || '/subscription-plans';
+            if (!rootState.user.token) {
+                url = '/preview' + url;
             }
             const params = {
                 per_page: state.limit,
+            };
+
+            try {
+                const response = await axiosClient.get(url, {
+                    params: {
+                        ...params,
+                        search,
+                        per_page,
+                        sort_field,
+                        sort_direction,
+                        id
+                    }
+                });
+                commit('setSubscriptionPlans', [false, response.data, id]);
+            } catch (error) {
+                commit('setSubscriptionPlans', [false]);
             }
-
-            return axiosClient.get(url, {
-                params: {
-                    ...params,
-                    search, per_page, sort_field, sort_direction, id
-                }
-            })
-                .then((response) => {
-
-                    commit('setSubscriptionPlans', [false, response.data,id])
-                })
-                .catch((response) => {
-                    commit('setSubscriptionPlans', [false])
-                })
         },
         createSubscriptionPlan({commit}, subscriptionPlan) {
             return axiosClient.post('/subscription-plans', subscriptionPlan)

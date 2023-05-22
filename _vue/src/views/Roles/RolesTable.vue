@@ -203,15 +203,15 @@ function showAddNewModal() {
   showRoleModal.value = true
 }
 
-function deleteRole(role) {
+async function deleteRole(role) {
     if (!confirm(`Are you sure you want to delete the role?`)) {
-    return
-  }
-  store.dispatch('deleteRole', role)
-    .then(res => {
-      // TODO Show notification
-      store.dispatch('getRoles')
-    })
+        return;
+    }
+    try {
+        await store.dispatch('deleteRole', role);
+        await store.dispatch('getRoles');
+    } catch (error) {
+    }
 }
 
 function editRole(p) {

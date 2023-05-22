@@ -32,24 +32,27 @@ export const Subscriptions = {
 
     },
     actions: {
-        getSubscriptions({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
-            commit('setSubscriptions', [true])
-            url = url || '/subscriptions'
+        async getSubscriptions({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+            commit('setSubscriptions', [true]);
+            url = url || '/subscriptions';
             const params = {
                 per_page: state.limit,
+            };
+
+            try {
+                const response = await axiosClient.get(url, {
+                    params: {
+                        ...params,
+                        search,
+                        per_page,
+                        sort_field,
+                        sort_direction
+                    }
+                });
+                commit('setSubscriptions', [false, response.data]);
+            } catch (error) {
+                commit('setSubscriptions', [false]);
             }
-            return axiosClient.get(url, {
-                params: {
-                    ...params,
-                    search, per_page, sort_field, sort_direction
-                }
-            })
-                .then((response) => {
-                    commit('setSubscriptions', [false, response.data])
-                })
-                .catch(() => {
-                    commit('setSubscriptions', [false])
-                })
         },
         deleteSubscription({commit}, subscription) {
             return axiosClient.delete(`/subscriptions/${subscription.id}`)

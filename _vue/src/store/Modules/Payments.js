@@ -31,24 +31,27 @@ export const Payments = {
 
     },
     actions: {
-        getPayments({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
-            commit('setPayments', [true])
-            url = url || '/payments'
+        async getPayments({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+            commit('setPayments', [true]);
+            url = url || '/payments';
             const params = {
                 per_page: state.limit,
+            };
+
+            try {
+                const response = await axiosClient.get(url, {
+                    params: {
+                        ...params,
+                        search,
+                        per_page,
+                        sort_field,
+                        sort_direction
+                    }
+                });
+                commit('setPayments', [false, response.data]);
+            } catch (error) {
+                commit('setPayments', [false]);
             }
-            return axiosClient.get(url, {
-                params: {
-                    ...params,
-                    search, per_page, sort_field, sort_direction
-                }
-            })
-                .then((response) => {
-                    commit('setPayments', [false, response.data])
-                })
-                .catch(() => {
-                    commit('setPayments', [false])
-                })
         },
         deletePayment({commit}, payment) {
             return axiosClient.delete(`/payments/${payment.id}`)

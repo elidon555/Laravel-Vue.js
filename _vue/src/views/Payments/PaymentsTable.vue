@@ -155,6 +155,7 @@ const isLoading = ref(false);
 const fullPage = ref(true);
 const perPage = ref(USERS_PER_PAGE);
 const search = ref('');
+
 const payments = computed(() => store.state.payments);
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
@@ -176,17 +177,20 @@ function getForPage(ev, link) {
   getPayments(link.url)
 }
 
-function getPayments(url = null) {
-  isLoading.value = true;
-  store.dispatch("getPayments", {
-    url,
-    search: search.value,
-    per_page: perPage.value,
-    sort_field: sortField.value,
-    sort_direction: sortDirection.value
-  }).then(function(response){
-      isLoading.value = false;
-  });
+async function getPayments(url = null) {
+    isLoading.value = true;
+    try {
+        await store.dispatch("getPayments", {
+            url,
+            search: search.value,
+            per_page: perPage.value,
+            sort_field: sortField.value,
+            sort_direction: sortDirection.value
+        });
+        isLoading.value = false;
+    } catch (error) {
+        isLoading.value = false;
+    }
 }
 
 function sortPayments(field) {

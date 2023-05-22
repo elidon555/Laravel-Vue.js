@@ -48,37 +48,33 @@ export const Stripe = {
 
     },
     actions: {
-        createStripeSubscription({commit}, stripeSubscription) {
-            return axiosClient.post('/stripe/create-subscription', stripeSubscription)
-                .then((response) => {
-                    commit('setStripeSubscriptionData', [false, {...stripeSubscription,...response.data}])
-                })
-                .catch(() => {
-                    commit('setStripeSubscriptionData', [false])
-                })
+        async createStripeSubscription({ commit }, stripeSubscription) {
+            try {
+                const response = await axiosClient.post('/stripe/create-subscription', stripeSubscription);
+                commit('setStripeSubscriptionData', [false, { ...stripeSubscription, ...response.data }]);
+            } catch (error) {
+                commit('setStripeSubscriptionData', [false]);
+            }
         },
-        createPaymentIntent({commit},plan) {
-
-            commit('setStripeClientSecret', [true])
-            return axiosClient.post('/stripe/pay-intent')
-                .then((response) => {
-                    commit('setStripeClientSecret', [false, response.data])
-                    commit('setPlan', [plan.name,plan.price,plan.price_id])
-                })
-                .catch(() => {
-                })
-                .finally(()=>{
-                    commit('setStripeClientSecret', [false])
-                })
+        async createPaymentIntent({ commit }, plan) {
+            commit('setStripeClientSecret', [true]);
+            try {
+                const response = await axiosClient.post('/stripe/pay-intent');
+                commit('setStripeClientSecret', [false, response.data]);
+                commit('setPlan', [plan.name, plan.price, plan.price_id]);
+            } catch (error) {
+                // Handle error
+            } finally {
+                commit('setStripeClientSecret', [false]);
+            }
         },
-        createStripeCustomer({commit}, stripeCustomer) {
-            return axiosClient.post('/stripe/create-costumer', stripeCustomer)
-                .then((response) => {
-                    commit('setStripeCustomerData', [false, response.data])
-                })
-                .catch(() => {
-                    commit('setStripeCustomerData', [false])
-                })
+        async createStripeCustomer({ commit }, stripeCustomer) {
+            try {
+                const response = await axiosClient.post('/stripe/create-costumer', stripeCustomer);
+                commit('setStripeCustomerData', [false, response.data]);
+            } catch (error) {
+                commit('setStripeCustomerData', [false]);
+            }
         }
     },
     getters: {}

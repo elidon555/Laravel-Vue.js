@@ -187,17 +187,20 @@ function getForPage(ev, link) {
   getSubscriptionPlans(link.url)
 }
 
-function getSubscriptionPlans(url = null) {
-  isLoading.value = true;
-  store.dispatch("getSubscriptionPlans", {
-    url,
-    search: search.value,
-    per_page: perPage.value,
-    sort_field: sortField.value,
-    sort_direction: sortDirection.value
-  }).then(function(response){
-      isLoading.value = false;
-  });
+async function getSubscriptionPlans(url = null) {
+    isLoading.value = true;
+    try {
+        await store.dispatch("getSubscriptionPlans", {
+            url,
+            search: search.value,
+            per_page: perPage.value,
+            sort_field: sortField.value,
+            sort_direction: sortDirection.value
+        });
+        isLoading.value = false;
+    } catch (error) {
+        // Handle error
+    }
 }
 
 function sortSubscriptionPlans(field) {

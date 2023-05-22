@@ -29,21 +29,26 @@
 <script setup>
 import {computed, onMounted, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
+import {useNotification} from "@kyvg/vue3-notification";
+
+const notification = useNotification()
+
 
 const loading = ref(false)
-
-const rules = [
-  value => {
-    if (value) return true
-
-    return 'Field is empty.'
-  },
-];
 
 const billingInfo = ref(computed(() => store.state.billingInfo));
 
 let postBillingInfo = {}
 
+const rules = [
+    value => {
+        if (value) return true
+
+        return 'Field is empty.'
+    },
+];
+
+//Experimental, it's how stripe requires it
 onUpdated(() => {
   postBillingInfo = {
     email: billingInfo.value.email,
@@ -68,23 +73,23 @@ onUpdated(() => {
   }
 
 })
-
-function submit(){
-
+async function submit() {
     loading.value = true;
-    store.dispatch('createStripeCustomer', postBillingInfo)
-        .then(response => {
-          loading.value = false;
-
-        })
-        .catch(err => {
-          loading.value = false;
-            // debugger;
-        })
+    try {
+        await store.dispatch('createStripeCustomer', postBillingInfo);
+        loading.value = false;
+        notification.notify({
+            title: "Success!",
+            type: "success",
+        });
+    } catch (err) {
+        loading.value = false;
+        // debugger;
+    }
 }
 
-function getBillingInfo(){
-  store.dispatch('getBillingInfo')
+async function getBillingInfo() {
+    await store.dispatch('getBillingInfo');
 }
 
 onMounted(()=>{

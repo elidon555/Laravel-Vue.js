@@ -78,7 +78,6 @@ export default defineComponent({
             // Access instance methods, e.g. createToken()
             elms.value.instance.createToken(cardElement).then((result) => {
                 // Handle result.error or result.token
-                console.log(result);
             });
         };
 

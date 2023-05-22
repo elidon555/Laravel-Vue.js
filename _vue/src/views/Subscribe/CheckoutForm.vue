@@ -114,42 +114,43 @@ onMounted(() => {
 })
 
 const Submit = async () => {
-  disabled.value = true
-  const clientSecret = store.state.stripe.clientSecret
-  const fullName = store.state.stripe.clientName
+    try {
+        disabled.value = true;
+        const clientSecret = store.state.stripe.clientSecret;
+        const fullName = store.state.stripe.clientName;
 
-  const result = await stripe.confirmCardSetup(clientSecret, {
-    payment_method: {
-      type: 'card',
-      card: el,
-      billing_details: {
-        name: fullName
-      }
+        const result = await stripe.confirmCardSetup(clientSecret, {
+            payment_method: {
+                type: 'card',
+                card: el,
+                billing_details: {
+                    name: fullName,
+                },
+            },
+        });
+        if (result.error) {
+            disabled.value = false;
+            alert(result.error.message);
+        } else {
+            let data = {
+                name: store.state.plan.name,
+                paymentMethodId: result.setupIntent.payment_method,
+                priceId: store.state.plan.price_id,
+            };
+
+            await store.dispatch('createStripeSubscription', data);
+            await Swal.fire({
+                title: 'Success!',
+                text: 'You are successfully subscribed to ' + contentUser.value.name,
+                icon: 'success',
+            });
+            await store.dispatch('getCurrentUser');
+            emit('complete');
+        }
+    } catch (err) {
+        // Handle error
+        // debugger;
     }
-  })
-  if (result.error) {
-    disabled.value = false
-    alert(result.error.message)
-  } else {
-    let data = {
-      name: store.state.plan.name,
-      paymentMethodId: result.setupIntent.payment_method,
-      priceId: store.state.plan.price_id,
-    }
-    store.dispatch('createStripeSubscription', data)
-        .then(response => {
-          Swal.fire({
-            title: 'Success!',
-            text:'You are successfully subscribed to '+contentUser.value.name,
-            icon: 'success',
-          })
-            store.dispatch("getCurrentUser")
-            emit('complete')
-        })
-        .catch(err => {
-          // debugger;
-        })
-  }
-}
+};
 
 </script>

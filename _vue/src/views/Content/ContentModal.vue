@@ -56,6 +56,14 @@ import {computed, onUpdated, ref, watch} from 'vue'
 import store from "../../store/index.js";
 import {useNotification} from "@kyvg/vue3-notification";
 
+const emit = defineEmits(['update:modelValue', 'close'])
+const notification = useNotification()
+
+const show = computed({
+    get: () => props.modelValue,
+    set: (value) => emit('update:modelValue', value)
+})
+
 const props = defineProps({
   modelValue: Boolean,
   content: {
@@ -64,14 +72,12 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'close'])
-
-const notification = useNotification()
-
 const roles = ref([]);
 const permissions = ref([]);
 const loading = ref(false)
 const file = ref(false)
+
+
 const form = ref();
 const rules = [
   value => {
@@ -87,22 +93,19 @@ const content = ref({
   isPublic: props.content.isPublic,
 })
 
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
 
-onUpdated(() => {
-  content.value = {
-    title: props.content.title,
-    description: props.content.description,
-    isPublic: props.content.isPublic,
-  }
-})
 
 function onFileSelected(event) {
   file.value = event.target.files[0];
 }
+
+onUpdated(() => {
+    content.value = {
+        title: props.content.title,
+        description: props.content.description,
+        isPublic: props.content.isPublic,
+    }
+})
 
 watch(show, (first, second) => {
     if (first===false) emit('close')
@@ -115,7 +118,6 @@ async function onSubmit() {
   formData.append('properties[title]', content.value.title);
   formData.append('properties[description]', content.value.description);
   formData.append('properties[isPublic]', content.value.isPublic);
-  console.log(content.value.isPublic)
   formData.append('file', file.value);
 
   store.dispatch('createContent', formData)

@@ -42,10 +42,8 @@ function editSubscriptionPlan(u) {
 }
 
 function onModalClose() {
-    console.log('ok')
   subscriptionPlanModel.value = {...DEFAULT_SUBSCRIPTION_PLAN}
 }
-
 
 </script>
 

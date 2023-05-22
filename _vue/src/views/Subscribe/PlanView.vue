@@ -46,20 +46,23 @@ const route = useRoute()
 const userId = computed(() => route.params.id)
 const subscriptionPlans = computed(()=>store.state.subscriptionPlans)
 
-function getSubscriptionPlansData(url = null) {
-  store.dispatch("getSubscriptionPlans", {
-    url,
-    search: '',
-    per_page: '',
-    sort_field: 'price',
-    sort_direction: 'asc',
-    id:userId.value
-  }).then(function(response){
-  });
+async function getSubscriptionPlansData(url = null) {
+    try {
+        await store.dispatch("getSubscriptionPlans", {
+            url,
+            search: '',
+            per_page: '',
+            sort_field: 'price',
+            sort_direction: 'asc',
+            id: userId.value
+        });
+        // Rest of the code after successful response
+    } catch (error) {
+        // Error handling code
+    }
 }
 onMounted(()=>{
   getSubscriptionPlansData()
-  console.log(tab.value)
 })
 
 </script>
