@@ -9,6 +9,11 @@ class UserResource extends JsonResource
 {
     public static $wrap = false;
 
+    public function __construct($model,private readonly array $media = [])
+    {
+        parent::__construct($model);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -22,6 +27,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'roles' => $this->roles,
+            'media' => $this->media,
             'permissions' => $this->permissions,
             'subscriptions' => $this->activeSubscriptions,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),

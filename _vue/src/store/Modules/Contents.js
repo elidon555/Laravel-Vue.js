@@ -7,6 +7,7 @@ export const Contents = {
             data: [],
             subscriptionPlans:[],
             user:[],
+            images:{},
             links: [],
             from: null,
             to: null,
@@ -28,6 +29,7 @@ export const Contents = {
                     total: data.meta.total,
                     subscriptionPlans: data.subscriptionPlans,
                     user: data.user,
+                    images: data.images,
                 });
             }
             state.loading = loading;

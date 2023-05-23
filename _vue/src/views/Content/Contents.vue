@@ -1,7 +1,6 @@
 <template>
-    <ProfileHeader :edit ="false" />
+    <ProfileHeader :edit ="false" :images="contents.images" :key="$route.path"/>
     <br><br><br>
-
 
     <div v-if="!user.token">
         <PlanView v-if="stripe.clientSecret ===''"></PlanView>

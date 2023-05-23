@@ -32,6 +32,7 @@ class ContentController extends Controller
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
         $additional['subscriptionPlans'] = SubscriptionPlan::query()->where('user_id',$userIdContent)->get()->toArray();
+        $additional['images'] = $user->profileImages();
         $additional['user'] = $user->toArray();
 
         //check if it's owner of content or is subscribed

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\SubscriptionPlanController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserDetailController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
-    return new \App\Http\Resources\UserResource($request->user());
+    $user = $request->user();
+    $media = $user->profileImages();
+    return (new UserResource($user,$media));
 });
 
 Route::prefix('preview')->as('preview')->group(function (){

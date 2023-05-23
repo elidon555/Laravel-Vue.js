@@ -41,7 +41,7 @@
         <v-list-item prepend-icon="mdi-chart-bar" title="Reports" value="reports"></v-list-item>
       </router-link>
 
-      <v-divider class="m-2"></v-divider>
+      <v-divider v-show="checkRole(['admin','finance'])" class="m-2"></v-divider>
 
       <router-link v-show="checkRole(['admin'])" :to="{name: 'app.users'}">
         <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>

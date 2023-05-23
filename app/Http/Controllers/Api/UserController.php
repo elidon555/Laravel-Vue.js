@@ -107,6 +107,7 @@ class UserController extends Controller
         $user = auth()->user();
 
         foreach ($images as $key=>$file) {
+            if (!$file) continue;
             $user->clearMediaCollection($key);
             $user->addMediaFromRequest($key)->toMediaCollection($key);
         }

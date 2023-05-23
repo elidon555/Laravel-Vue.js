@@ -24,8 +24,8 @@ class UpdateUserImagesRequest extends FormRequest
     public function rules()
     {
         return [
-            'cover' => 'required|mimes:jpeg,jpg,png,gif',
-            'profile' => 'required|mimes:jpeg,jpg,png,gif'
+            'cover' => 'nullable|mimes:jpeg,jpg,png,gif',
+            'profile' => 'nullable|mimes:jpeg,jpg,png,gif'
         ];
     }
 }

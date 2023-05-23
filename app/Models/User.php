@@ -9,6 +9,7 @@ use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
 
@@ -50,6 +51,15 @@ class User extends Authenticatable implements HasMedia
     public function details()
     {
         return $this->hasOne(UserDetail::class);
+    }
+
+    public function profileImages(){
+        $profileImages = $this->media->whereIn('collection_name',['cover','profile']);
+        $data = [];
+        foreach ($profileImages as $media) {
+            $data[$media->collection_name] = $media->getFullUrl();
+        }
+        return $data;
     }
 
     public function activeSubscriptions()
