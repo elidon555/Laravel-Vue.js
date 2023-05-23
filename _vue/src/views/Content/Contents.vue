@@ -26,7 +26,7 @@
       </div>
       <div v-else-if=" user.data.id !== parseInt(userId) && planName==='' && contents.subscriptionPlans.length " class="mt-6">
           <PlanView v-if="stripe.clientSecret === ''"/>
-          <SignUpForm v-else-if="stripe.clientSecret !=='' && stripe.clientId ===''"/>
+          <BillingDetails v-else-if="stripe.clientSecret !=='' && stripe.clientId ===''"/>
           <CheckoutForm @complete = "getContents()" v-else-if="stripe.clientId !==''" />
       </div>
     </div>
@@ -56,7 +56,7 @@ import ContentModal from "./ContentModal.vue";
 import PlanView from "../Subscribe/PlanView.vue";
 import CheckoutForm from "../Subscribe/CheckoutForm.vue";
 import {useRoute} from "vue-router";
-import SignUpForm from "../Subscribe/SignUpForm.vue";
+import BillingDetails from "../Subscribe/BillingDetails.vue";
 
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);

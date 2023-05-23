@@ -1,12 +1,13 @@
 <template>
-  <br><br>
-    <SignUpForm/>
+    <ProfileHeader />
+    <BillingDetails class="mt-8"/>
 </template>
 <script>
 //importing bootstrap 5 Modules
 import "bootstrap/dist/css/bootstrap.min.css";
-import SignUpForm from "../Subscribe/SignUpForm.vue";
+import BillingDetails from "../Subscribe/BillingDetails.vue";
+import ProfileHeader from "./ProfileHeader.vue";
 export default {
-    components: {SignUpForm}
+    components: {ProfileHeader, BillingDetails}
 }
 </script>

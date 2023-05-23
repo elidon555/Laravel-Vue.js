@@ -17,7 +17,7 @@ watch(route, (rt) => {
 }, {immediate: true})
 
 function getData() {
-  axiosClient.get('report/subscriptions', {params: {d: route.params.date}})
+  axiosClient.get('report/subscribers', {params: {d: route.params.date}})
     .then(({data}) => {
       chartData.value = data;
     })
