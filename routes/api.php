@@ -37,6 +37,8 @@ Route::prefix('preview')->as('preview')->group(function (){
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('user/update-profile', [UserController::class,'updateUserImages']);
+
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('permissions', PermissionController::class);

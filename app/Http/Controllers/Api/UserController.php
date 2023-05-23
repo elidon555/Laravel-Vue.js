@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserImagesRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +66,7 @@ class UserController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserImagesRequest $request, User $user)
     {
         $data = $request->validated();
 
@@ -93,5 +93,24 @@ class UserController extends Controller
         $user->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * Update user images.
+     *
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserImages(UpdateUserImagesRequest $request)
+    {
+        $images = $request->validated();
+        $user = auth()->user();
+
+        foreach ($images as $key=>$file) {
+            $user->clearMediaCollection($key);
+            $user->addMediaFromRequest($key)->toMediaCollection($key);
+        }
+
+        return response()->json();
     }
 }

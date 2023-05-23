@@ -67,6 +67,9 @@ export const User = {
                 throw error;
             }
         },
+        async updateUserImages({commit}, images) {
+            return axiosClient.post('/user/update-profile', images)
+        }
     },
     getters: {},
 };

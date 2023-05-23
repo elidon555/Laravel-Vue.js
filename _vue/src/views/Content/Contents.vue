@@ -1,21 +1,7 @@
 <template>
-    <div class="relative">
-        <img :src="'https://picsum.photos/1920/1080?image='+Math.floor(Math.random() * 100)"  class="aspect-[4/1] object-cover" alt="Wallpaper"/>
-        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-            <div class="aspect-w-1 aspect-h-1 text-center" >
-                <img
-                    :src="'https://loremflickr.com/320/240/profile'"
-                    alt="Bottom Image"
-                    class="object-cover w-[120px] h-[120px] rounded-full"/>
-            </div>
-        </div>
-    </div>
+    <ProfileHeader :edit ="false" />
     <br><br><br>
 
-    <div class="text-center mt-3">
-        <h1 class="font-semibold leading-tight text-xl">Lorem ipsum dolor</h1>
-        <h6 class="font-thin text-gray-300 mt-3">Nulla facilisi. Nam egestas rutrum ex, eget consequat lacus laoreet in.</h6>
-    </div>
 
     <div v-if="!user.token">
         <PlanView v-if="stripe.clientSecret ===''"></PlanView>
@@ -57,6 +43,7 @@ import PlanView from "../Subscribe/PlanView.vue";
 import CheckoutForm from "../Subscribe/CheckoutForm.vue";
 import {useRoute} from "vue-router";
 import BillingDetails from "../Subscribe/BillingDetails.vue";
+import ProfileHeader from "../Profile/ProfileHeader.vue";
 
 const contents = computed(() => store.state.contents);
 const user = computed(() => store.state.user);
