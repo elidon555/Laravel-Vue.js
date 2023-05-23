@@ -1,26 +1,26 @@
 <template>
     <div class="relative">
-        <img @click="props.value.edit ? updateImage('cover') : null"
+        <img @click="edit ? updateImage('cover') : null"
             :src="coverPreview || 'https://picsum.photos/1920/1080?image='+Math.floor(Math.random() * 100)"
             class="aspect-[4/1] object-cover w-100"
-             :class="props.edit ? 'cursor-pointer  hover:brightness-75' : ''"
+             :class="edit ? 'cursor-pointer  hover:brightness-75' : ''"
              alt="Wallpaper"/>
         <input ref="coverInput" type="file" class="d-none" @change="onCoverFileSelected">
 
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
             <div class="aspect-w-1 aspect-h-1 text-center" >
-                <img @click="props.edit ? updateImage('profile') : null"
+                <img @click="edit ? updateImage('profile') : null"
                     :src="profilePreview || 'https://loremflickr.com/320/240/profile'"
                     alt="Bottom Image"
                     class="object-cover w-[120px] h-[120px] rounded-full"
-                     :class="props.edit ? 'cursor-pointer hover:brightness-75' : ''"/>
+                     :class="edit ? 'cursor-pointer hover:brightness-75' : ''"/>
                 <input ref="profileInput" type="file" class="d-none" @change="onProfileFileSelected">
             </div>
         </div>
     </div>
     <br><br><br>
     <div class="flex justify-center">
-        <v-btn @click="" color="blue" variant="tonal" :class="loading">Update pictures</v-btn>
+        <v-btn @click="onSubmit" color="blue" variant="tonal" :class="loading">Update pictures</v-btn>
     </div>
 
     <div class="text-center mt-3">
@@ -39,6 +39,8 @@ import store from "../../store";
 const props = defineProps({
     edit:Boolean
 })
+
+const edit = props.edit;
 
 const emits = defineEmits([''])
 
